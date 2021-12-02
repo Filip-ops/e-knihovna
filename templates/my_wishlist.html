@@ -40,6 +40,7 @@
         </header>
 
         <main>
+            <!-- vsetko same ako my_library.html + tlacitka -->
             <div id="main-inner">
                 <div id="content-header">
                     <h2>My Wishlist</h2>
@@ -72,10 +73,14 @@
                                     </div>
                                     <div class="list-item-tag-list">
                                     </div>
+                                    <!-- vzdy tieto 2 tlacitka -->
                                     <div class="list-item-button">
                                         <p>LIBRARY</p>
+                                        <!-- on press sends post request s add=title_in_wishlist.title.isbn -->
+                                        <!-- odstrani sa title_in_wishlist a vytvori sa title_in_library -->
                                         <form method="POST" class="form-button-icon">
-                                            <button name="add" value="library" class="btn-add">
+                                            <button name="add" value="isbn_value" class="btn-add">
+                                                <!-- isbn_value=title_in_wishlis.title.isbn -->
                                                 <i class="fas fa-plus"></i>
                                                 <span class="tooltip">add</span>
                                             </button>
@@ -83,8 +88,11 @@
                                     </div>
                                     <div class="list-item-button">
                                         <p>WISHLIST</p>
+                                        <!-- on press sends post request s remove=title_in_wishlist.title.isbn -->
+                                        <!-- odstrani sa title_in_wishlist -->
                                         <form method="POST" class="form-button-icon">
-                                            <button name="remove" value="wishlist" class="btn-del">
+                                            <button name="remove" value="isbn_value" class="btn-del">
+                                                <!-- isbn_value=title_in_wishlis.title.isbn -->
                                                 <i class="fas fa-times"></i>
                                                 <span class="tooltip">remove</span>
                                             </button>

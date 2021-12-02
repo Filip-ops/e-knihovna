@@ -26,7 +26,7 @@
                     <a href="search.html" class="nav-item">
                         <span>Search</span>
                     </a>
-                    <a href="my_library.html" class="nav-item" id="nav-selected">
+                    <a href="my_library.html" class="nav-item" id="nav-selected"> <!-- id="nav-selected" -->
                         <span>My Library</span>
                     </a>
                     <a href="my_shelves.html" class="nav-item">
@@ -47,30 +47,40 @@
                 <div id="content">
                     <h3>Add Title</h3>
                     <p>Add title to your library by entering its isbn or find a title in the Search section.</p>
+                    <!-- on submit through post method sends isbn value in isbn -->
                     <form action="" method="post" class="isbn-form">
                         <label for="isbn">ISBN: </label>
                         <input type="number" min="1" name="isbn" id="isbn">
                         <input type="submit" value="Add">
                     </form>
+                    <!-- if title s isbn=isbn doesnt exist -> display this, replace isbn_value -->
                     <p class="err-msg">Sorry, there is no title with this isbn in the database. Contact the
-                        <a class="err-link" href="mailto:admin@eknihovna.com">admin</a>.</p>
-                    <p class="ok-msg">Title succesfully added to your library.</p>
+                        <a class="err-link" href="mailto:admin@eknihovna.com?subject=Missing title&body=isbn_value">admin</a>.
+                    </p>
+                    <!-- if title s isbn=isbn exists -> create title_in_library and display this -->
+                    <!-- ked sa prida mohlo by to redirectnut na jeho detail aby sa dalo pridat do policiek a hovadiny
+                    lebo sa mi tam nechcelo robit daky pridavaci form -->
+                    <p class="ok-msg">Title successfully added to your library.</p>
+                    <!-- if not post -> display this -->
+                    <p></p>
 
                     <h3>Search My Titles</h3>
-                    <form action="" class="form-search">
+                    <!-- post method: v search je hladany retazeca a v search_filter je co sa sf_x kde x je co sa prehladava -->
+                    <form action="" method="post" class="form-search">
                         <label for="search"></label>
                         <input type="text" name="search" id="search" size="30">
                         <input type="submit" value="Search">
                         <div class="search_filter">
-                            <label><input type="radio" checked="checked" name="search_filter" id="search_filter_all"> all</label>
-                            <label><input type="radio" value="title" name="search_filter" id="search_filter_title"> title</label>
-                            <label><input type="radio" value="author" name="search_filter" id="search_filter_author"> author</label>
-                            <label><input type="radio" value="genre" name="search_filter" id="search_filter_genre"> genre</label>
+                            <label><input type="radio" checked="checked" name="search_filter" id="sf_all"> all</label>
+                            <label><input type="radio" value="title" name="search_filter" id="sf_title"> title</label>
+                            <label><input type="radio" value="author" name="search_filter" id="sf_author"> author</label>
+                            <label><input type="radio" value="genre" name="search_filter" id="sf_genre"> genre</label>
                         </div>
                     </form>
 
                     <div class="list-wrapper">
                         <table>
+                            <!-- title item - same ako v author_detail.html + tlacitka -->
                             <tr class="list-item">
                                 <td class="list-item-inner">
                                     <img src="../static/hery.jpg" alt="img" height="70">
@@ -86,10 +96,14 @@
                                         <span class="tag-item">owned</span>
                                         <span class="tag-item">read</span>
                                     </div>
+                                    <!-- vzdy tento jeden button -->
                                     <div class="list-item-button">
                                         <p>LIBRARY</p>
+                                        <!-- on press send post request with remove=title_in_library.title.isbn -->
+                                        <!-- odstrani sa title_in_library -->
                                         <form method="POST" class="form-button-icon">
-                                            <button name="remove" value="library" class="btn-del">
+                                            <button name="remove" value="isbn_value" class="btn-del">
+                                                <!-- isbn_value=title_in_library.title.isbn -->
                                                 <i class="fas fa-times"></i>
                                                 <span class="tooltip">remove</span>
                                             </button>

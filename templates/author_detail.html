@@ -43,29 +43,33 @@
             <div id="main-inner">
                 <div id="content-detail">
                     <div id="content-detail-header">
-                        <img src="../static/profile.jpg" alt="" height="150 ">
+                        <img src="../static/profile.jpg" alt="" height="150 "> <!-- author.picture -->
                         <div class="detail-desc">
-                            <h2 class="detail-name">J. K. Rowling</h2>
-                            <p class="detail-author">Great Britain</p>
-                            <p class="detail-other">2005 - present</p>
+                            <h2 class="detail-name">J. K. Rowling</h2> <!-- author.name -->
+                            <p class="detail-author">Great Britain</p> <!-- author.country -->
+                            <p class="detail-other">2005 - present</p> <!-- author.born - author.died -->
+                            <!-- died moze byt null a vtedy sa da ze present #-->
                         </div>
                     </div>
+                    <!-- if existuju tituly od autora v databaze -->
                     <div id="content-detail-list">
                         <h3>Titles</h3>
                         <table>
+                            <!-- jeden title item -->
                             <tr class="list-item">
                                 <td class="list-item-inner">
-                                    <img src="../static/hery.jpg" alt="img" height="70">
+                                    <img src="../static/hery.jpg" alt="img" height="70"> <!-- title.picture -->
                                     <div class="list-item-text">
-                                        <span class="title-name">Harry Potter</span>
-                                        <span class="title-year">2004</span>
+                                        <span class="title-name">Harry Potter</span> <!-- title.name -->
+                                        <span class="title-year">2004</span> <!-- title.year -->
                                         <br>
-                                        <span class="title-author">J. K. Rowling</span>
+                                        <span class="title-author">J. K. Rowling</span> <!-- title author.name -->
                                         <br>
-                                        <span class="title-genre">fantasy</span>
+                                        <span class="title-genre">fantasy</span> <!-- title.genre -->
                                     </div>
                                     <div class="list-item-tag-list">
-                                        <span class="tag-item">owned</span>
+                                    <!-- for tag in title.tag -->
+                                        <span class="tag-item">owned</span> <!-- tag.name -->
                                         <span class="tag-item">read</span>
                                     </div>
                                 </td>

@@ -44,19 +44,22 @@
                 <div id="content-detail">
                     <div id="content-detail-header">
                         <div class="detail-desc">
-                            <h2>Harry Potter</h2>
-                            <p>All Harry Potter books</p>
+                            <h2>Harry Potter</h2> <!-- shelf.name -->
+                            <p>All Harry Potter books</p> <!-- shelf.description -->
                         </div>
+                        <!-- default tlacitka -->
                         <div class="detail-button-area">
                             <div class="form-button-wrapper">
-                                <button name="library" value="edit" class="btn-edit" id="create-tag-btn">
+                                <!-- vola edit shelf popup -->
+                                <button name="shelf" value="edit" class="btn-edit" id="create-tag-btn">
                                     <i class="fas fa-edit"></i>
                                 </button>
                                 <p class="btn-desc">EDIT SHELF</p>
                             </div>
                             <div class="form-button-wrapper">
+                                <!-- post request s shelf=remove -->
                                 <form method="POST" class="form-button-icon">
-                                    <button name="library" value="remove" class="btn-del">
+                                    <button name="shelf" value="remove" class="btn-del">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </form>
@@ -65,9 +68,11 @@
                         </div>
                     </div>
 
+                    <!-- if dake knihy v shelfe -->
                     <div id="content-detail-list">
                         <h3>Titles</h3>
                         <table>
+                            <!-- jeden item ako v author_detail.html + tlacitko -->
                             <tr class="list-item">
                                 <td class="list-item-inner">
                                     <img src="../static/hery.jpg" alt="img" height="70">
@@ -86,7 +91,9 @@
                                     <div class="list-item-button">
                                         <p>SHELF</p>
                                         <form method="POST" class="form-button-icon">
-                                            <button name="remove" value="library" class="btn-del">
+                                            <!-- post request s remove=title.isbn -->
+                                            <button name="remove" value="isbn_value" class="btn-del">
+                                                <!-- value=title_in_library.isbn -->
                                                 <i class="fas fa-times"></i>
                                                 <span class="tooltip">remove</span>
                                             </button>

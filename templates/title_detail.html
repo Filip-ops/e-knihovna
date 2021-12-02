@@ -51,10 +51,13 @@
                             <p class="detail-other">2005</p>
                             <p class="detail-other">fantasy</p>
                             <div class="detail-tag-list">
+                                <!-- for shelf in policky v ktorych je tento title_in_library -->
                                 <div class="detail-tag-item">
-                                    <span>owned</span>
+                                    <span>owned</span> <!-- shelf.name -->
+                                    <!-- on click post request with remove_tag=shelf.id -->
                                     <form method="POST" class="form-button-icon">
-                                        <button name="tag" value="add" class="btn-del-tag">
+                                        <button name="remove_tag" value="id_value" class="btn-del-tag">
+                                            <!-- id_value=shelf.id -->
                                             <i class="fas fa-times"></i>
                                             <span class="tooltip">remove</span>
                                         </button>
@@ -69,8 +72,10 @@
                                         </button>
                                     </form>
                                 </div>
+                                <!-- default sa zobrazi -->
                                 <div class="detail-tag-item">
                                     <div class="form-button-icon">
+                                        <!-- calls add title to shelf pop up -->
                                         <button name="tag" value="add" class="btn-add-tag" id="add-tag-btn">
                                             <i class="fas fa-plus"></i>
                                             <span class="tooltip">add</span>
@@ -79,41 +84,52 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- tlacitka - on click post request... -->
                         <div class="detail-button-area">
+                            <!-- zobrazi sa ked existuje title_in_library s title.isbn a je v policke reading -->
                             <div class="form-button-wrapper">
                                 <form method="POST" class="form-button-icon">
+                                    <!-- odstrani z policky reading a prida do policky read -->
                                     <button name="reading" value="done" class="btn-finish">
                                         <i class="fas fa-check-circle"></i>
                                     </button>
                                 </form>
                                 <p class="btn-desc">FINISH READING</p>
                             </div>
+                            <!-- zobrazi sa ked neexistuje title_in_library pre tento title -->
                             <div class="form-button-wrapper">
                                 <form method="POST" class="form-button-icon">
+                                    <!-- vytvori title_in_library, isbn netreba poslat, bude v url -->
                                     <button name="library" value="add" class="btn-add">
                                         <i class="fas fa-plus-circle"></i>
                                     </button>
                                 </form>
                                 <p class="btn-desc">ADD TO LIBRARY</p>
                             </div>
+                            <!-- zobrazi sa ked existuje title_in_library pre tento title -->
                             <div class="form-button-wrapper">
                                 <form method="POST" class="form-button-icon">
+                                    <!-- odstrani title_in_library -->
                                     <button name="library" value="remove" class="btn-del">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </form>
                                 <p class="btn-desc">REMOVE FROM LIBRARY</p>
                             </div>
+                            <!-- zobrazi sa ked neexistuje title_in_wishlist pre tento title -->
                             <div class="form-button-wrapper">
                                 <form method="POST" class="form-button-icon">
+                                    <!-- vytvori sa title_in_wishlist, isbn v url -->
                                     <button name="wishlist" value="add" class="btn-add">
                                         <i class="fas fa-plus-circle"></i>
                                     </button>
                                 </form>
                                 <p class="btn-desc">ADD TO WISHLIST</p>
                             </div>
+                            <!-- zobrazi sa ked existuje title_in_wishlist pre tento title -->
                             <div class="form-button-wrapper">
                                 <form method="POST" class="form-button-icon">
+                                    <!-- odstrani title_in_wishlist -->
                                     <button name="wishlist" value="remove" class="btn-del">
                                         <i class="fas fa-trash"></i>
                                     </button>
@@ -122,40 +138,51 @@
                             </div>
                         </div>
                     </div>
+                    <!-- zobrazi sa len ked existuje title_in_library a je v policke reading -->
+                    <!-- on enter post request page = new page value -->
                     <form action="" method="post" class="form-page-input">
                         <label>
                             <span>You're on page: </span>
-                            <input type="number" value="150" class="page-input">
+                            <input type="number" name="page" value="150" class="page-input"> <!-- title_in_library.page -->
                             <i class="fas fa-pencil-alt"></i>
                             <span class="tooltip">Confirm by pressing Enter.</span>
                         </label>
                     </form>
+                    <!-- note_list -->
                     <div id="content-detail-list">
-                            <div class="heading-w-button">
+                        <div class="heading-w-button">
                             <h3>My Notes</h3>
+                            <!-- vola add note popup -->
                             <button name="note" value="add" class="btn-add" id="add-note-btn">
                                 <span><i class="fas fa-plus-circle"></i> New Note</span>
                             </button>
                         </div>
+                        <!-- if title_in_library ma dake notes -->
                         <table>
+                            <!-- for note in poznamky k tomuto title_in_library -->
+                            <!-- jedna note item -->
                             <tr class="note-list-item">
                                 <td class="note-list-item-color">
                                     <svg width="8px" height="50px">
-                                        <rect width="8px" height="50px" style="fill: lightgreen"></rect>
+                                        <rect width="8px" height="50px" style="fill: lightgreen"></rect> <!-- note.color -->
                                     </svg>
                                 </td>
                                 <td class="note-list-item-page">
                                     <p>PAGE</p>
-                                    <span>120</span>
+                                    <span>120</span> <!-- note.page_start - note.page_end if note.page_end else note.page_start -->
                                 </td>
                                 <td class="note-list-item-name">
-                                    <p>important</p>
+                                    <p>important</p> <!-- note.name -->
                                 </td>
                                 <td class="note-list-item-text">
-                                    <p>This is exciting. Have to check it again.</p>
+                                    <p>This is exciting. Have to check it again.</p> <!-- note.text -->
                                 </td>
+                                <!-- default tlacitka -->
                                 <td class="note-list-item-button">
                                     <div class="form-button-icon">
+                                        <!-- toto vyzera celkom complicated lebo dako tu bude treba predavat note.id
+                                        a potom daky komplikovany js takze by som tam asi nechal nefunkcny button aby
+                                        vyzeralo ze to ide editovat lebo to je celkom taka vec co by mala tam byt -->
                                         <button name="note" value="edit" class="btn-edit">
                                             <i class="fas fa-edit"></i>
                                             <span class="tooltip">edit</span>
@@ -163,8 +190,11 @@
                                     </div>
                                 </td>
                                 <td class="note-list-item-button">
+                                    <!-- post request s remove_note=note.id -->
+                                    <!-- odstrani note -->
                                     <form method="POST" class="form-button-icon">
-                                        <button name="note" value="remove" class="btn-del">
+                                        <button name="remove_note" value="id_value" class="btn-del">
+                                            <!-- id_value=note.id -->
                                             <i class="fas fa-trash"></i>
                                             <span class="tooltip">remove</span>
                                         </button>
@@ -217,6 +247,7 @@
         </footer>
     </div>
 
+    <!-- add note pop up -->
     <div id="add-note-modal" class="modal">
         <div class="modal-inner">
             <div class="modal-header">
@@ -225,6 +256,9 @@
             </div>
             <div class="modal-body">
                 <div class="modal-form">
+                    <!-- post request s note=add a hodnotami pre novy notev : name, page_start, page_end, color, text -->
+                    <!-- not sure about the color ze co to posle a ako sa to bude ukladat ta hodnota, hadam to bude
+                    hexa hodnota a nebude je treba dako specialne riesit -->
                     <form action="" method="post">
                         <div class="input-row">
                             <label for="name" class="required-label">Name: </label>
@@ -244,11 +278,13 @@
                             <label for="text">Text: </label>
                             <textarea name="text" id="text" rows="5"></textarea>
                         </div>
+                        <!-- on click post request -->
                         <button name="note" value="add" class="btn-add">
                             <i class="fas fa-check"></i>
                         </button>
                         <br>
                     </form>
+                    <!-- zbytocne -->
                     <button name="note" value="remove" class="btn-del">
                         <i class="fas fa-times"></i>
                     </button>
@@ -257,6 +293,7 @@
         </div>
     </div>
 
+    <!-- add title to shelf popup -->
     <div id="add-tag-modal" class="modal">
         <div class="modal-inner">
             <div class="modal-header">
@@ -265,20 +302,27 @@
             </div>
             <div class="modal-body">
                 <div class="modal-form">
+                    <!-- post request with array: selected[] containing shelf.id values  -->
+                    <!-- prida title do vsetkych policiek co su v selected -->
                     <form action="" method="post">
+                        <!-- for shelf in policky v ktorych este neni tento title -->
+                        <!-- jeden item -->
                         <div class="checkbox-item">
                             <input type="checkbox" name="selected" id="Harry Potter" value="Harry Potter">
-                            <label for="Harry Potter">Harry Potter</label>
+                            <!-- id alebo value (radsej obidva)=shelf.id -->
+                            <label for="Harry Potter">Harry Potter</label> <!-- shelf.name -->
                         </div>
                         <div class="checkbox-item">
                             <input type="checkbox" name="selected" id="School" value="School">
                             <label for="School">School</label>
                         </div>
+                        <!-- post request on click -->
                         <button name="tag" value="add" class="btn-add">
                             <i class="fas fa-check"></i>
                         </button>
                         <br>
                     </form>
+                    <!-- uselesss -->
                     <button name="tag" value="remove" class="btn-del">
                         <i class="fas fa-times"></i>
                     </button>

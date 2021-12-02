@@ -45,7 +45,9 @@
                     <h2>My Shelves</h2>
                 </div>
                 <div id="content">
+                    <!-- for shelf in policky -->
                     <table class="shelf-list">
+                        <!-- od tadeto 1 -->
                         <tr class="top">
                             <td></td>
                             <td></td>
@@ -55,6 +57,19 @@
                             <td></td>
                             <td class="shelf-item">
                                 <a class="shelf-new" id="create-tag-btn"><i class="fas fa-plus"></i> New Shelf</a>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr class="small">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="normal">
+                            <td></td>
+                            <td class="shelf-item">
+                                <a href="">Owned</a>
+                                <span class="shelf-small">1 book</span>
                             </td>
                             <td></td>
                         </tr>
@@ -89,11 +104,14 @@
                             <td></td>
                             <td></td>
                         </tr>
+                        <!-- po tadeto 1 - je default -->
+                        <!-- od tadeto 2 -->
                         <tr class="normal">
                             <td></td>
                             <td class="shelf-item">
-                                <a href="shelf_detail.html">Harry Potter</a>
-                                <span class="shelf-small">2 books</span>
+                                <a href="shelf_detail.html">Harry Potter</a> <!-- shelf.name -->
+                                <!-- href=shelf/shelf.id or something -->
+                                <span class="shelf-small">2 books</span> <!-- shelf.count - counter kolko tam je knih -->
                             </td>
                             <td></td>
                         </tr>
@@ -102,6 +120,7 @@
                             <td></td>
                             <td></td>
                         </tr>
+                        <!-- po tadeto 2 - je jeden item -->
                         <tr class="normal">
                             <td></td>
                             <td class="shelf-item">
@@ -115,11 +134,13 @@
                             <td></td>
                             <td></td>
                         </tr>
+                        <!-- od tadeto 3 -->
                         <tr class="bottom">
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
+                        <!-- po tadeto 3 - default -->
                     </table>
                 </div>
             </div>
@@ -132,6 +153,7 @@
         </footer>
     </div>
 
+    <!-- pop up na novy shelf -->
     <div id="create-tag-modal" class="modal">
         <div class="modal-inner">
             <div class="modal-header">
@@ -149,11 +171,13 @@
                             <label for="text">Description: </label>
                             <textarea name="text" id="text" rows="5"></textarea>
                         </div>
+                        <!-- on click post request s name=shelf.name, text=shelf.description -->
                         <button name="note" value="add" class="btn-add">
                             <i class="fas fa-check"></i>
                         </button>
                         <br>
                     </form>
+                    <!-- toto je celkom zbytocne -->
                     <button name="note" value="remove" class="btn-del">
                         <i class="fas fa-times"></i>
                     </button>
