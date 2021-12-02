@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>E-Knihovna</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu">
+    <link rel="icon" sizes="180x180" href="../static/favicon.ico">
+    <link rel="stylesheet" href="../static/style.css">
+    <script src="https://kit.fontawesome.com/307091ac57.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div id="top-div">
+        <header>
+            <div id="header-inner">
+                <div id="page-heading">
+                    <a href="home.html">
+                        <h1>eKnihovna</h1>
+                    </a>
+                </div>
+
+                <div id="nav">
+                    <a href="search.html" class="nav-item">
+                        <span>Search</span>
+                    </a>
+                    <a href="my_library.html" class="nav-item">
+                        <span>My Library</span>
+                    </a>
+                    <a href="my_shelves.html" class="nav-item">
+                        <span>My Shelves</span>
+                    </a>
+                    <a href="my_wishlist.html" class="nav-item" id="nav-selected">
+                        <span>My Wishlist</span>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <div id="main-inner">
+                <div id="content-header">
+                    <h2>My Wishlist</h2>
+                </div>
+                <div id="content">
+                    <form action="" class="form-search">
+                        <label for="search"></label>
+                        <input type="text" name="search" size="30" id="search">
+                        <input type="submit" value="Search">
+                        <div class="search_filter">
+                            <label><input type="radio" checked="checked" name="search_filter" id="search_filter_all"> all</label>
+                            <label><input type="radio" value="title" name="search_filter" id="search_filter_title"> title</label>
+                            <label><input type="radio" value="author" name="search_filter" id="search_filter_author"> author</label>
+                            <label><input type="radio" value="genre" name="search_filter" id="search_filter_genre"> genre</label>
+                        </div>
+                    </form>
+
+                    <div class="list-wrapper">
+                        <table>
+                            <tr class="list-item">
+                                <td class="list-item-inner">
+                                    <img src="../static/hery.jpg" alt="img" height="70">
+                                    <div class="list-item-text">
+                                        <span class="title-name">Harry Potter</span>
+                                        <span class="title-year">2004</span>
+                                        <br>
+                                        <span class="title-author">J. K. Rowling</span>
+                                        <br>
+                                        <span class="title-genre">fantasy</span>
+                                    </div>
+                                    <div class="list-item-tag-list">
+                                    </div>
+                                    <div class="list-item-button">
+                                        <p>LIBRARY</p>
+                                        <form method="POST" class="form-button-icon">
+                                            <button name="add" value="library" class="btn-add">
+                                                <i class="fas fa-plus"></i>
+                                                <span class="tooltip">add</span>
+                                            </button>
+                                        </form>
+                                    </div>
+                                    <div class="list-item-button">
+                                        <p>WISHLIST</p>
+                                        <form method="POST" class="form-button-icon">
+                                            <button name="remove" value="wishlist" class="btn-del">
+                                                <i class="fas fa-times"></i>
+                                                <span class="tooltip">remove</span>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="list-item">
+                                <td class="list-item-inner">
+                                    <img src="../static/hery2.jpg" alt="img" height="70">
+                                    <div class="list-item-text">
+                                        <span class="title-name">Harry Potter 2</span>
+                                        <span class="title-year">2005</span>
+                                        <br>
+                                        <span class="title-author">J. K. Rowling</span>
+                                        <br>
+                                        <span class="title-genre">fantasy</span>
+                                    </div>
+                                    <div class="list-item-tag-list">
+                                    </div>
+                                    <div class="list-item-button">
+                                        <p>LIBRARY</p>
+                                        <form method="POST" class="form-button-icon">
+                                            <button name="add" value="library" class="btn-add">
+                                                <i class="fas fa-plus"></i>
+                                                <span class="tooltip">add</span>
+                                            </button>
+                                        </form>
+                                    </div>
+                                    <div class="list-item-button">
+                                        <p>WISHLIST</p>
+                                        <form method="POST" class="form-button-icon">
+                                            <button name="remove" value="wishlist" class="btn-del">
+                                                <i class="fas fa-times"></i>
+                                                <span class="tooltip">remove</span>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <div id="footer-inner">
+                <span>&copy 2021, eKnihovna</span>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

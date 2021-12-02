@@ -1,0 +1,167 @@
+       <!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>E-Knihovna</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu">
+    <link rel="icon" sizes="180x180" href="../static/favicon.ico">
+    <link rel="stylesheet" href="../static/style.css">
+    <script src="https://kit.fontawesome.com/307091ac57.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div id="top-div">
+        <header>
+            <div id="header-inner">
+                <div id="page-heading">
+                    <a href="home.html">
+                        <h1>eKnihovna</h1>
+                    </a>
+                </div>
+
+                <div id="nav">
+                    <a href="search.html" class="nav-item">
+                        <span>Search</span>
+                    </a>
+                    <a href="my_library.html" class="nav-item">
+                        <span>My Library</span>
+                    </a>
+                    <a href="my_shelves.html" class="nav-item" id="nav-selected">
+                        <span>My Shelves</span>
+                    </a>
+                    <a href="my_wishlist.html" class="nav-item">
+                        <span>My Wishlist</span>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <div id="main-inner">
+                <div id="content-header">
+                    <h2>My Shelves</h2>
+                </div>
+                <div id="content">
+                    <table class="shelf-list">
+                        <tr class="top">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="normal">
+                            <td></td>
+                            <td class="shelf-item">
+                                <a class="shelf-new" id="create-tag-btn"><i class="fas fa-plus"></i> New Shelf</a>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr class="small">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="normal">
+                            <td></td>
+                            <td class="shelf-item">
+                                <a href="">Read</a>
+                                <span class="shelf-small">1 book</span>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr class="small">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="normal">
+                            <td></td>
+                            <td class="shelf-item">
+                                <a href="">Reading</a>
+                                <span class="shelf-small">1 book</span>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr class="small">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="normal">
+                            <td></td>
+                            <td class="shelf-item">
+                                <a href="shelf_detail.html">Harry Potter</a>
+                                <span class="shelf-small">2 books</span>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr class="small">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="normal">
+                            <td></td>
+                            <td class="shelf-item">
+                                <a href="">School</a>
+                                <span class="shelf-small">0 books</span>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr class="small">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="bottom">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <div id="footer-inner">
+                <span>&copy 2021, eKnihovna</span>
+            </div>
+        </footer>
+    </div>
+
+    <div id="create-tag-modal" class="modal">
+        <div class="modal-inner">
+            <div class="modal-header">
+                <h2>New Shelf</h2>
+                <i class="fas fa-times" id="create-tag-close"></i>
+            </div>
+            <div class="modal-body">
+                <div class="modal-form">
+                    <form action="" method="post">
+                        <div class="input-row">
+                            <label for="name" class="required-label">Name: </label>
+                            <input type="text" name="name" id="name" required="required">
+                        </div>
+                        <div class="input-row">
+                            <label for="text">Description: </label>
+                            <textarea name="text" id="text" rows="5"></textarea>
+                        </div>
+                        <button name="note" value="add" class="btn-add">
+                            <i class="fas fa-check"></i>
+                        </button>
+                        <br>
+                    </form>
+                    <button name="note" value="remove" class="btn-del">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../static/create_tag.js"></script>
+</body>
+</html>
