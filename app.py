@@ -42,5 +42,17 @@ def myWishlist():
 def search():
     return render_template('search.html')
 
+@app.route("/showAuthor")
+def showAuthor():
+    return render_template('author_detail.html')
+
+@app.route("/showTitle")
+def showTitle():
+    return render_template('title_detail.html')
+
+@app.route("/showShelf")
+def showShelf():
+    return render_template('shelf_detail.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
