@@ -19,7 +19,7 @@ login_manager.login_message_category = 'info' '''
 app = Flask(__name__)
 
 @app.route("/")
-@app.route("/index")
+@app.route("/home")
 def home():
     return render_template('home.html')
 
