@@ -20,7 +20,8 @@ app = Flask(__name__)
 
 @app.route('/')
 def init():  # put application's code here
-    return routes.myLibrary()
+    routes.home()
+    return True
 
 
 if __name__ == '__main__':
