@@ -18,11 +18,5 @@ login_manager.login_message_category = 'info' '''
 app = Flask(__name__)
 
 
-@app.route('/')
-def init():  # put application's code here
-    routes.home()
-    return True
-
-
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=False)
