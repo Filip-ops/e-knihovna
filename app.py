@@ -17,11 +17,11 @@ login_manager.login_message_category = 'info' '''
 
 app = Flask(__name__)
 
-'''
+
 @app.route('/')
-def hello_world():  # put application's code here
-    return 'Hello World!'
-'''
+def init():  # put application's code here
+    return routes.myLibrary()
+
 
 if __name__ == '__main__':
     app.run()
