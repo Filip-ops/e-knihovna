@@ -16,7 +16,6 @@ admin.add_view(ModelView(Library_title, db.session))
 admin.add_view(ModelView(Note, db.session))
 admin.add_view(ModelView(Shelf, db.session))
 '''
-app = Flask(__name__)
 
 @app.route("/")
 @app.route("/home")
