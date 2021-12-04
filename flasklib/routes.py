@@ -43,9 +43,10 @@ def search():
 def showAuthor():
     return render_template('author_detail.html')
 
-@app.route("/showTitle")
-def showTitle():
-    return render_template('title_detail.html')
+@app.route("/showTitle/<int:id>")
+def showTitle(id):
+    title = Title.query.filter_by(id=id)
+    return render_template('title_detail.html',title = title)
 
 @app.route("/showShelf")
 def showShelf():

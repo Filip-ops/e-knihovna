@@ -41,6 +41,9 @@
                     <a href="register" class="nav-item">
                         <span>Register</span>
                     </a>
+                    <a href="logout" class="nav-item">
+                        <span>Log out</span>
+                    </a>
                 </div>
             </div>
         </header>
@@ -62,7 +65,7 @@
                             </div>
                             <img src="../static/hery2.jpg" alt="img" height="70"> <!-- title_in_library.title.picture -->
                             <div class="list-item-text">
-                                <a class="title-name" href="showTitle">{{title.title}}</a> <!-- title_in_library.title.name -->
+                                <a class="title-name" href="{{ url_for('showTitle', id=title.id)}}">{{title.title}}</a> <!-- title_in_library.title.name -->
                                 <span class="title-year">2005</span> <!-- title_in_library.title.year -->
                                 <br>
                                 <a class="title-author" href="showAuthor">J. K. Rowling</a> <!-- title_in_library.title.author -->
