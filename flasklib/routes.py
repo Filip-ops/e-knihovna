@@ -31,7 +31,8 @@ def myLibrary():
 
 @app.route("/myShelves")
 def myShelves():
-    return render_template('my_shelves.html')
+    shelves = Shelf.query
+    return render_template('my_shelves.html',shelves=shelves)
 
 @app.route("/addShelf/<string:name>/<string:text>")
 def addShelf(name,text):
