@@ -28,7 +28,6 @@ class User(db.Model, UserMixin):
 class Author(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(20), nullable=False)
-    username = db.Column(db.String(20), nullable=False)
     born = db.Column(db.Integer, nullable=False)
     died = db.Column(db.Integer)
 
