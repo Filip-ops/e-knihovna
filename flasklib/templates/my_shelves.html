@@ -35,6 +35,12 @@
                     <a href="myWishlist" class="nav-item">
                         <span>My Wishlist</span>
                     </a>
+                    {% if current_user.is_authenticated %}
+                        <a href="logout">Log out</a>
+                    {% else %}
+                        <a href="login">Log in</a>
+                        <a href="register">Sign up</a>
+                    {% endif %}
                 </div>
             </div>
         </header>
