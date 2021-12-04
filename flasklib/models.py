@@ -11,7 +11,7 @@ def load_user(user_id):
     
 
 book_shelf = db.Table('book_shelf',
-    db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
+    db.Column('shelf_id', db.Integer, db.ForeignKey('shelf.id'), primary_key=True),
     db.Column('library_title_id', db.Integer, db.ForeignKey('library_title.id'), primary_key=True)
 )
 
