@@ -17,7 +17,8 @@ admin.add_view(ModelView(Shelf, db.session))
 @app.route("/")
 @app.route("/home")
 def home():
-    return render_template('home.html')
+    titles = Library_title.query
+    return render_template('home.html',titles = titles)
 
 
 @app.route("/myLibrary")

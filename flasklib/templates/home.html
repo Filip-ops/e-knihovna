@@ -47,21 +47,22 @@
 
         <main>
             <div id="main-inner">
-                <p id="welcome-text">Welcome to your eKniznica <b>&ltusername&gt</b>!</p> <!-- user.username -->
+                <p id="welcome-text">Welcome to your eKnihovna <b>&ltusername&gt</b>!</p> <!-- user.username -->
                 <br>
                 <!-- if su v databaze title_in_library s tagom reading -->
                 <h3>Currently reading</h3>
                 <table>
                     <!-- jeden item -->
+                    {% for title in titles %}
                     <tr class="list-item">
                         <td class="list-item-inner">
                             <div class="list-item-page">
                                 <p>PAGE</p>
-                                <span>150</span> <!-- title_in_library.page -->
+                                <span>{{title.page}}</span> <!-- title_in_library.page -->
                             </div>
                             <img src="../static/hery2.jpg" alt="img" height="70"> <!-- title_in_library.title.picture -->
                             <div class="list-item-text">
-                                <a class="title-name" href="showTitle">Harry Potter 2</a> <!-- title_in_library.title.name -->
+                                <a class="title-name" href="showTitle">{{title.title}}</a> <!-- title_in_library.title.name -->
                                 <span class="title-year">2005</span> <!-- title_in_library.title.year -->
                                 <br>
                                 <a class="title-author" href="showAuthor">J. K. Rowling</a> <!-- title_in_library.title.author -->
@@ -72,6 +73,7 @@
                             </div>
                         </td>
                     </tr>
+                    {% endfor %}
                 </table>
             </div>
         </main>
