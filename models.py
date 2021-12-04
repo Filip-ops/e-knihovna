@@ -1,6 +1,6 @@
 from datetime import datetime
 from sqlalchemy.orm import backref
-import db
+from e-knihovna import db
 from flask_login import UserMixin
 from flask_login import current_user
 
