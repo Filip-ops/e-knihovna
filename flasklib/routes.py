@@ -32,12 +32,7 @@ def myLibrary():
 @app.route("/myShelves",methods=['GET', 'POST'])
 def myShelves():
     shelves = Shelf.query
-    return render_template('my_shelves.html',shelves=shelves)
-
-@app.route("/addShelf",methods=['GET', 'POST'])
-def addShelf():
-    
-    if request.method == "post":
+    if request.method == "POST":
         name = request.form.get("name")
         desc = request.form.get("text")
         shelf = Shelf(name=name,desc=desc,user=current_user)
@@ -46,7 +41,7 @@ def addShelf():
         return render_template('home.html')
     else:
         pass
-    return render_template('my_shelves.html')
+    return render_template('my_shelves.html',shelves=shelves)
 
 
 @app.route("/myWishlist",methods=['GET', 'POST'])
