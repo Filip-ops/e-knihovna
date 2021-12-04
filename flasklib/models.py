@@ -77,7 +77,7 @@ class Shelf(db.Model):
     name = db.Column(db.String(50), nullable=False)
 
     user = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    library_titles = db.Column(db.Integer, db.ForeignKey('library_title.id'))
+
     library_titles = db.relationship('Library_title', secondary=book_shelf,back_populates='shelfs')
 
 class MyModelView(ModelView):
