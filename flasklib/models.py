@@ -28,14 +28,14 @@ class User(db.Model, UserMixin):
 class Author(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(20), nullable=False)
-    username = db.Column(db.String(20), nullable=False)
     born = db.Column(db.Integer, nullable=False)
     died = db.Column(db.Integer)
 
     titles = db.relationship('Title', backref='author')
 
 class Title(db.Model):
-    isbn = db.Column(db.String(17), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
+    isbn = db.Column(db.String(17), nullable=False)
     name = db.Column(db.String(50), nullable=False)
     release_year = db.Column(db.Integer, nullable=False)
     genre = db.Column(db.String(25), nullable=False)
@@ -51,7 +51,7 @@ class Wishlist_title(db.Model):
     date_added = db.Column(db.DateTime, default=datetime.utcnow)
 
     user = db.Column(db.Integer, db.ForeignKey('user.id'))
-    title = db.Column(db.String(17), db.ForeignKey('title.isbn'))
+    title = db.Column(db.Integer, db.ForeignKey('title.id'))
 
 class Library_title(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -59,7 +59,7 @@ class Library_title(db.Model):
     page = db.Column(db.Integer, nullable=False)
 
     user = db.Column(db.Integer, db.ForeignKey('user.id'))
-    title = db.Column(db.String(17), db.ForeignKey('title.isbn'))
+    title = db.Column(db.Integer, db.ForeignKey('title.id'))
     shelfs = db.relationship('Shelf', secondary=book_shelf,back_populates='library_titles')
 
 class Note(db.Model):
@@ -69,7 +69,7 @@ class Note(db.Model):
     start_page = db.Column(db.Integer, nullable=False)
     end_page = db.Column(db.Integer, nullable=False)
 
-    title = db.Column(db.String(17), db.ForeignKey('title.isbn'))
+    title = db.Column(db.Integer, db.ForeignKey('title.id'))
 
 class Shelf(db.Model):
     id = db.Column(db.Integer, primary_key=True)
