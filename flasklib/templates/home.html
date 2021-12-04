@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>E-Knihovna</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu">
+    <link rel="icon" sizes="180x180" href="../static/favicon.ico">
+    <link rel="stylesheet" href="../static/style.css">
+    <script src="https://kit.fontawesome.com/307091ac57.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div id="top-div">
+        <header>
+            <div id="header-inner">
+                <div id="page-heading">
+                    <a href="">
+                        <h1>eKnihovna</h1>
+                    </a>
+                </div>
+
+                <div id="nav">
+                    <a href="search" class="nav-item">
+                        <span>Search</span>
+                    </a>
+                    <a href="myLibrary" class="nav-item">
+                        <span>My Library</span>
+                    </a>
+                    <a href="myShelves" class="nav-item">
+                        <span>My Shelves</span>
+                    </a>
+                    <a href="myWishlist" class="nav-item">
+                        <span>My Wishlist</span>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <div id="main-inner">
+                <p id="welcome-text">Welcome to your eKniznica <b>&ltusername&gt</b>!</p> <!-- user.username -->
+                <br>
+                <!-- if su v databaze title_in_library s tagom reading -->
+                <h3>Currently reading</h3>
+                <table>
+                    <!-- jeden item -->
+                    <tr class="list-item">
+                        <td class="list-item-inner">
+                            <div class="list-item-page">
+                                <p>PAGE</p>
+                                <span>150</span> <!-- title_in_library.page -->
+                            </div>
+                            <img src="../static/hery2.jpg" alt="img" height="70"> <!-- title_in_library.title.picture -->
+                            <div class="list-item-text">
+                                <a class="title-name" href="showTitle">Harry Potter 2</a> <!-- title_in_library.title.name -->
+                                <span class="title-year">2005</span> <!-- title_in_library.title.year -->
+                                <br>
+                                <a class="title-author" href="showAuthor">J. K. Rowling</a> <!-- title_in_library.title.author -->
+                                <br>
+                                <span class="title-genre">fantasy</span> <!-- title_in_library.title.genre -->
+                            </div>
+                            <div class="list-item-tag-list">
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </main>
+
+        <footer>
+            <div id="footer-inner">
+                <span>&copy 2021, eKnihovna</span>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
