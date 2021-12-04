@@ -52,7 +52,7 @@ class Wishlist_title(db.Model):
     title = db.Column(db.String(17), db.ForeignKey('title.isbn'))
 
 class Library_title(db.Model):
-    id = db.Column(db.Integer primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     date_added = db.Column(DateTime, default=datetime.utcnow)
     page = db.Column(db.Integer, nullable=False)
 
@@ -61,7 +61,7 @@ class Library_title(db.Model):
     shelfs = db.relationship('Shelf', secondary=book_shelf,back_populates='library_titles')
 
 class Note(db.Model):
-    id = db.Column(db.Integer primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(30), nullable=False)
     text = db.Column(db.String(1000), nullable=False)
     start_page = db.Column(db.Integer, nullable=False)
@@ -70,7 +70,7 @@ class Note(db.Model):
     title = db.Column(db.String(17), db.ForeignKey('title.isbn'))
 
 class Shelf(db.Model):
-    id = db.Column(db.Integer primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
 
     user = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
