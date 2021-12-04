@@ -45,7 +45,7 @@ class Title(db.Model):
     notes = db.relationship('Note', backref='title')
 
 class Wishlist_title(db.Model):
-    id = db.Column(db.Integer primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     date_added = db.Column(DateTime, default=datetime.utcnow)
 
     user = db.Column(db.Integer, db.ForeignKey('user.id'))
