@@ -34,7 +34,7 @@ def myShelves():
     shelves = Shelf.query
     return render_template('my_shelves.html',shelves=shelves)
 
-@app.route("/addShelf")
+@app.route("/addShelf",methods=['GET', 'POST'])
 def addShelf():
     if request.method == "POST":
         if request.POST.get("note") == "add":
