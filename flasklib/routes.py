@@ -18,7 +18,10 @@ admin.add_view(ModelView(Shelf, db.session))
 @app.route("/home")
 def home():
     titles = Library_title.query
-    return render_template('home.html',titles=titles)
+    if current_user.is_authenticated:
+        return render_template('home.html',titles=titles,user=current_user)
+    else:
+        return render_template('home.html',titles=titles)
 
 
 @app.route("/myLibrary")
