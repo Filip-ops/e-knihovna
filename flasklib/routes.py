@@ -38,7 +38,7 @@ def myShelves():
         shelf = Shelf(name=name,desc=desc,user=current_user.id)
         db.session.add(shelf)
         db.session.commit()
-        return render_template('home.html')
+        return render_template('my_shelves.html',shelves=shelves)
     else:
         pass
     return render_template('my_shelves.html',shelves=shelves)
@@ -69,6 +69,13 @@ def showTitle(id):
 @app.route("/showShelf/<int:id>",methods=['GET', 'POST'])
 def showShelf(id):
     shelf = Shelf.query.filter_by(id=id)
+
+    if request.method == "POST":
+        shelf = Shelf.query.filter_by(id=id).delete()
+        db.session.commit()
+        return redirect(url_for('myShelves'))
+    else:
+        pass
     return render_template('shelf_detail.html',shelf=shelf)
 ############################################################################################################################################
 
