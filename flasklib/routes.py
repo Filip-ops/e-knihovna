@@ -7,15 +7,6 @@ from flasklib.forms import RegistrationForm, LoginForm
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 
-admin = Admin(app)
-admin.add_view(ModelView(User, db.session))
-admin.add_view(ModelView(Author, db.session))
-admin.add_view(ModelView(Title, db.session))
-admin.add_view(ModelView(Wishlist_title, db.session))
-admin.add_view(ModelView(Library_title, db.session))
-admin.add_view(ModelView(Note, db.session))
-admin.add_view(ModelView(Shelf, db.session))
-
 
 @app.route("/")
 @app.route("/home")

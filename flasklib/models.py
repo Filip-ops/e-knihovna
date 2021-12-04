@@ -4,9 +4,6 @@ from flasklib import db, login_manager
 from flask_login import UserMixin
 from flask_login import current_user
 
-from flask_admin.contrib.sqla import ModelView
-from flask_admin import AdminIndexView
-
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -80,10 +77,5 @@ class Shelf(db.Model):
     user = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     library_titles = db.relationship('Library_title', secondary=book_shelf,back_populates='shelfs')
-'''
-class MyModelView(ModelView):
 
-
-class MyAdminIndexView(AdminIndexView):
-'''
 
