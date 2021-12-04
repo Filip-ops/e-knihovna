@@ -1,9 +1,10 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>E-Knihovna</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo">
@@ -12,6 +13,7 @@
     <link rel="stylesheet" href="../static/style.css">
     <script src="https://kit.fontawesome.com/307091ac57.js" crossorigin="anonymous"></script>
 </head>
+
 <body>
     <div id="top-div">
         <header>
@@ -64,12 +66,15 @@
                                 <p>PAGE</p>
                                 <span>{{title.page}}</span> <!-- title_in_library.page -->
                             </div>
-                            <img src="../static/hery2.jpg" alt="img" height="70"> <!-- title_in_library.title.picture -->
+                            <img src="../static/hery2.jpg" alt="img" height="70">
+                            <!-- title_in_library.title.picture -->
                             <div class="list-item-text">
-                                <a class="title-name" href="{{ url_for('showTitle', id=title.id)}}">{{title.title}}</a> <!-- title_in_library.title.name -->
+                                <a class="title-name" href="{{ url_for('showTitle', id=title.id)}}">{{title.title}}</a>
+                                <!-- title_in_library.title.name -->
                                 <span class="title-year">2005</span> <!-- title_in_library.title.year -->
                                 <br>
-                                <a class="title-author" href="showAuthor">J. K. Rowling</a> <!-- title_in_library.title.author -->
+                                <a class="title-author" href="showAuthor">J. K. Rowling</a>
+                                <!-- title_in_library.title.author -->
                                 <br>
                                 <span class="title-genre">fantasy</span> <!-- title_in_library.title.genre -->
                             </div>
@@ -80,7 +85,8 @@
                     {% endfor %}
                 </table>
                 {%else%}
-                <p id="welcome-text">Welcome to eKnihovna, please log in!</p> 
+                <p id="welcome-text">Welcome to eKnihovna, please log in!</p>
+                {% endif %}
             </div>
         </main>
 
@@ -91,4 +97,5 @@
         </footer>
     </div>
 </body>
+
 </html>
