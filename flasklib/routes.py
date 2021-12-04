@@ -59,7 +59,7 @@ def search():
                 if filter_type == "title":
                     titles = Title.query.order_by(name=name_title)
                 elif filter_type == "author":
-                    titles = Title.query.order_by((author.name)=name_title)
+                    titles = Title.query.order_by(author_id=name_title)
                 else:
                     titles = Title.query.order_by(genre=name_title)
         return render_template('search.html', titles=titles)
