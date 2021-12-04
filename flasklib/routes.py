@@ -36,13 +36,14 @@ def myShelves():
 
 @app.route("/addShelf",methods=['GET', 'POST'])
 def addShelf():
-    if request.method.capitalize == "POST":
+    
+    if request.method == "post":
         name = request.form.get("name")
         desc = request.form.get("text")
         shelf = Shelf(name=name,desc=desc,user=current_user)
         db.session.add(shelf)
         db.session.commit()
-        return name,desc
+        return render_template('home.html')
     else:
         pass
     return render_template('my_shelves.html')
