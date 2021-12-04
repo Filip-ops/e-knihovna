@@ -66,16 +66,17 @@
 
                     <div class="list-wrapper">
                         <table>
+                            {% for title in titles: %}
                             <tr class="list-item">
                                 <td class="list-item-inner">
-                                    <img src="../static/hery.jpg" alt="img" height="70">
+                                    <img src={{title.img}} alt="img" height="70">
                                     <div class="list-item-text">
-                                        <span class="title-name">Harry Potter</span>
-                                        <span class="title-year">2004</span>
+                                        <span class="title-name">{{title.name}}</span>
+                                        <span class="title-year">{{title.release_year}}</span>
                                         <br>
-                                        <span class="title-author">J. K. Rowling</span>
+                                        <span class="title-author">{{title.author.name}}</span>
                                         <br>
-                                        <span class="title-genre">fantasy</span>
+                                        <span class="title-genre">{{title.genre}}</span>
                                     </div>
                                     <div class="list-item-tag-list">
                                     </div>
@@ -99,39 +100,6 @@
                                         <form method="POST" class="form-button-icon">
                                             <button name="add_wl" value="isbn_value" class="btn-add">
                                                 <!-- isbn_value=title.isbn -->
-                                                <i class="fas fa-plus"></i>
-                                                <span class="tooltip">add</span>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr class="list-item">
-                                <td class="list-item-inner">
-                                    <img src="../static/hery2.jpg" alt="img" height="70">
-                                    <div class="list-item-text">
-                                        <span class="title-name">Harry Potter 2</span>
-                                        <span class="title-year">2005</span>
-                                        <br>
-                                        <span class="title-author">J. K. Rowling</span>
-                                        <br>
-                                        <span class="title-genre">fantasy</span>
-                                    </div>
-                                    <div class="list-item-tag-list">
-                                    </div>
-                                    <div class="list-item-button">
-                                        <p>LIBRARY</p>
-                                        <form method="POST" class="form-button-icon">
-                                            <button name="add" value="library" class="btn-add">
-                                                <i class="fas fa-plus"></i>
-                                                <span class="tooltip">add</span>
-                                            </button>
-                                        </form>
-                                    </div>
-                                    <div class="list-item-button">
-                                        <p>WISHLIST</p>
-                                        <form method="POST" class="form-button-icon">
-                                            <button name="add" value="wishlist" class="btn-add">
                                                 <i class="fas fa-plus"></i>
                                                 <span class="tooltip">add</span>
                                             </button>
