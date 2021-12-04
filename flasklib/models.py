@@ -7,10 +7,11 @@ from flask_login import current_user
 from flask_admin.contrib.sqla import ModelView
 from flask_admin import AdminIndexView
 
-
+'''
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
+    '''
 
 book_shelf = db.Table('book_shelf',
     db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
@@ -43,7 +44,7 @@ class Title(db.Model):
     genre = db.Column(db.String(25), nullable=False)
 
     author_id = db.Column(db.Integer, db.ForeignKey('author.id'))
-    wishlist_titles = db.relationship('Wishlist_title', backref='w_title')
+    wishlist_titles = db.relationship('Wishlist_title', backref='w_title')    library_titles = db.Column(db.Integer, db.ForeignKey('library_title.id'))
     library_titles = db.relationship('Library_title', backref='l_title')
     notes = db.relationship('Note', backref='n_title')
 
@@ -81,18 +82,7 @@ class Shelf(db.Model):
     library_titles = db.relationship('Library_title', secondary=book_shelf,back_populates='shelfs')
 
 class MyModelView(ModelView):
-    def is_accessible(self):
-        if current_user.is_authenticated:
-            return True
-        else:
-            return False
-
-    def inaccessible_callback(self,name, **kwargs):
-        return redirect(url_for('login'))
+    return True
 
 class MyAdminIndexView(AdminIndexView):
-    def is_accessible(self):
-        if current_user.is_authenticated:
-            return True
-        else:
-            return False
+    return True
