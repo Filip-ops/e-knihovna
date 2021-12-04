@@ -2,7 +2,7 @@ from datetime import datetime
 from flask import render_template, url_for, flash, redirect, request
 from flasklib import app, db, bcrypt
 from flask_login import login_user, current_user, logout_user, login_required
-from flasklib.models import User, Author, Title, Wishlist_title, Library_title, Note, Shelf
+from flasklib.models import User, Author, Title, Wishlist_title, Library_title, Note, Shelf, MyAdminIndexView, MyModelView
 from flasklib.forms import RegistrationForm, LoginForm
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
@@ -55,7 +55,7 @@ def showShelf():
     return render_template('shelf_detail.html')
 ############################################################################################################################################
 
-
+'''
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
@@ -90,6 +90,6 @@ def register():
 def logout():
     logout_user()
     return redirect(url_for('home'))
-
+'''
 if __name__ == '__main__':
     app.run(debug=True)
