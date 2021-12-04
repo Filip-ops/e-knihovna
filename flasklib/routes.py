@@ -57,11 +57,11 @@ def search():
                 name_title = request.form.get("search")
                 filter_type = request.form.get("search_filter")
                 if filter_type == "title":
-                    titles = Title.query.order_by(name=name_title)
+                    titles = Title.query.filter(Title.name.op('~')(name_title)).order_by(Title.name)
                 elif filter_type == "author":
-                    titles = Title.query.order_by(author_id=name_title)
+                    titles = Title.query.filter(Title.author.name.op('~')(name_title)).order_by(Title.name)
                 else:
-                    titles = Title.query.order_by(genre=name_title)
+                    titles = Title.query.filter(Title.genre.op('~')(name_title)).order_by(Title.name)
         return render_template('search.html', titles=titles)
     else:
         return redirect(url_for('home'))
