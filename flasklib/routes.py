@@ -15,7 +15,7 @@ admin.add_view(ModelView(Note, db.session))
 admin.add_view(ModelView(Shelf, db.session))
 
 @app.route("/")
-@app.route("/home")
+@app.route("/home",methods=['GET', 'POST'])
 def home():
     titles = Library_title.query
     if current_user.is_authenticated:
@@ -24,12 +24,12 @@ def home():
         return render_template('home.html',titles=titles)
 
 
-@app.route("/myLibrary")
+@app.route("/myLibrary",methods=['GET', 'POST'])
 def myLibrary():
     return render_template('my_library.html')
 
 
-@app.route("/myShelves")
+@app.route("/myShelves",methods=['GET', 'POST'])
 def myShelves():
     shelves = Shelf.query
     return render_template('my_shelves.html',shelves=shelves)
@@ -46,25 +46,25 @@ def addShelf():
     return render_template('my_shelves.html')
 
 
-@app.route("/myWishlist")
+@app.route("/myWishlist",methods=['GET', 'POST'])
 def myWishlist():
     return render_template('my_wishlist.html')
 
-@app.route("/search")
+@app.route("/search",methods=['GET', 'POST'])
 def search():
     return render_template('search.html')
 
-@app.route("/showAuthor/<int:id>")
+@app.route("/showAuthor/<int:id>",methods=['GET', 'POST'])
 def showAuthor(id):
     author = Author.query.filter_by(id=id)
     return render_template('author_detail.html',author=author)
 
-@app.route("/showTitle/<int:id>")
+@app.route("/showTitle/<int:id>",methods=['GET', 'POST'])
 def showTitle(id):
     title = Title.query.filter_by(id=id)
     return render_template('title_detail.html',title=title)
 
-@app.route("/showShelf/<int:id>")
+@app.route("/showShelf/<int:id>",methods=['GET', 'POST'])
 def showShelf(id):
     shelf = Shelf.query.filter_by(id=id)
     return render_template('shelf_detail.html',shelf=shelf)
