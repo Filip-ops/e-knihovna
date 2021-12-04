@@ -25,7 +25,7 @@ class User(db.Model, UserMixin):
     library_titles = db.relationship('Library_title', backref='user')
 
 class Author(db.Model):
-    id = db.Column(db.Integer primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(20), nullable=False)
     username = db.Column(db.String(20), nullable=False)
     born = db.Column(db.Integer, nullable=False)
