@@ -38,7 +38,7 @@ def myShelves():
 def addShelf():
     if request.method == "POST":
         if request.form["note"] == "add":
-            shelf = Shelf(name=request.form.get("name"),desc=request.form.get("text"))
+            shelf = Shelf(name=request.form["name"],desc=request.form["text"])
             db.session.add(shelf)
             db.session.commit()
         else:
