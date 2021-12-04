@@ -35,7 +35,7 @@ def myShelves():
     if request.method == "POST":
         name = request.form.get("name")
         desc = request.form.get("text")
-        shelf = Shelf(name=name,desc=desc,user=current_user)
+        shelf = Shelf(name=name,desc=desc,user=current_user.id)
         db.session.add(shelf)
         db.session.commit()
         return render_template('home.html')
