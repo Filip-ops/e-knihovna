@@ -48,13 +48,24 @@ def myShelves():
 def myWishlist():
     return render_template('my_wishlist.html')
 
-@app.route("/search",methods=['GET', 'POST'])
+@app.route("/search")
 def search():
     if current_user.is_authenticated:
         titles = Title.query.order_by(Title.name)
+        if request.method == "POST":
+            if request.form.get("button_search") == "Search":
+                name_title = request.form.get("search")
+                filter_type = request.form.get("search_filter")
+                if filter_type == "title":
+                    titles = Title.query.order_by(name=name_title)
+                elif filter_type == "author":
+                    titles = Title.query.order_by(author.name=name_title)
+                else:
+                    titles = Title.query.order_by(genre=name_title)
         return render_template('search.html', titles=titles)
     else:
         return redirect(url_for('home'))
+
 
 @app.route("/showAuthor/<int:id>",methods=['GET', 'POST'])
 def showAuthor(id):
