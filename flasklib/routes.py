@@ -18,7 +18,7 @@ admin.add_view(ModelView(Shelf, db.session))
 @app.route("/home")
 def home():
     titles = Library_title.query
-    return render_template('home.html',titles = titles)
+    return render_template('home.html',titles=titles)
 
 
 @app.route("/myLibrary")
@@ -39,18 +39,20 @@ def myWishlist():
 def search():
     return render_template('search.html')
 
-@app.route("/showAuthor")
-def showAuthor():
-    return render_template('author_detail.html')
+@app.route("/showAuthor/<int:id>")
+def showAuthor(id):
+    author = Author.query.filter_by(id=id)
+    return render_template('author_detail.html',author=author)
 
 @app.route("/showTitle/<int:id>")
 def showTitle(id):
     title = Title.query.filter_by(id=id)
-    return render_template('title_detail.html',title = title)
+    return render_template('title_detail.html',title=title)
 
-@app.route("/showShelf")
-def showShelf():
-    return render_template('shelf_detail.html')
+@app.route("/showShelf/<int:id>")
+def showShelf(id):
+    shelf = Shelf.query.filter_by(id=id)
+    return render_template('shelf_detail.html',shelf=shelf)
 ############################################################################################################################################
 
 @app.route("/login", methods=['GET', 'POST'])
