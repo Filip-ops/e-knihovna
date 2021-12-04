@@ -33,6 +33,13 @@ def myLibrary():
 def myShelves():
     return render_template('my_shelves.html')
 
+@app.route("/addShelf/<string:name>/<string:text>")
+def addShelf(name,text):
+    shelf = Shelf(name=name)
+    db.session.add(shelf)
+    db.session.commit()
+    return render_template('my_shelves.html')
+
 
 @app.route("/myWishlist")
 def myWishlist():
