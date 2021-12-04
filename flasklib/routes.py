@@ -85,7 +85,7 @@ def showShelf(id):
         if request.form.get("shelf") == "remove": # if name == value
             shelf = Shelf.query.filter_by(id=id).delete()
             db.session.commit()
-            
+
         if request.form.get("remove") == "isbn_value":
             pass
 
@@ -96,10 +96,7 @@ def showShelf(id):
             shelf.name = request.form.get("name")
             shelf.desc = request.form.get("text")
             db.session.commit()
-
-        if request.form.get("note") == "remove":
-            shelf = Shelf.query.filter_by(id=id).delete()
-            db.session.commit()
+            
         return redirect(url_for('myShelves'))
     else:
         pass
