@@ -44,7 +44,7 @@ class Title(db.Model):
     genre = db.Column(db.String(25), nullable=False)
 
     author_id = db.Column(db.Integer, db.ForeignKey('author.id'))
-    wishlist_titles = db.relationship('Wishlist_title', backref='w_title')    library_titles = db.Column(db.Integer, db.ForeignKey('library_title.id'))
+    wishlist_titles = db.relationship('Wishlist_title', backref='w_title')
     library_titles = db.relationship('Library_title', backref='l_title')
     notes = db.relationship('Note', backref='n_title')
 
