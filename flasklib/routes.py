@@ -7,6 +7,7 @@ from flasklib.forms import RegistrationForm, LoginForm
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 
+admin = Admin(app, index_view=ModelView())
 admin.add_view(ModelView(User, db.session))
 admin.add_view(ModelView(Author, db.session))
 admin.add_view(ModelView(Title, db.session))
