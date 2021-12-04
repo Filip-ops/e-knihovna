@@ -37,8 +37,8 @@ def myShelves():
 @app.route("/addShelf",methods=['GET', 'POST'])
 def addShelf():
     if request.method == "POST":
-        if request.POST.get("note") == "add":
-            shelf = Shelf(name=request.POST.get("name"),desc=request.POST.get("text"))
+        if request.form["note"] == "add":
+            shelf = Shelf(name=request.form.get("name"),desc=request.form.get("text"))
             db.session.add(shelf)
             db.session.commit()
         else:
