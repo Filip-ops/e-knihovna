@@ -2,19 +2,18 @@ from datetime import datetime
 from flask import render_template, url_for, flash, redirect, request
 from flasklib import app, db, bcrypt
 from flask_login import login_user, current_user, logout_user, login_required
-from flasklib.models import User, Author, Title, Wishlist_title, Library_title, Note, Shelf, MyAdminIndexView, MyModelView
+from flasklib.models import User, Author, Title, Wishlist_title, Library_title, Note, Shelf
 from flasklib.forms import RegistrationForm, LoginForm
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 
-admin = Admin(app, index_view=MyAdminIndexView())
-admin.add_view(MyModelView(User, db.session))
-admin.add_view(MyModelView(Author, db.session))
-admin.add_view(MyModelView(Title, db.session))
-admin.add_view(MyModelView(Wishlist_title, db.session))
-admin.add_view(MyModelView(Library_title, db.session))
-admin.add_view(MyModelView(Note, db.session))
-admin.add_view(MyModelView(Shelf, db.session))
+admin.add_view(ModelView(User, db.session))
+admin.add_view(ModelView(Author, db.session))
+admin.add_view(ModelView(Title, db.session))
+admin.add_view(ModelView(Wishlist_title, db.session))
+admin.add_view(ModelView(Library_title, db.session))
+admin.add_view(ModelView(Note, db.session))
+admin.add_view(ModelView(Shelf, db.session))
 
 app = Flask(__name__)
 
