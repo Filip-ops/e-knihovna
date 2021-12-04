@@ -36,7 +36,7 @@ def myShelves():
 
 @app.route("/addShelf",methods=['GET', 'POST'])
 def addShelf():
-    if request.method == "POST":
+    if request.method.capitalize == "POST":
         name = request.form.get("name")
         desc = request.form.get("text")
         shelf = Shelf(name=name,desc=desc,user=current_user)
