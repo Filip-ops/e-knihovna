@@ -49,14 +49,14 @@ class Title(db.Model):
 
 class Wishlist_title(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    date_added = db.Column(DateTime, default=datetime.utcnow)
+    date_added = db.Column(db.DateTime, default=datetime.utcnow)
 
     user = db.Column(db.Integer, db.ForeignKey('user.id'))
     title = db.Column(db.String(17), db.ForeignKey('title.isbn'))
 
 class Library_title(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    date_added = db.Column(DateTime, default=datetime.utcnow)
+    date_added = db.Column(db.DateTime, default=datetime.utcnow)
     page = db.Column(db.Integer, nullable=False)
 
     user = db.Column(db.Integer, db.ForeignKey('user.id'))
