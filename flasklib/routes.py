@@ -54,7 +54,11 @@ def myWishlist():
 
 @app.route("/search",methods=['GET', 'POST'])
 def search():
-    return render_template('search.html')
+    if current_user.is_authenticated:
+        titles = Title.query.order_by(Title.name)
+        return render_template('search.html', titles=titles)
+    else:
+        return redirect(url_for('home'))
 
 @app.route("/showAuthor/<int:id>",methods=['GET', 'POST'])
 def showAuthor(id):
