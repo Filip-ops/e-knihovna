@@ -51,7 +51,6 @@ def showShelf():
     return render_template('shelf_detail.html')
 ############################################################################################################################################
 
-'''
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
@@ -86,6 +85,6 @@ def register():
 def logout():
     logout_user()
     return redirect(url_for('home'))
-'''
+
 if __name__ == '__main__':
     app.run(debug=True)

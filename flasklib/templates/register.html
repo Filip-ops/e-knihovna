@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>E-Knihovna</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu">
+    <link rel="icon" sizes="180x180" href="../static/favicon.ico">
+    <link rel="stylesheet" href="../static/style.css">
+    <script src="https://kit.fontawesome.com/307091ac57.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div id="top-div">
+        <header>
+            <div id="header-inner">
+                <div id="page-heading">
+                    <a href="">
+                        <h1>eKnihovna</h1>
+                    </a>
+                </div>
+
+                <div id="nav">
+                    <a href="search" class="nav-item">
+                        <span>Search</span>
+                    </a>
+                    <a href="myLibrary" class="nav-item">
+                        <span>My Library</span>
+                    </a>
+                    <a href="myShelves" class="nav-item">
+                        <span>My Shelves</span>
+                    </a>
+                    <a href="myWishlist" class="nav-item">
+                        <span>My Wishlist</span>
+                    </a>
+                    <a href="login" class="nav-item">
+                        <span>Log in</span>
+                    </a>
+                    <a href="register" class="nav-item">
+                        <span>Register</span>
+                    </a>
+                </div>
+            </div>
+        </header>
+    </div>
+    <div class="special_margin">
+        <div class="content-section">
+            <form method="POST" action="">
+                {{ form.hidden_tag() }}
+                <fieldset class="form-group">
+                    <legend class="border-bottom mb-4">Join Today</legend>
+                    <div class="form-group">
+                        {{ form.username.label(class="form-control-label") }}
+    
+                        {% if form.username.errors %}
+                            {{ form.username(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.username.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.username(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.email.label(class="form-control-label") }}
+                        {% if form.email.errors %}
+                            {{ form.email(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.email.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.email(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.password.label(class="form-control-label") }}
+                        {% if form.password.errors %}
+                            {{ form.password(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.password.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.password(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.confirm_password.label(class="form-control-label") }}
+                        {% if form.confirm_password.errors %}
+                            {{ form.confirm_password(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.confirm_password.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.confirm_password(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                </fieldset>
+                <div class="form-group">
+                    {{ form.submit(class="btn btn-outline-info") }}
+                </div>
+            </form>
+        </div>
+        <div class="border-top pt-3">
+            <small class="text-muted">
+                Already Have An Account? <a class="ml-2" href="{{ url_for('login') }}">Sign In</a>
+            </small>
+        </div>
+    </div>
+</body>
+</html>
