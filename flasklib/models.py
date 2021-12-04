@@ -7,11 +7,11 @@ from flask_login import current_user
 from flask_admin.contrib.sqla import ModelView
 from flask_admin import AdminIndexView
 
-'''
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
-    '''
+    
 
 book_shelf = db.Table('book_shelf',
     db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
