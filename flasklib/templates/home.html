@@ -50,6 +50,7 @@
 
         <main>
             <div id="main-inner">
+                {% if user %}
                 <p id="welcome-text">Welcome to your eKnihovna <b>{{user.name}}</b>!</p> <!-- user.username -->
                 <br>
                 <!-- if su v databaze title_in_library s tagom reading -->
@@ -78,6 +79,8 @@
                     </tr>
                     {% endfor %}
                 </table>
+                {%else%}
+                <p id="welcome-text">Welcome to eKnihovna, please log in!</p> 
             </div>
         </main>
 
