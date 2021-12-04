@@ -1,12 +1,18 @@
 from datetime import datetime
 from flask import render_template, url_for, flash, redirect, request
-from flasklib import app, db, bcrypt
+from flasklib import app, db, bcrypt, admin
 from flask_login import login_user, current_user, logout_user, login_required
 from flasklib.models import User, Author, Title, Wishlist_title, Library_title, Note, Shelf
 from flasklib.forms import RegistrationForm, LoginForm
-from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 
+admin.add_view(ModelView(User, db.session))
+admin.add_view(ModelView(Author, db.session))
+admin.add_view(ModelView(Title, db.session))
+admin.add_view(ModelView(Wishlist_title, db.session))
+admin.add_view(ModelView(Library_title, db.session))
+admin.add_view(ModelView(Note, db.session))
+admin.add_view(ModelView(Shelf, db.session))
 
 @app.route("/")
 @app.route("/home")
