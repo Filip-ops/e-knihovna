@@ -24,8 +24,8 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
 
-    wishlist_titles = db.relationship('Wishlist_title', backref='user')
-    library_titles = db.relationship('Library_title', backref='user')
+    wishlist_titles = db.relationship('Wishlist_title', backref='w_user')
+    library_titles = db.relationship('Library_title', backref='l_user')
 
 class Author(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -43,9 +43,9 @@ class Title(db.Model):
     genre = db.Column(db.String(25), nullable=False)
 
     author_id = db.Column(db.Integer, db.ForeignKey('author.id'))
-    wishlist_titles = db.relationship('Wishlist_title', backref='title')
-    library_titles = db.relationship('Library_title', backref='title')
-    notes = db.relationship('Note', backref='title')
+    wishlist_titles = db.relationship('Wishlist_title', backref='w_title')
+    library_titles = db.relationship('Library_title', backref='l_title')
+    notes = db.relationship('Note', backref='n_title')
 
 class Wishlist_title(db.Model):
     id = db.Column(db.Integer, primary_key=True)
