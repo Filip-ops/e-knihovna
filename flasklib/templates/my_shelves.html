@@ -173,11 +173,11 @@
                     <form action="" method="post">
                         <div class="input-row">
                             <label for="name" class="required-label">Name: </label>
-                            <input type="text" name="name" id="name" required="required">
+                            <input type="text" name="name" id="name" required="required" value="{{request.form.name}}">
                         </div>
                         <div class="input-row">
                             <label for="text">Description: </label>
-                            <textarea name="text" id="text" rows="5"></textarea>
+                            <textarea name="text" id="text" rows="5" value="{{request.form.desc}}"></textarea>
                         </div>
                         <!-- on click post request s name=shelf.name, text=shelf.description -->
                         <button name="note" value="add" class="btn-add" type="submit">
