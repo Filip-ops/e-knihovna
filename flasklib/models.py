@@ -39,6 +39,7 @@ class Title(db.Model):
     name = db.Column(db.String(50), nullable=False)
     release_year = db.Column(db.Integer, nullable=False)
     genre = db.Column(db.String(25), nullable=False)
+    img = db.Column(db.String(40), nullable=False)
 
     author_id = db.Column(db.Integer, db.ForeignKey('author.id'))
     wishlist_titles = db.relationship('Wishlist_title', backref='w_title')
