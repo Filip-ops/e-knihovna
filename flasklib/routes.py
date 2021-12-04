@@ -39,6 +39,8 @@ def addShelf():
     if request.method == "POST":
         if request.POST.get("note") == "add":
             shelf = Shelf(name=request.POST.get("name"),desc=request.POST.get("text"))
+            db.session.add(shelf)
+            db.session.commit()
         else:
             pass
     else:
