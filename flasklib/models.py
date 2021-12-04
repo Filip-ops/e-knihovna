@@ -74,7 +74,7 @@ class Note(db.Model):
 class Shelf(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
-
+    desc = db.Column(db.String(50), nullable=False)
     user = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     library_titles = db.relationship('Library_title', secondary=book_shelf,back_populates='shelfs')

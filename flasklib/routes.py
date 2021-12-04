@@ -34,11 +34,15 @@ def myShelves():
     shelves = Shelf.query
     return render_template('my_shelves.html',shelves=shelves)
 
-@app.route("/addShelf/<string:name>/<string:text>")
-def addShelf(name,text):
-    shelf = Shelf(name=name)
-    db.session.add(shelf)
-    db.session.commit()
+@app.route("/addShelf")
+def addShelf():
+    if request.method == "POST":
+        if request.POST.get("note") == "add":
+            shelf = Shelf(name=request.POST.get("name"),desc=request.POST.get("text"))
+        else:
+            pass
+    else:
+        pass
     return render_template('my_shelves.html')
 
 
