@@ -96,4 +96,3 @@ class MyAdminIndexView(AdminIndexView):
             return True
         else:
             return False
-'''
