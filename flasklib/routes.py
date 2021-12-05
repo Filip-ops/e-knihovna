@@ -24,22 +24,27 @@ def home():
         return render_template('home.html', titles=titles, user=current_user)
     else:
         return render_template('home.html', titles=titles)
-
-
-@app.route("/myLibrary")
-def myLibrary():
+    
+@app.route("/search/", methods=['GET', 'POST'])
+def search():
     if current_user.is_authenticated:
-        titles = Title.query.order_by(Title.name)
+        titles = Title.query.order_by(Title.name).all()
         if request.method == "POST":
-            name_title = request.form.get("search")
-            filter_type = request.form.get("search_filter")
-            if filter_type == "title":
-                titles = Title.query.filter(Title.name.op('~')(name_title)).order_by(Title.name)
-            elif filter_type == "author":
-                titles = Title.query.filter(Title.author.name.op('~')(name_title)).order_by(Title.name)
-            else:
-                titles = Title.query.filter(Title.genre.op('~')(name_title)).order_by(Title.name)
-        return render_template('my_library.html')
+            if request.form.get("button_search") == "Search":
+                name_title = request.form.get("search")
+                filter_type = request.form.get("search_filter")
+                if filter_type == "all":
+                    titles = Title.query.join(Author).filter(or_(Title.name.op('~*')(name_title),
+                                                                 Author.name.op('~*')(name_title),
+                                                                 Title.genre.op('~*')(name_title))).order_by(
+                        Title.name).all()
+                elif filter_type == "title":
+                    titles = Title.query.filter(Title.name.op('~*')(name_title)).order_by(Title.name).all()
+                elif filter_type == "author":
+                    titles = Title.query.join(Author).filter(Author.name.op('~*')(name_title)).order_by(Title.name).all()
+                else:
+                    titles = Title.query.filter(Title.genre.op('~*')(name_title)).order_by(Title.name).all()
+        return render_template('search.html', titles=titles)
     else:
         return redirect(url_for('home'))
 
