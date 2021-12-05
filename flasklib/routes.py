@@ -98,7 +98,45 @@ def myShelves():
 
 @app.route("/myWishlist/", methods=['GET', 'POST'])
 def myWishlist():
-    return render_template('my_wishlist.html')
+    if current_user.is_authenticated:
+        wl_titles = Wishlist_title.query.filter_by(user=current_user.id)
+        titles = [Title.query.get(lib_title.id) for lib_title in wl_titles.all()]
+        if request.method == "POST":
+            if request.form.get("button_search") == "Search":
+                name_title = request.form.get("search")
+                filter_type = request.form.get("search_filter")
+                if filter_type == "all":
+                    titles = wl_titles.join(Title).join(Author).filter(
+                        or_(Title.name.op('~*')(name_title),
+                            Author.name.op('~*')(name_title),
+                            Title.genre.op('~*')(name_title))).order_by(
+                        Title.name).all()
+                elif filter_type == "title":
+                    titles = wl_titles.join(Title).filter(Title.name.op('~*')(name_title)).order_by(Title.name).all()
+                elif filter_type == "author":
+                    titles = wl_titles.join(Title).join(Author).filter(Author.name.op('~*')(name_title)).order_by(
+                        Title.name).all()
+                else:
+                    titles = wl_titles.join(Title).filter(Title.genre.op('~*')(name_title)).order_by(Title.name).all()
+            if request.form.get("remove"):
+                title_id = request.form.get("remove")
+                item = Wishlist_title.query.get(title_id)
+                db.session.delete(item)
+                db.session.commit()
+            if request.form.get("add"):
+                title_id = request.form.get("add")
+                item = Wishlist_title.query.get(title_id)
+                db.session.delete(item)
+                lib_title = Library_title(id=title_id, page=-1, user=current_user.id, title=title_id)
+                db.session.add(lib_title)
+                db.session.commit()
+
+            lib_titles = Wishlist_title.query.filter_by(user=current_user.id)
+            titles = [Title.query.get(lib_title.id) for lib_title in lib_titles.all()]
+
+        return render_template('my_wishlist.html', titles=titles)
+    else:
+        return redirect(url_for('home'))
 
 
 @app.route("/search/", methods=['GET', 'POST'])

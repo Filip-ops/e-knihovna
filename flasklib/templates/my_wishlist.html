@@ -61,7 +61,7 @@
                     <form action="" class="form-search">
                         <label for="search"></label>
                         <input type="text" name="search" size="30" id="search">
-                        <input type="submit" value="Search">
+                        <input type="submit" name="button_search" value="Search">
                         <div class="search_filter">
                             <label><input type="radio" checked="checked" name="search_filter" id="search_filter_all"> all</label>
                             <label><input type="radio" value="title" name="search_filter" id="search_filter_title"> title</label>
@@ -71,81 +71,52 @@
                     </form>
 
                     <div class="list-wrapper">
-                        <table>
-                            <tr class="list-item">
-                                <td class="list-item-inner">
-                                    <img src="../static/hery.jpg" alt="img" height="70">
-                                    <div class="list-item-text">
-                                        <span class="title-name">Harry Potter</span>
-                                        <span class="title-year">2004</span>
-                                        <br>
-                                        <span class="title-author">J. K. Rowling</span>
-                                        <br>
-                                        <span class="title-genre">fantasy</span>
-                                    </div>
-                                    <div class="list-item-tag-list">
-                                    </div>
-                                    <!-- vzdy tieto 2 tlacitka -->
-                                    <div class="list-item-button">
-                                        <p>LIBRARY</p>
-                                        <!-- on press sends post request s add=title_in_wishlist.title.isbn -->
-                                        <!-- odstrani sa title_in_wishlist a vytvori sa title_in_library -->
-                                        <form method="POST" class="form-button-icon">
-                                            <button name="add" value="isbn_value" class="btn-add">
-                                                <!-- isbn_value=title_in_wishlis.title.isbn -->
-                                                <i class="fas fa-plus"></i>
-                                                <span class="tooltip">add</span>
-                                            </button>
-                                        </form>
-                                    </div>
-                                    <div class="list-item-button">
-                                        <p>WISHLIST</p>
-                                        <!-- on press sends post request s remove=title_in_wishlist.title.isbn -->
-                                        <!-- odstrani sa title_in_wishlist -->
-                                        <form method="POST" class="form-button-icon">
-                                            <button name="remove" value="isbn_value" class="btn-del">
-                                                <!-- isbn_value=title_in_wishlis.title.isbn -->
-                                                <i class="fas fa-times"></i>
-                                                <span class="tooltip">remove</span>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr class="list-item">
-                                <td class="list-item-inner">
-                                    <img src="../static/hery2.jpg" alt="img" height="70">
-                                    <div class="list-item-text">
-                                        <span class="title-name">Harry Potter 2</span>
-                                        <span class="title-year">2005</span>
-                                        <br>
-                                        <span class="title-author">J. K. Rowling</span>
-                                        <br>
-                                        <span class="title-genre">fantasy</span>
-                                    </div>
-                                    <div class="list-item-tag-list">
-                                    </div>
-                                    <div class="list-item-button">
-                                        <p>LIBRARY</p>
-                                        <form method="POST" class="form-button-icon">
-                                            <button name="add" value="library" class="btn-add">
-                                                <i class="fas fa-plus"></i>
-                                                <span class="tooltip">add</span>
-                                            </button>
-                                        </form>
-                                    </div>
-                                    <div class="list-item-button">
-                                        <p>WISHLIST</p>
-                                        <form method="POST" class="form-button-icon">
-                                            <button name="remove" value="wishlist" class="btn-del">
-                                                <i class="fas fa-times"></i>
-                                                <span class="tooltip">remove</span>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
+                        {% if titles %}
+                            <table>
+                                {% for title in titles %}
+                                    <tr class="list-item">
+                                        <td class="list-item-inner">
+                                            <img src="{{title.img}}" alt="img" height="70">
+                                            <div class="list-item-text">
+                                                <a class="title-name" href="{{ url_for('showTitle', id=title.id)}}">{{title.name}}</a>
+                                                <span class="title-year">{{title.release_year}}</span>
+                                                <br>
+                                                <a class="title-author" href="{{ url_for('showAuthor', id=title.author_id)}}">{{title.author.name}}</a>
+                                                <br>
+                                                <span class="title-genre">{{title.genre}}</span>
+                                            </div>
+                                            <div class="list-item-tag-list">
+                                            </div>
+                                            <!-- vzdy tieto 2 tlacitka -->
+                                            <div class="list-item-button">
+                                                <p>LIBRARY</p>
+                                                <!-- on press sends post request s add=title_in_wishlist.title.isbn -->
+                                                <!-- odstrani sa title_in_wishlist a vytvori sa title_in_library -->
+                                                <form method="POST" class="form-button-icon">
+                                                    <button name="add" value="{{ title.id }}" class="btn-add">
+                                                        <!-- isbn_value=title_in_wishlis.title.isbn -->
+                                                        <i class="fas fa-plus"></i>
+                                                        <span class="tooltip">add</span>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                            <div class="list-item-button">
+                                                <p>WISHLIST</p>
+                                                <!-- on press sends post request s remove=title_in_wishlist.title.isbn -->
+                                                <!-- odstrani sa title_in_wishlist -->
+                                                <form method="POST" class="form-button-icon">
+                                                    <button name="remove" value="{{ title.id }}" class="btn-del">
+                                                        <!-- isbn_value=title_in_wishlis.title.isbn -->
+                                                        <i class="fas fa-times"></i>
+                                                        <span class="tooltip">remove</span>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        {% endif %}
                     </div>
                 </div>
             </div>
