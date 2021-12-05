@@ -182,7 +182,9 @@ def showTitle(id):
                 return render_template('title_detail.html', title=title, shelves=shelves, notes=notes)
 
             if request.form.get("remove_note"):
-                pass
+                note = Note.query.get(id=request.form.get("remove_note"))
+                db.session.delete(note)
+                db.session.commit()
 
             if request.form.get("note") == "remove":
                 pass
