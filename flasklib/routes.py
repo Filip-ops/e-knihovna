@@ -217,7 +217,7 @@ def showTitle(id):
             if request.form.get("tag") == "add":
                 selected = request.form.get("selected")
                 #libraryTitle = Library_title(page=0,user=current_user.id,title=id)
-                libraryTitle = Library_title.query.filter_by(title=title)
+                libraryTitle = Library_title.query.filter_by(title=id)
                 for s_id in selected:
                     shelf = Shelf.query.get(s_id)
                     shelf.library_titles.append(libraryTitle)
