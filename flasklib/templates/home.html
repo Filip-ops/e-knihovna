@@ -90,7 +90,7 @@
                         </table>
                     {% endif %}
                 {%else%}
-                    <p id="welcome-text">Welcome to eKnihovna, please <a href="login" class="small-link">log in</a>!</p>
+                    <p id="welcome-text">Welcome to eKnihovna, please <a href="{{ url_for('login') }}" class="small-link">log in</a>!</p>
                 {% endif %}
             </div>
         </main>
