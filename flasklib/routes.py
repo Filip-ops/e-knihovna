@@ -191,11 +191,15 @@ def search():
         title_dict = {}
         for title in titles:
             item = [False, False]
-            print(Library_title.query.join(Title).filter(Title.isbn == title.isbn).all())
-            print(Wishlist_title.query.join(Title).filter(Title.isbn == title.isbn).all())
-            if len(Library_title.query.join(Title).filter(Title.isbn == title.isbn).all()) > 0:
+            print(Library_title.query.join(Title).filter(Title.isbn == title.isbn,
+                                                          Library_title.user == current_user.id).all())
+            print(Wishlist_title.query.join(Title).filter(Title.isbn == title.isbn,
+                                                           Wishlist_title.user == current_user.id).all())
+            if len(Library_title.query.join(Title).filter(Title.isbn == title.isbn,
+                                                          Library_title.user == current_user.id).all()) > 0:
                 item[0] = True
-            if len(Wishlist_title.query.join(Title).filter(Title.isbn == title.isbn).all()) > 0:
+            if len(Wishlist_title.query.join(Title).filter(Title.isbn == title.isbn,
+                                                           Wishlist_title.user == current_user.id).all()) > 0:
                 item[1] = True
             title_dict[title] = item
         print(title_dict)
