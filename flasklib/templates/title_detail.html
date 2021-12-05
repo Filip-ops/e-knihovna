@@ -173,6 +173,7 @@
                         <table>
                             <!-- for note in poznamky k tomuto title_in_library -->
                             <!-- jedna note item -->
+                            {% for note in notes %}
                             <tr class="note-list-item">
                                 <td class="note-list-item-color">
                                     <svg width="8px" height="50px">
@@ -181,13 +182,13 @@
                                 </td>
                                 <td class="note-list-item-page">
                                     <p>PAGE</p>
-                                    <span>120</span> <!-- note.page_start - note.page_end if note.page_end else note.page_start -->
+                                    <span>{{note.start_page}}</span> <!-- note.page_start - note.page_end if note.page_end else note.page_start -->
                                 </td>
                                 <td class="note-list-item-name">
-                                    <p>important</p> <!-- note.name -->
+                                    <p>{{note.name}}</p> <!-- note.name -->
                                 </td>
                                 <td class="note-list-item-text">
-                                    <p>This is exciting. Have to check it again.</p> <!-- note.text -->
+                                    <p>{{note.text}}</p> <!-- note.text -->
                                 </td>
                                 <!-- default tlacitka -->
                                 <td class="note-list-item-button">
@@ -213,6 +214,7 @@
                                     </form>
                                 </td>
                             </tr>
+                            {% endfor %}
                             <tr class="note-list-item">
                                 <td class="note-list-item-color">
                                     <svg width="8px" height="50px">

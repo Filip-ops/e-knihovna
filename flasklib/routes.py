@@ -124,6 +124,7 @@ def showAuthor(id):
 @app.route("/showTitle/<int:id>/", methods=['GET', 'POST'])
 def showTitle(id):
     title = Title.query.get(id)
+    notes = Note.query
     if current_user.is_authenticated:
         shelves = Shelf.query.filter_by(user = current_user.id)
         if request.method == "POST":
@@ -152,7 +153,14 @@ def showTitle(id):
                 pass
 
             if request.form.get("note") == "add":
-                pass
+                name = request.form.get("name")
+                start_page = request.form.get("page_start")
+                text = request.form.get("text")
+                end_page = request.form.get("page_end")
+                note = Note(name=name, start_page=start_page, text=text,end_page=end_page )
+                db.session.add(note)
+                db.session.commit()
+                return render_template('title_detail.html', title=title, shelves=shelves, notes=notes)
 
             if request.form.get("remove_note"):
                 pass
@@ -171,8 +179,8 @@ def showTitle(id):
             pass
     else:
         return redirect(url_for('login'))
-        
-    return render_template('title_detail.html', title=title, shelves=shelves)
+
+    return render_template('title_detail.html', title=title, shelves=shelves, notes=notes)
 
 
 @app.route("/showShelf/<int:id>", methods=['GET', 'POST'])
