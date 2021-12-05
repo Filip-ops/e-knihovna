@@ -44,8 +44,11 @@ Site is automatically deployed when pushed to Github repository if everything is
 
 Both local project and deployed web is running on the same online database. Every migration, even local, will make changes to the DB.
 
-When made changes to ```model.py``` files, you have to run:
+When made changes to ```models.py``` files, you have to run:
 
-- ```heroku local migrate```
+- ```$ heroku run python``` 
+  ```>>>from flasklib import db```
+  ```>>>db.create_all()```
+  ```>>>exit()```
 
 which will update (create/delete/...) corresponding DB tables.
