@@ -93,7 +93,7 @@
                                                 <!-- on press sends post request s add=title_in_wishlist.title.isbn -->
                                                 <!-- odstrani sa title_in_wishlist a vytvori sa title_in_library -->
                                                 <form method="POST" class="form-button-icon">
-                                                    <button name="add" value="{{ title.id }}" class="btn-add">
+                                                    <button name="add" value="{{ title.isbn }}" class="btn-add">
                                                         <!-- isbn_value=title_in_wishlis.title.isbn -->
                                                         <i class="fas fa-plus"></i>
                                                         <span class="tooltip">add</span>
@@ -105,7 +105,7 @@
                                                 <!-- on press sends post request s remove=title_in_wishlist.title.isbn -->
                                                 <!-- odstrani sa title_in_wishlist -->
                                                 <form method="POST" class="form-button-icon">
-                                                    <button name="remove" value="{{ title.id }}" class="btn-del">
+                                                    <button name="remove" value="{{ title.isbn }}" class="btn-del">
                                                         <!-- isbn_value=title_in_wishlis.title.isbn -->
                                                         <i class="fas fa-times"></i>
                                                         <span class="tooltip">remove</span>

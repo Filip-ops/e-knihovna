@@ -22,7 +22,7 @@ admin.add_view(ModelView(Shelf, db.session))
 def home():
     
     if current_user.is_authenticated:
-        titles = Library_title.query.filter_by(user = current_user.id)
+        titles = Library_title.query.filter_by(user=current_user.id)
         return render_template('home.html', titles=titles, user=current_user)
     else:
         return render_template('home.html')
@@ -32,7 +32,7 @@ def home():
 def myLibrary():
     if current_user.is_authenticated:
         lib_titles = Library_title.query.filter_by(user=current_user.id)
-        titles = [Title.query.get(lib_title.id) for lib_title in lib_titles.all()]
+        titles = [Title.query.get(lib_title.title) for lib_title in lib_titles.all()]
         result = None
         bad_isbn = None
         if request.method == "POST":
@@ -59,15 +59,16 @@ def myLibrary():
                     result = False
                     bad_isbn = isbn
                 else:
-                    lib_title = Library_title(id=title.id, page=-1, user=current_user.id, title=title.id)
+                    lib_title = Library_title(page=-1, user=current_user.id, title=title.id)
                     db.session.add(lib_title)
                     db.session.commit()
                     result = True
                     lib_titles = Library_title.query.filter_by(user=current_user.id)
                     titles = [Title.query.get(lib_title.id) for lib_title in lib_titles.all()]
             if request.form.get("remove"):
-                title_id = request.form.get("remove")
-                item = Library_title.query.get(title_id)
+                title_isbn = request.form.get("remove")
+                title = Title.query.filter_by(isbn=title_isbn).first()
+                item = Library_title.query.filter_by(title=title.id).first()
                 db.session.delete(item)
                 db.session.commit()
                 lib_titles = Library_title.query.filter_by(user=current_user.id)
@@ -100,7 +101,7 @@ def myShelves():
 def myWishlist():
     if current_user.is_authenticated:
         wl_titles = Wishlist_title.query.filter_by(user=current_user.id)
-        titles = [Title.query.get(lib_title.id) for lib_title in wl_titles.all()]
+        titles = [Title.query.get(lib_title.title) for lib_title in wl_titles.all()]
         if request.method == "POST":
             if request.form.get("button_search") == "Search":
                 name_title = request.form.get("search")
@@ -119,15 +120,17 @@ def myWishlist():
                 else:
                     titles = wl_titles.join(Title).filter(Title.genre.op('~*')(name_title)).order_by(Title.name).all()
             if request.form.get("remove"):
-                title_id = request.form.get("remove")
-                item = Wishlist_title.query.get(title_id)
+                title_isbn = request.form.get("remove")
+                title = Title.query.filter_by(isbn=title_isbn).first()
+                item = Wishlist_title.query.filter_by(title=title.id).first()
                 db.session.delete(item)
                 db.session.commit()
             if request.form.get("add"):
-                title_id = request.form.get("add")
-                item = Wishlist_title.query.get(title_id)
+                title_isbn = request.form.get("add")
+                title = Title.query.filter_by(isbn=title_isbn).first()
+                item = Wishlist_title.query.filter_by(title=title.id).first()
+                lib_title = Library_title(page=-1, user=current_user.id, title=title.id)
                 db.session.delete(item)
-                lib_title = Library_title(id=title_id, page=-1, user=current_user.id, title=title_id)
                 db.session.add(lib_title)
                 db.session.commit()
 
@@ -160,35 +163,39 @@ def search():
                 else:
                     titles = Title.query.filter(Title.genre.op('~*')(name_title)).order_by(Title.name).all()
             elif request.form.get("add_lib"):
-                title_id = request.form.get("add_lib")
-                lib_title = Library_title(id=title_id, page=-1, user=current_user.id, title=title_id)
+                title_isbn = request.form.get("add_lib")
+                title = Title.query.filter_by(isbn=title_isbn).first()
+                lib_title = Library_title(page=-1, user=current_user.id, title=title.id)
                 db.session.add(lib_title)
                 db.session.commit()
                 titles = Title.query.order_by(Title.name).all()
             elif request.form.get("add_wl"):
-                title_id = request.form.get("add_wl")
-                wl_title = Wishlist_title(id=title_id, user=current_user.id, title=title_id)
+                title_isbn = request.form.get("add_wl")
+                title = Title.query.filter_by(isbn=title_isbn).first()
+                wl_title = Wishlist_title(user=current_user.id, title=title.id)
                 db.session.add(wl_title)
                 db.session.commit()
                 titles = Title.query.order_by(Title.name).all()
             elif request.form.get("remove_lib"):
-                title_id = request.form.get("remove_lib")
-                item = Library_title.query.get(title_id)
+                title_isbn = request.form.get("remove_lib")
+                title = Title.query.filter_by(isbn=title_isbn).first()
+                item = Library_title.query.filter_by(title=title.id).first()
                 db.session.delete(item)
                 db.session.commit()
             elif request.form.get("remove_wl"):
-                title_id = request.form.get("remove_wl")
-                item = Wishlist_title.query.get(title_id)
+                title_isbn = request.form.get("remove_wl")
+                title = Title.query.filter_by(isbn=title_isbn).first()
+                item = Wishlist_title.query.filter_by(title=title.id).first()
                 db.session.delete(item)
                 db.session.commit()
         title_dict = {}
         for title in titles:
             item = [False, False]
-            print(Library_title.query.get(title.id))
-            print(Wishlist_title.query.get(title.id))
-            if Library_title.query.get(title.id):
+            print(Library_title.query.join(Title).filter(Title.isbn == title.isbn).all())
+            print(Wishlist_title.query.join(Title).filter(Title.isbn == title.isbn).all())
+            if len(Library_title.query.join(Title).filter(Title.isbn == title.isbn).all()) > 0:
                 item[0] = True
-            if Wishlist_title.query.get(title.id):
+            if len(Wishlist_title.query.join(Title).filter(Title.isbn == title.isbn).all()) > 0:
                 item[1] = True
             title_dict[title] = item
         print(title_dict)
