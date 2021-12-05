@@ -19,8 +19,9 @@ admin.add_view(ModelView(Shelf, db.session))
 @app.route("/")
 @app.route("/home/", methods=['GET', 'POST'])
 def home():
-    titles = Library_title.query.filter_by(user = current_user.id)
+    
     if current_user.is_authenticated:
+        titles = Library_title.query.filter_by(user = current_user.id)
         return render_template('home.html', titles=titles, user=current_user)
     else:
         return render_template('home.html', titles=titles)
@@ -53,16 +54,19 @@ def myLibrary():
 
 @app.route("/myShelves/", methods=['GET', 'POST'])
 def myShelves():
-    shelves = Shelf.query.filter_by(user = current_user.id)
-    if request.method == "POST":
-        name = request.form.get("name")
-        desc = request.form.get("text")
-        shelf = Shelf(name=name, desc=desc, user=current_user.id)
-        db.session.add(shelf)
-        db.session.commit()
-        return render_template('my_shelves.html', shelves=shelves)
+    if current_user.is_authenticated:
+        shelves = Shelf.query.filter_by(user = current_user.id)
+        if request.method == "POST":
+            name = request.form.get("name")
+            desc = request.form.get("text")
+            shelf = Shelf(name=name, desc=desc, user=current_user.id)
+            db.session.add(shelf)
+            db.session.commit()
+            return render_template('my_shelves.html', shelves=shelves)
+        else:
+            pass
     else:
-        pass
+        return redirect(url_for('home'))
     return render_template('my_shelves.html', shelves=shelves)
 
 
@@ -120,76 +124,78 @@ def showAuthor(id):
 @app.route("/showTitle/<int:id>/", methods=['GET', 'POST'])
 def showTitle(id):
     title = Title.query.get(id)
-    shelves = Library_title.query.filter_by(user = current_user.id).shelfs
-    if request.method == "POST":
-        if request.form.get("remove_tag"):  # if name == value
-            pass
+    if current_user.is_authenticated:
+        shelves = Library_title.query.filter_by(user = current_user.id).shelfs
+        if request.method == "POST":
+            if request.form.get("remove_tag"):  # if name == value
+                pass
 
-        if request.form.get("tag") == "add":
-            pass
+            if request.form.get("tag") == "add":
+                pass
 
-        if request.form.get("tag") == "remove":
-            pass
+            if request.form.get("tag") == "remove":
+                pass
 
-        if request.form.get("reading") == "done":
-            pass
+            if request.form.get("reading") == "done":
+                pass
 
-        if request.form.get("library") == "add":
-            pass
+            if request.form.get("library") == "add":
+                pass
 
-        if request.form.get("library") == "remove":
-            pass
+            if request.form.get("library") == "remove":
+                pass
 
-        if request.form.get("wishlist") == "add":
-            pass
-        
-        if request.form.get("wishlist") == "remove":
-            pass
+            if request.form.get("wishlist") == "add":
+                pass
+            
+            if request.form.get("wishlist") == "remove":
+                pass
 
-        if request.form.get("note") == "add":
-            pass
+            if request.form.get("note") == "add":
+                pass
 
-        if request.form.get("remove_note"):
-            pass
+            if request.form.get("remove_note"):
+                pass
 
-        if request.form.get("note") == "remove":
-            pass
+            if request.form.get("note") == "remove":
+                pass
 
-        if request.form.get("wishlist") == "remove":
-            pass
+            if request.form.get("wishlist") == "remove":
+                pass
 
-        if request.form.get("wishlist") == "remove":
-            pass
-        
+            if request.form.get("wishlist") == "remove":
+                pass
+            
 
-    else:
-        pass
+        else:
+            pass
     return render_template('title_detail.html', title=title, shelves=shelves)
 
 
 @app.route("/showShelf/<int:id>", methods=['GET', 'POST'])
 def showShelf(id):
     shelf = Shelf.query.get(id)
-    if request.method == "POST":
-        if request.form.get("shelf") == "remove":  # if name == value
-            db.session.delete(shelf)
-            db.session.commit()
-            return redirect(url_for('myShelves'))
+    if current_user.is_authenticated:
+        if request.method == "POST":
+            if request.form.get("shelf") == "remove":  # if name == value
+                db.session.delete(shelf)
+                db.session.commit()
+                return redirect(url_for('myShelves'))
 
-        if request.form.get("remove"):
-            title_id = request.form.get("remove")
-            # remove title with title_id from this shelf
-            title = db.session.query(Library_title).filter(Library_title.id == title_id).first()
-            db.session.delete(title)
-            db.session.commit()
+            if request.form.get("remove"):
+                title_id = request.form.get("remove")
+                # remove title with title_id from this shelf
+                title = db.session.query(Library_title).filter(Library_title.id == title_id).first()
+                db.session.delete(title)
+                db.session.commit()
 
-        if request.form.get("shelf") == "edit":
-            shelf.name = request.form.get("name")
-            shelf.desc = request.form.get("text")
-            db.session.commit()
+            if request.form.get("shelf") == "edit":
+                shelf.name = request.form.get("name")
+                shelf.desc = request.form.get("text")
+                db.session.commit()
 
-    else:
-        pass
+        else:
+            pass
     return render_template('shelf_detail.html', shelf=shelf, titles=shelf.library_titles)
 
 
