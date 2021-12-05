@@ -179,13 +179,12 @@ def showTitle(id):
                 note = Note(name=name, start_page=start_page, text=text,end_page=end_page )
                 db.session.add(note)
                 db.session.commit()
-                return render_template('title_detail.html', title=title, shelves=shelves, notes=notes)
 
             if request.form.get("remove_note"):
                 note = Note.query.get(id=request.form.get("remove_note"))
                 db.session.delete(note)
                 db.session.commit()
-
+                
             if request.form.get("note") == "remove":
                 pass
 
