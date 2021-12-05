@@ -246,7 +246,8 @@ def showTitle(id):
         title = Title.query.get(id)
         lib_title = Library_title.query.filter_by(title=id, user=current_user.id).first()
         wl_title = Wishlist_title.query.filter_by(title=id, user=current_user.id).first()
-        notes = Note.query.order_by(Note.start_page).all()
+        notes = Note.query.join(Library_title).filter(Library_title.title == id,
+            Library_title.user == current_user.id).order_by(Note.start_page).all()
         if lib_title:
             shelves = Shelf.query.filter_by(user=current_user.id)
             my_shelves = shelves.filter(Shelf.library_titles.any(id=lib_title.id)).all()
@@ -334,7 +335,8 @@ def showTitle(id):
 
             lib_title = Library_title.query.filter_by(title=id, user=current_user.id).first()
             wl_title = Wishlist_title.query.filter_by(title=id, user=current_user.id).first()
-            notes = Note.query.order_by(Note.start_page).all()
+            notes = Note.query.join(Library_title).filter(Library_title.title == id,
+                Library_title.user == current_user.id).order_by(Note.start_page).all()
             if lib_title:
                 shelves = Shelf.query.filter_by(user=current_user.id)
                 my_shelves = shelves.filter(Shelf.library_titles.any(id=lib_title.id)).all()
