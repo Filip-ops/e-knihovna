@@ -22,7 +22,9 @@ admin.add_view(ModelView(Shelf, db.session))
 def home():
     
     if current_user.is_authenticated:
-        titles = Library_title.query.filter_by(user=current_user.id)
+        lib_titles = Library_title.query.filter_by(user=current_user.id)
+        titles = lib_titles
+        # todo display currently reading
         return render_template('home.html', titles=titles, user=current_user)
     else:
         return render_template('home.html')
