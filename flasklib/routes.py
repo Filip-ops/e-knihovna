@@ -28,7 +28,7 @@ def home():
 @app.route("/myLibrary/", methods=['GET', 'POST'])
 def myLibrary():
     if current_user.is_authenticated:
-        titles = Title.query.order_by(Title.name).all()
+        titles = Library_title.query.order_by(Library_title.l_title.name).all()
         if request.method == "POST":
             if request.form.get("button_search") == "Search":
                 name_title = request.form.get("search")
