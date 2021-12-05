@@ -258,7 +258,8 @@ def showTitle(id):
                 start_page = request.form.get("page_start")
                 text = request.form.get("text")
                 end_page = request.form.get("page_end")
-                note = Note(name=name, start_page=start_page, text=text,end_page=end_page )
+                color = request.form.get("color")
+                note = Note(name=name, start_page=start_page, text=text,end_page=end_page,color=color)
                 db.session.add(note)
                 db.session.commit()
 
