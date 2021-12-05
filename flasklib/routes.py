@@ -120,6 +120,7 @@ def showAuthor(id):
 @app.route("/showTitle/<int:id>/", methods=['GET', 'POST'])
 def showTitle(id):
     title = Title.query.get(id)
+    shelves = Library_title.query.filter_by(user = current_user.id).shelfs
     if request.method == "POST":
         if request.form.get("remove_tag"):  # if name == value
             pass
@@ -163,7 +164,7 @@ def showTitle(id):
 
     else:
         pass
-    return render_template('title_detail.html', title=title)
+    return render_template('title_detail.html', title=title, shelves=shelves)
 
 
 @app.route("/showShelf/<int:id>", methods=['GET', 'POST'])
