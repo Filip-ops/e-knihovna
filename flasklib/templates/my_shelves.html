@@ -79,16 +79,16 @@
                         </tr>
                         <!-- po tadeto 1 - je default -->
                         <!-- od tadeto 2 -->
-                        {% for shelf in shelves %}
+                        {% for shelf, count in shelves.items() %}
                             <tr class="normal">
                                 <td></td>
                                 <td class="shelf-item">
                                     <a href="{{ url_for('showShelf', id=shelf.id)}}">{{shelf.name}}</a> <!-- shelf.name -->
                                     <!-- todo: add counter to model -->
-                                    {% if shelf.count == 1 %}
-                                        <span class="shelf-small">{{ shelf.count }} book</span>
+                                    {% if count == 1 %}
+                                        <span class="shelf-small">{{ count }} book</span>
                                     {% else %}
-                                        <span class="shelf-small">{{ shelf.count }} books</span>
+                                        <span class="shelf-small">{{ count }} books</span>
                                     {% endif %}
                                 </td>
                                 <td></td>

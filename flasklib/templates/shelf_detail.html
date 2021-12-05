@@ -81,69 +81,46 @@
                     </div>
 
                     <!-- if dake knihy v shelfe -->
-                    <!-- if shelf.counter > 0 -->
+                    {% if titles %}
                         <div id="content-detail-list">
-                            <h3>Titles ({{ shelf.counter }})</h3>
+                            <h3>Titles ({{ titles|length }})</h3>
                             <table>
                                 <!-- jeden item ako v author_detail.html + tlacitko -->
                                 {% for title in titles %}
-                                <tr class="list-item">
-                                    <td class="list-item-inner">
-                                        <img src="../static/hery.jpg" alt="img" height="70">
-                                        <div class="list-item-text">
-                                            <span class="title-name">{{title.l_title.name}}</span>
-                                            <span class="title-year">{{title.l_title.release_year}}</span>
-                                            <br>
-                                            <span class="title-author">{{title.l_title.author.name}}</span>
-                                            <br>
-                                            <span class="title-genre">{{title.l_title.genre}}</span>
-                                        </div>
-                                        <div class="list-item-tag-list">
-                                            <span class="tag-item">owned</span>
-                                            <span class="tag-item">read</span>
-                                        </div>
-                                        <div class="list-item-button">
-                                            <p>SHELF</p>
-                                            <form method="POST" class="form-button-icon">
-                                                <!-- post request s remove=title.isbn -->
-                                                <button name="remove" value="{{title.id}}" class="btn-del">
-                                                    <!-- value=title_in_library.isbn -->
-                                                    <i class="fas fa-times"></i>
-                                                    <span class="tooltip">remove</span>
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </td>
-                                </tr>
+                                    <tr class="list-item">
+                                        <td class="list-item-inner">
+                                            <img src="{{ title.l_title.img }}" alt="img" height="70">
+                                            <div class="list-item-text">
+                                                <span class="title-name">{{title.l_title.name}}</span>
+                                                <span class="title-year">{{title.l_title.release_year}}</span>
+                                                <br>
+                                                <span class="title-author">{{title.l_title.author.name}}</span>
+                                                <br>
+                                                <span class="title-genre">{{title.l_title.genre}}</span>
+                                            </div>
+                                            <div class="list-item-tag-list">
+                                                <span class="tag-item">owned</span>
+                                                <span class="tag-item">read</span>
+                                            </div>
+                                            <div class="list-item-button">
+                                                <p>SHELF</p>
+                                                <form method="POST" class="form-button-icon">
+                                                    <!-- post request s remove=title.isbn -->
+                                                    <button name="remove" value="{{title.id}}" class="btn-del">
+                                                        <!-- value=title_in_library.isbn -->
+                                                        <i class="fas fa-times"></i>
+                                                        <span class="tooltip">remove</span>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 {% endfor %}
-                               <!--<tr class="list-item">
-                                    <td class="list-item-inner">
-                                        <img src="../static/hery2.jpg" alt="img" height="70">
-                                        <div class="list-item-text">
-                                            <span class="title-name">Harry Potter 2</span>
-                                            <span class="title-year">2005</span>
-                                            <br>
-                                            <span class="title-author">J. K. Rowling</span>
-                                            <br>
-                                            <span class="title-genre">fantasy</span>
-                                        </div>
-                                        <div class="list-item-tag-list">
-                                            <span class="tag-item">reading</span>
-                                        </div>
-                                        <div class="list-item-button">
-                                            <p>SHELF</p>
-                                            <form method="POST" class="form-button-icon">
-                                                <button name="remove" value="isbn_value" class="btn-del">
-                                                    <i class="fas fa-times"></i>
-                                                    <span class="tooltip">remove</span>
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </td>
-                                </tr>-->
                             </table>
                         </div>
-                    <!-- endif -->
+                    {% else %}
+                        <p>There are no titles in this shelf yet.</p>
+                    {% endif %}
                 </div>
             </div>
         </main>

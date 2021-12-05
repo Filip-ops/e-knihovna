@@ -20,7 +20,6 @@ admin.add_view(ModelView(Shelf, db.session))
 @app.route("/")
 @app.route("/home/", methods=['GET', 'POST'])
 def home():
-    
     if current_user.is_authenticated:
         lib_titles = Library_title.query.filter_by(user=current_user.id)
         titles = lib_titles
@@ -84,7 +83,10 @@ def myLibrary():
 @app.route("/myShelves/", methods=['GET', 'POST'])
 def myShelves():
     if current_user.is_authenticated:
-        shelves = Shelf.query.filter_by(user = current_user.id)
+        shelf_list = Shelf.query.filter_by(user=current_user.id).all()
+        shelves = {}
+        for shelf in shelf_list:
+            shelves[shelf] = len(shelf.library_titles)
         if request.method == "POST":
             name = request.form.get("name")
             desc = request.form.get("text")
@@ -194,9 +196,9 @@ def search():
         for title in titles:
             item = [False, False]
             print(Library_title.query.join(Title).filter(Title.isbn == title.isbn,
-                                                          Library_title.user == current_user.id).all())
+                                                         Library_title.user == current_user.id).all())
             print(Wishlist_title.query.join(Title).filter(Title.isbn == title.isbn,
-                                                           Wishlist_title.user == current_user.id).all())
+                                                          Wishlist_title.user == current_user.id).all())
             if len(Library_title.query.join(Title).filter(Title.isbn == title.isbn,
                                                           Library_title.user == current_user.id).all()) > 0:
                 item[0] = True
@@ -220,22 +222,32 @@ def showAuthor(id):
 @app.route("/showTitle/<int:id>/", methods=['GET', 'POST'])
 def showTitle(id):
     title = Title.query.get(id)
-    notes = Note.query
+    lib_title = Library_title.query.filter_by(title=id).first()
+    notes = Note.query.all()
     if current_user.is_authenticated:
-        shelves = Shelf.query.filter_by(user = current_user.id)
+        shelves = Shelf.query.filter_by(user=current_user.id)
+        my_shelves = shelves.filter(Shelf.library_titles.any(id=lib_title.id)).all()
+        not_shelves = shelves.filter(~Shelf.library_titles.any(id=lib_title.id)).all()
+        reading = False
+        for shelf in my_shelves:
+            if shelf.name == 'Reading':
+                reading = True
+                break
         if request.method == "POST":
             if request.form.get("remove_tag"):  # if name == value
-                pass
-
-            if request.form.get("tag") == "add":
-                selected = request.form.get("selected")
-                libraryTitle = Library_title.query.filter_by(title=id).first()
-                for s_id in selected:
-                    shelf = Shelf.query.get(s_id)
-                    shelf.library_titles.append(libraryTitle)
-
+                shelf_id = request.form.get("remove_tag")
+                shelf = Shelf.query.get(shelf_id)
+                shelf.library_titles.remove(lib_title)
                 db.session.commit()
 
+            if request.form.get("tag") == "add":
+
+                library_title = Library_title.query.filter_by(title=id).first()
+                for s_id in request.form.getlist("selected"):
+                    shelf = Shelf.query.get(s_id)
+                    shelf.library_titles.append(library_title)
+
+                db.session.commit()
 
             if request.form.get("tag") == "remove":
                 pass
@@ -251,7 +263,7 @@ def showTitle(id):
 
             if request.form.get("wishlist") == "add":
                 pass
-            
+
             if request.form.get("wishlist") == "remove":
                 pass
 
@@ -260,8 +272,7 @@ def showTitle(id):
                 start_page = request.form.get("page_start")
                 text = request.form.get("text")
                 end_page = request.form.get("page_end")
-                color = request.form.get("color")
-                note = Note(name=name, start_page=start_page, text=text,end_page=end_page,color=color)
+                note = Note(name=name, start_page=start_page, text=text, end_page=end_page)
                 db.session.add(note)
                 db.session.commit()
 
@@ -269,7 +280,7 @@ def showTitle(id):
                 note_id = request.form.get("remove_note")
                 Note.query.filter_by(id=note_id).delete()
                 db.session.commit()
-                
+
             if request.form.get("note") == "remove":
                 pass
 
@@ -278,14 +289,26 @@ def showTitle(id):
 
             if request.form.get("wishlist") == "remove":
                 pass
-            
+
+            if request.form.get("page"):
+                lib_title.page = request.form.get("page")
+                db.session.commit()
+
+            my_shelves = shelves.filter(Shelf.library_titles.any(id=lib_title.id)).all()
+            not_shelves = shelves.filter(~Shelf.library_titles.any(id=lib_title.id)).all()
+            reading = False
+            for shelf in my_shelves:
+                if shelf.name == 'Reading':
+                    reading = True
+                    break
 
         else:
             pass
     else:
         return redirect(url_for('login'))
 
-    return render_template('title_detail.html', title=title, shelves=shelves, notes=notes)
+    return render_template('title_detail.html', title=title, shelves=not_shelves, my_shelves=my_shelves, notes=notes,
+                           reading=reading, lib_title=lib_title)
 
 
 @app.route("/showShelf/<int:id>", methods=['GET', 'POST'])
@@ -301,8 +324,8 @@ def showShelf(id):
             if request.form.get("remove"):
                 title_id = request.form.get("remove")
                 # remove title with title_id from this shelf
-                title = db.session.query(Library_title).filter(Library_title.id == title_id).first()
-                db.session.delete(title)
+                title = Library_title.query.get(title_id)
+                shelf.library_titles.remove(title)
                 db.session.commit()
 
             if request.form.get("shelf") == "edit":
