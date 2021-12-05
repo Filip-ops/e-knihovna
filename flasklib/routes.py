@@ -151,7 +151,11 @@ def showTitle(id):
                 pass
 
             if request.form.get("tag") == "add":
-                pass
+                here = request.form.get("selected")
+                libraryTitle = Library_title(page=0,user=current_user.id,title=id,shelfs=here)
+                db.session.add(libraryTitle)
+                db.session.commit()
+                
 
             if request.form.get("tag") == "remove":
                 pass
@@ -183,16 +187,9 @@ def showTitle(id):
             if request.form.get("remove_note"):
                 note_id = request.form.get("remove_note")
                 Note.query.filter_by(id=note_id).delete()
-                #db.session.delete(note)
                 db.session.commit()
                 
             if request.form.get("note") == "remove":
-                pass
-
-            if request.form.get("wishlist") == "remove":
-                pass
-
-            if request.form.get("wishlist") == "remove":
                 pass
             
 

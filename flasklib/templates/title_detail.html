@@ -321,11 +321,13 @@
                     <form action="" method="POST">
                         <!-- for shelf in policky v ktorych este neni tento title -->
                         <!-- jeden item -->
+                        {% for shelf in shelves%}
                         <div class="checkbox-item">
-                            <input type="checkbox" name="selected" id="Harry Potter" value="Harry Potter">
+                            <input type="checkbox" name="selected" id="{{shelf.id}}" value="{{shelf.id}}">
                             <!-- id alebo value (radsej obidva)=shelf.id -->
-                            <label for="Harry Potter">Harry Potter</label> <!-- shelf.name -->
+                            <label for="{{shelf.id}}">{{shelf.name}}</label> <!-- shelf.name -->
                         </div>
+                        {% endfor %}
                         <div class="checkbox-item">
                             <input type="checkbox" name="selected" id="School" value="School">
                             <label for="School">School</label>
