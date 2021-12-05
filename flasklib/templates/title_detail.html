@@ -58,10 +58,10 @@
                     <div id="content-detail-header">
                         <img src="../static/hery2.jpg" alt="" height="200">
                         <div class="detail-desc">
-                            <h2 class="detail-name">title.name</h2>
-                            <p><a class="detail-author" href="author_detail.html">J. K. Rowling</a></p>
-                            <p class="detail-other">2005</p>
-                            <p class="detail-other">fantasy</p>
+                            <h2 class="detail-name">{{title.name}}</h2>
+                            <p><a class="detail-author" href="{{ url_for('showAuthor', id=title.author_id)}}">{{title.author.name}}</a></p>
+                            <p class="detail-other">{{title.release_year}}</p>
+                            <p class="detail-other">{{title.genre}}</p>
                             <div class="detail-tag-list">
                                 <!-- for shelf in policky v ktorych je tento title_in_library -->
                                 <div class="detail-tag-item">
@@ -152,7 +152,7 @@
                     </div>
                     <!-- zobrazi sa len ked existuje title_in_library a je v policke reading -->
                     <!-- on enter post request page = new page value -->
-                    <form action="" method="post" class="form-page-input">
+                    <form action="" method="POST" class="form-page-input">
                         <label>
                             <span>You're on page: </span>
                             <input type="number" name="page" value="150" class="page-input"> <!-- title_in_library.page -->
@@ -271,7 +271,7 @@
                     <!-- post request s note=add a hodnotami pre novy notev : name, page_start, page_end, color, text -->
                     <!-- not sure about the color ze co to posle a ako sa to bude ukladat ta hodnota, hadam to bude
                     hexa hodnota a nebude je treba dako specialne riesit -->
-                    <form action="" method="post">
+                    <form action="" method="POST">
                         <div class="input-row">
                             <label for="name" class="required-label">Name: </label>
                             <input type="text" name="name" id="name" required="required">
@@ -316,7 +316,7 @@
                 <div class="modal-form">
                     <!-- post request with array: selected[] containing shelf.id values  -->
                     <!-- prida title do vsetkych policiek co su v selected -->
-                    <form action="" method="post">
+                    <form action="" method="POST">
                         <!-- for shelf in policky v ktorych este neni tento title -->
                         <!-- jeden item -->
                         <div class="checkbox-item">

@@ -96,12 +96,56 @@ def search():
 @app.route("/showAuthor/<int:id>/", methods=['GET', 'POST'])
 def showAuthor(id):
     author = Author.query.get(id)
-    return render_template('author_detail.html', author=author)
+    titles = Title.query.filter_by(author_id=id)
+    return render_template('author_detail.html', author=author, titles=titles)
 
 
 @app.route("/showTitle/<int:id>/", methods=['GET', 'POST'])
 def showTitle(id):
     title = Title.query.get(id)
+    if request.method == "POST":
+        if request.form.get("remove_tag"):  # if name == value
+            pass
+
+        if request.form.get("tag") == "add":
+            pass
+
+        if request.form.get("tag") == "remove":
+            pass
+
+        if request.form.get("reading") == "done":
+            pass
+
+        if request.form.get("library") == "add":
+            pass
+
+        if request.form.get("library") == "remove":
+            pass
+
+        if request.form.get("wishlist") == "add":
+            pass
+        
+        if request.form.get("wishlist") == "remove":
+            pass
+
+        if request.form.get("note") == "add":
+            pass
+
+        if request.form.get("remove_note"):
+            pass
+
+        if request.form.get("note") == "remove":
+            pass
+
+        if request.form.get("wishlist") == "remove":
+            pass
+
+        if request.form.get("wishlist") == "remove":
+            pass
+        
+
+    else:
+        pass
     return render_template('title_detail.html', title=title)
 
 

@@ -57,9 +57,9 @@
                     <div id="content-detail-header">
                         <img src="../static/profile.jpg" alt="" height="150 "> <!-- author.picture -->
                         <div class="detail-desc">
-                            <h2 class="detail-name">J. K. Rowling</h2> <!-- author.name -->
+                            <h2 class="detail-name">{{author.name}}</h2> <!-- author.name -->
                             <p class="detail-author">Great Britain</p> <!-- author.country -->
-                            <p class="detail-other">2005 - present</p> <!-- author.born - author.died -->
+                            <p class="detail-other">{{author.born}} - {{author.died}}</p> <!-- author.born - author.died -->
                             <!-- died moze byt null a vtedy sa da ze present #-->
                         </div>
                     </div>
@@ -68,16 +68,17 @@
                         <h3>Titles</h3>
                         <table>
                             <!-- jeden title item -->
+                            {% for title in titles %}
                             <tr class="list-item">
                                 <td class="list-item-inner">
                                     <img src="../static/hery.jpg" alt="img" height="70"> <!-- title.picture -->
                                     <div class="list-item-text">
-                                        <span class="title-name">Harry Potter</span> <!-- title.name -->
-                                        <span class="title-year">2004</span> <!-- title.year -->
+                                        <span class="title-name">{{title.name}}</span> <!-- title.name -->
+                                        <span class="title-year">{{title.release_year}}</span> <!-- title.year -->
                                         <br>
-                                        <span class="title-author">J. K. Rowling</span> <!-- title author.name -->
+                                        <span class="title-author">{{author.name}}</span> <!-- title author.name -->
                                         <br>
-                                        <span class="title-genre">fantasy</span> <!-- title.genre -->
+                                        <span class="title-genre">{{title.genre}}</span> <!-- title.genre -->
                                     </div>
                                     <div class="list-item-tag-list">
                                     <!-- for tag in title.tag -->
@@ -86,7 +87,8 @@
                                     </div>
                                 </td>
                             </tr>
-                            <tr class="list-item">
+                            {% endfor %}
+                            <!--<tr class="list-item">
                                 <td class="list-item-inner">
                                     <img src="../static/hery2.jpg" alt="img" height="70">
                                     <div class="list-item-text">
@@ -101,7 +103,7 @@
                                         <span class="tag-item">reading</span>
                                     </div>
                                 </td>
-                            </tr>
+                            </tr>-->
                         </table>
                     </div>
                 </div>
