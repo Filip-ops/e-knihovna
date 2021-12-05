@@ -63,84 +63,98 @@
                             <p class="detail-other">{{title.release_year}}</p>
                             <p class="detail-other">{{title.genre}}</p>
                             <div class="detail-tag-list">
-                                <!-- for shelf in policky v ktorych je tento title_in_library -->
-                                {% for shelf in my_shelves %}
+                                {% if my_shelves %}
+                                    <!-- for shelf in policky v ktorych je tento title_in_library -->
+                                    {% for shelf in my_shelves %}
+                                        <div class="detail-tag-item">
+                                            <span>{{ shelf.name }}</span> <!-- shelf.name -->
+                                            <!-- on click post request with remove_tag=shelf.id -->
+                                            <form method="POST" class="form-button-icon">
+                                                <button name="remove_tag" value="{{ shelf.id }}" class="btn-del-tag">
+                                                    <!-- id_value=shelf.id -->
+                                                    <i class="fas fa-times"></i>
+                                                    <span class="tooltip">remove</span>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                                {% if lib_title %}
+                                    <!-- default sa zobrazi -->
                                     <div class="detail-tag-item">
-                                        <span>{{ shelf.name }}</span> <!-- shelf.name -->
-                                        <!-- on click post request with remove_tag=shelf.id -->
-                                        <form method="POST" class="form-button-icon">
-                                            <button name="remove_tag" value="{{ shelf.id }}" class="btn-del-tag">
-                                                <!-- id_value=shelf.id -->
-                                                <i class="fas fa-times"></i>
-                                                <span class="tooltip">remove</span>
+                                        <div class="form-button-icon">
+                                            <!-- calls add title to shelf pop up -->
+                                            <button name="tag" value="add" class="btn-add-tag" id="add-tag-btn">
+                                                <i class="fas fa-plus"></i>
+                                                <span class="tooltip">add</span>
                                             </button>
-                                        </form>
+                                        </div>
                                     </div>
-                                {% endfor %}
-                                <!-- default sa zobrazi -->
-                                <div class="detail-tag-item">
-                                    <div class="form-button-icon">
-                                        <!-- calls add title to shelf pop up -->
-                                        <button name="tag" value="add" class="btn-add-tag" id="add-tag-btn">
-                                            <i class="fas fa-plus"></i>
-                                            <span class="tooltip">add</span>
-                                        </button>
-                                    </div>
-                                </div>
+                                {% endif %}
                             </div>
                         </div>
                         <!-- tlacitka - on click post request... -->
                         <div class="detail-button-area">
                             <!-- zobrazi sa ked existuje title_in_library s title.isbn a je v policke reading -->
-                            <div class="form-button-wrapper">
-                                <form method="POST" class="form-button-icon">
-                                    <!-- odstrani z policky reading a prida do policky read -->
-                                    <button name="reading" value="done" class="btn-finish">
-                                        <i class="fas fa-check-circle"></i>
-                                    </button>
-                                </form>
-                                <p class="btn-desc">FINISH READING</p>
-                            </div>
+                            {% if reading %}
+                                <div class="form-button-wrapper">
+                                    <form method="POST" class="form-button-icon">
+                                        <!-- odstrani z policky reading a prida do policky read -->
+                                        <button name="reading" value="done" class="btn-finish">
+                                            <i class="fas fa-check-circle"></i>
+                                        </button>
+                                    </form>
+                                    <p class="btn-desc">FINISH READING</p>
+                                </div>
+                            {% endif %}
                             <!-- zobrazi sa ked neexistuje title_in_library pre tento title -->
-                            <div class="form-button-wrapper">
-                                <form method="POST" class="form-button-icon">
-                                    <!-- vytvori title_in_library, isbn netreba poslat, bude v url -->
-                                    <button name="library" value="add" class="btn-add">
-                                        <i class="fas fa-plus-circle"></i>
-                                    </button>
-                                </form>
-                                <p class="btn-desc">ADD TO LIBRARY</p>
-                            </div>
+                            {% if not lib_title %}
+                                <div class="form-button-wrapper">
+                                    <form method="POST" class="form-button-icon">
+                                        <!-- vytvori title_in_library, isbn netreba poslat, bude v url -->
+                                        <button name="library" value="add" class="btn-add">
+                                            <i class="fas fa-plus-circle"></i>
+                                        </button>
+                                    </form>
+                                    <p class="btn-desc">ADD TO LIBRARY</p>
+                                </div>
+                            {% endif %}
                             <!-- zobrazi sa ked existuje title_in_library pre tento title -->
-                            <div class="form-button-wrapper">
-                                <form method="POST" class="form-button-icon">
-                                    <!-- odstrani title_in_library -->
-                                    <button name="library" value="remove" class="btn-del">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </form>
-                                <p class="btn-desc">REMOVE FROM LIBRARY</p>
-                            </div>
+                            {% if lib_title %}
+                                <div class="form-button-wrapper">
+                                    <form method="POST" class="form-button-icon">
+                                        <!-- odstrani title_in_library -->
+                                        <button name="library" value="remove" class="btn-del">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                    <p class="btn-desc">REMOVE FROM LIBRARY</p>
+                                </div>
+                            {% endif %}
                             <!-- zobrazi sa ked neexistuje title_in_wishlist pre tento title -->
-                            <div class="form-button-wrapper">
-                                <form method="POST" class="form-button-icon">
-                                    <!-- vytvori sa title_in_wishlist, isbn v url -->
-                                    <button name="wishlist" value="add" class="btn-add">
-                                        <i class="fas fa-plus-circle"></i>
-                                    </button>
-                                </form>
-                                <p class="btn-desc">ADD TO WISHLIST</p>
-                            </div>
+                            {% if not wl_title and not lib_title %}
+                                <div class="form-button-wrapper">
+                                    <form method="POST" class="form-button-icon">
+                                        <!-- vytvori sa title_in_wishlist, isbn v url -->
+                                        <button name="wishlist" value="add" class="btn-add">
+                                            <i class="fas fa-plus-circle"></i>
+                                        </button>
+                                    </form>
+                                    <p class="btn-desc">ADD TO WISHLIST</p>
+                                </div>
+                            {% endif %}
                             <!-- zobrazi sa ked existuje title_in_wishlist pre tento title -->
-                            <div class="form-button-wrapper">
-                                <form method="POST" class="form-button-icon">
-                                    <!-- odstrani title_in_wishlist -->
-                                    <button name="wishlist" value="remove" class="btn-del">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </form>
-                                <p class="btn-desc">REMOVE FROM WISHLIST</p>
-                            </div>
+                            {% if wl_title %}
+                                <div class="form-button-wrapper">
+                                    <form method="POST" class="form-button-icon">
+                                        <!-- odstrani title_in_wishlist -->
+                                        <button name="wishlist" value="remove" class="btn-del">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                    <p class="btn-desc">REMOVE FROM WISHLIST</p>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                     <!-- zobrazi sa len ked existuje title_in_library a je v policke reading -->
