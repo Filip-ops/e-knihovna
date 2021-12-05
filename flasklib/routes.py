@@ -226,7 +226,7 @@ def showTitle(id):
         title = Title.query.get(id)
         lib_title = Library_title.query.filter_by(title=id, user=current_user.id).first()
         wl_title = Wishlist_title.query.filter_by(title=id, user=current_user.id).first()
-        notes = Note.query.all()
+        notes = Note.query.order_by(Note.start_page).all()
         if lib_title:
             shelves = Shelf.query.filter_by(user=current_user.id)
             my_shelves = shelves.filter(Shelf.library_titles.any(id=lib_title.id)).all()
@@ -288,18 +288,24 @@ def showTitle(id):
             if request.form.get("note") == "add":
                 name = request.form.get("name")
                 start_page = request.form.get("page_start")
-                text = request.form.get("text")
                 end_page = request.form.get("page_end")
-                note = Note(name=name, start_page=start_page, text=text, end_page=end_page)
+                text = request.form.get("text")
+                color = request.form.get("color")
+                note = Note(name=name, start_page=start_page, text=text, end_page=end_page, color=color,
+                            library_title=lib_title.id)
                 db.session.add(note)
                 db.session.commit()
 
             if request.form.get("remove_note"):
                 note_id = request.form.get("remove_note")
-                Note.query.filter_by(id=note_id).delete()
+                note = Note.query.get(note_id)
+                db.session.delete(note)
                 db.session.commit()
 
-            if request.form.get("note") == "remove":
+            if request.form.get("edit_note"):
+                note_id = request.form.get("edit_note")
+                note = Note.query.get(note_id)
+
                 pass
 
             if request.form.get("page"):
@@ -308,7 +314,7 @@ def showTitle(id):
 
             lib_title = Library_title.query.filter_by(title=id, user=current_user.id).first()
             wl_title = Wishlist_title.query.filter_by(title=id, user=current_user.id).first()
-            notes = Note.query.all()
+            notes = Note.query.order_by(Note.start_page).all()
             if lib_title:
                 shelves = Shelf.query.filter_by(user=current_user.id)
                 my_shelves = shelves.filter(Shelf.library_titles.any(id=lib_title.id)).all()

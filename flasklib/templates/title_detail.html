@@ -186,12 +186,16 @@
                                 <tr class="note-list-item">
                                     <td class="note-list-item-color">
                                         <svg width="8px" height="50px">
-                                            <rect width="8px" height="50px" style="fill: lightgreen"></rect> <!-- note.color -->
+                                            <rect width="8px" height="50px" style="fill: {{ note.color }}"></rect> <!-- note.color -->
                                         </svg>
                                     </td>
                                     <td class="note-list-item-page">
                                         <p>PAGE</p>
-                                        <span>{{note.start_page}}</span> <!-- note.page_start - note.page_end if note.page_end else note.page_start -->
+                                        {% if note.end_page != note.start_page %}
+                                            <span>{{note.start_page}} - {{note.end_page}}</span>
+                                        {% else %}
+                                            <span>{{note.start_page}}</span> <!-- note.page_start - note.page_end if note.page_end else note.page_start -->
+                                        {% endif %}
                                     </td>
                                     <td class="note-list-item-name">
                                         <p>{{note.name}}</p> <!-- note.name -->
@@ -202,10 +206,7 @@
                                     <!-- default tlacitka -->
                                     <td class="note-list-item-button">
                                         <div class="form-button-icon">
-                                            <!-- toto vyzera celkom complicated lebo dako tu bude treba predavat note.id
-                                            a potom daky komplikovany js takze by som tam asi nechal nefunkcny button aby
-                                            vyzeralo ze to ide editovat lebo to je celkom taka vec co by mala tam byt -->
-                                            <button name="note" value="edit" class="btn-edit">
+                                            <button name="edit_note" value="{{note.id}}" class="btn-edit">
                                                 <i class="fas fa-edit"></i>
                                                 <span class="tooltip">edit</span>
                                             </button>
@@ -218,45 +219,12 @@
                                             <button name="remove_note" value="{{note.id}}" class="btn-del">
                                                 <!-- id_value=note.id -->
                                                 <i class="fas fa-trash"></i>
-                                                <span class="tooltip">remove {{note.id}}</span>
+                                                <span class="tooltip">remove</span>
                                             </button>
                                         </form>
                                     </td>
                                 </tr>
                             {% endfor %}
-                           <!--<tr class="note-list-item">
-                                <td class="note-list-item-color">
-                                    <svg width="8px" height="50px">
-                                        <rect width="8px" height="50px" style="fill: cornflowerblue"></rect>
-                                    </svg>
-                                </td>
-                                <td class="note-list-item-page">
-                                    <p>PAGE</p>
-                                    <span>150 - 230</span>
-                                </td>
-                                <td class="note-list-item-name">
-                                    <p>skip</p>
-                                </td>
-                                <td class="note-list-item-text">
-                                    <p>This is super very boring. Skip this part it doesnt really matter because its irrelevant to the story.</p>
-                                </td>
-                                <td class="note-list-item-button">
-                                    <div class="form-button-icon">
-                                        <button name="note" value="edit" class="btn-edit">
-                                            <i class="fas fa-edit"></i>
-                                            <span class="tooltip">edit</span>
-                                        </button>
-                                    </div>
-                                </td>
-                                <td class="note-list-item-button">
-                                    <form method="POST" class="form-button-icon">
-                                        <button name="note" value="remove" class="btn-del">
-                                            <i class="fas fa-trash"></i>
-                                            <span class="tooltip">remove</span>
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>--> 
                         </table>
                     </div>
                 </div>
