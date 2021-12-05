@@ -185,7 +185,7 @@ def showTitle(id):
                     shelf.library_titles.append(libraryTitle)
 
                     
-                db.session.add(libraryTitle)
+                #db.session.add(libraryTitle)
                 db.session.commit()
 
 
