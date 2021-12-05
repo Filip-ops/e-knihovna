@@ -1,4 +1,4 @@
 from flasklib import app
 
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(debug=Truegit)
