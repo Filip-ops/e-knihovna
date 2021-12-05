@@ -17,33 +17,33 @@
         <header>
             <div id="header-inner">
                 <div id="page-heading">
-                    <a href="home">
+                    <a href="{{ url_for('home') }}">
                         <h1>eKnihovna</h1>
                     </a>
                 </div>
 
                 <div id="nav">
                     {% if current_user.is_authenticated %}
-                        <a href="search" class="nav-item">
+                        <a href="{{ url_for('search') }}" class="nav-item">
                             <span>Search</span>
                         </a>
-                        <a href="myLibrary" class="nav-item">
+                        <a href="{{ url_for('myLibrary') }}" class="nav-item">
                             <span>My Library</span>
                         </a>
-                        <a href="myShelves" class="nav-item">
+                        <a href="{{ url_for('myShelves') }}" class="nav-item">
                             <span>My Shelves</span>
                         </a>
-                        <a href="myWishlist" class="nav-item">
+                        <a href="{{ url_for('myWishlist') }}" class="nav-item" id="nav-selected">
                             <span>My Wishlist</span>
                         </a>
-                        <a href="logout" class="nav-item">
+                        <a href="{{ url_for('logout') }}" class="nav-item">
                             <span>Logout</span>
                         </a>
                     {% else %}
-                        <a href="login" class="nav-item">
+                        <a href="{{ url_for('login') }}" class="nav-item">
                             <span>Login</span>
                         </a>
-                        <a href="register" class="nav-item">
+                        <a href="{{ url_for('register') }}" class="nav-item">
                             <span>Register</span>
                         </a>
                     {% endif %}

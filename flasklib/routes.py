@@ -5,6 +5,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 from flasklib.models import User, Author, Title, Wishlist_title, Library_title, Note, Shelf
 from flasklib.forms import RegistrationForm, LoginForm
 from flask_admin.contrib.sqla import ModelView
+from sqlalchemy import or_
 
 admin.add_view(ModelView(User, db.session))
 admin.add_view(ModelView(Author, db.session))
@@ -16,7 +17,7 @@ admin.add_view(ModelView(Shelf, db.session))
 
 
 @app.route("/")
-@app.route("/home", methods=['GET', 'POST'])
+@app.route("/home/", methods=['GET', 'POST'])
 def home():
     titles = Library_title.query
     if current_user.is_authenticated:
@@ -25,14 +26,14 @@ def home():
         return render_template('home.html', titles=titles)
 
 
-@app.route("/myLibrary", methods=['GET', 'POST'])
+@app.route("/myLibrary/", methods=['GET', 'POST'])
 def myLibrary():
     return render_template('my_library.html')
 
 
-@app.route("/myShelves", methods=['GET', 'POST'])
+@app.route("/myShelves/", methods=['GET', 'POST'])
 def myShelves():
-    shelves = Shelf.query
+    shelves = Shelf.query.all()
     if request.method == "POST":
         name = request.form.get("name")
         desc = request.form.get("text")
@@ -45,63 +46,67 @@ def myShelves():
     return render_template('my_shelves.html', shelves=shelves)
 
 
-@app.route("/myWishlist", methods=['GET', 'POST'])
+@app.route("/myWishlist/", methods=['GET', 'POST'])
 def myWishlist():
     return render_template('my_wishlist.html')
 
 
-@app.route("/search")
+@app.route("/search/", methods=['GET', 'POST'])
 def search():
     if current_user.is_authenticated:
-        titles = Title.query.order_by(Title.name)
+        titles = Title.query.order_by(Title.name).all()
         if request.method == "POST":
             if request.form.get("button_search") == "Search":
                 name_title = request.form.get("search")
                 filter_type = request.form.get("search_filter")
-                if filter_type == "title":
-                    titles = Title.query.filter(Title.name.op('~')(name_title)).order_by(Title.name)
+                if filter_type == "all":
+                    titles = Title.query.join(Author).filter(or_(Title.name.op('~*')(name_title),
+                                                                 Author.name.op('~*')(name_title),
+                                                                 Title.genre.op('~*')(name_title))).order_by(
+                        Title.name).all()
+                elif filter_type == "title":
+                    titles = Title.query.filter(Title.name.op('~*')(name_title)).order_by(Title.name).all()
                 elif filter_type == "author":
-                    titles = Title.query.filter(Title.author.name.op('~')(name_title)).order_by(Title.name)
+                    titles = Title.query.join(Author).filter(Author.name.op('~*')(name_title)).order_by(Title.name).all()
                 else:
-                    titles = Title.query.filter(Title.genre.op('~')(name_title)).order_by(Title.name)
+                    titles = Title.query.filter(Title.genre.op('~*')(name_title)).order_by(Title.name).all()
         return render_template('search.html', titles=titles)
     else:
         return redirect(url_for('home'))
 
 
-@app.route("/showAuthor/<int:id>", methods=['GET', 'POST'])
+@app.route("/showAuthor/<int:id>/", methods=['GET', 'POST'])
 def showAuthor(id):
-    author = Author.query.filter_by(id=id)
+    author = Author.query.get(id)
     return render_template('author_detail.html', author=author)
 
 
-@app.route("/showTitle/<int:id>", methods=['GET', 'POST'])
+@app.route("/showTitle/<int:id>/", methods=['GET', 'POST'])
 def showTitle(id):
-    title = Title.query.filter_by(id=id)
+    title = Title.query.get(id)
     return render_template('title_detail.html', title=title)
 
 
 @app.route("/showShelf/<int:id>", methods=['GET', 'POST'])
 def showShelf(id):
-    shelf = Shelf.query.filter_by(id=id)
+    shelf = Shelf.query.get(id)
 
     if request.method == "POST":
         if request.form.get("shelf") == "remove":  # if name == value
-            shelf = Shelf.query.filter_by(id=id).delete()
+            shelf.delete()
             db.session.commit()
+            return redirect(url_for('myShelves'))
 
-        if request.form.get("remove") == "isbn_value":
-            pass
+        if request.form.get("remove"):
+            title_id = request.form.get("remove")
+            # remove title with title_id from this shelf
+            shelf = Shelf.query.get(id)
 
-        if request.form.get("remove") == "library":
-            pass
-
-        if request.form.get("note") == "add":
+        if request.form.get("shelf") == "edit":
             shelf.name = request.form.get("name")
             shelf.desc = request.form.get("text")
             db.session.commit()
 
-        return redirect(url_for('myShelves'))
     else:
         pass
     return render_template('shelf_detail.html', shelf=shelf)
@@ -109,7 +114,7 @@ def showShelf(id):
 
 ############################################################################################################################################
 
-@app.route("/login", methods=['GET', 'POST'])
+@app.route("/login/", methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('home'))
@@ -125,7 +130,7 @@ def login():
     return render_template('login.html', title='Login', form=form)
 
 
-@app.route("/register", methods=['GET', 'POST'])
+@app.route("/register/", methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
         return redirect(url_for('home'))
@@ -141,7 +146,7 @@ def register():
     return render_template('register.html', title='Register', form=form)
 
 
-@app.route("/logout")
+@app.route("/logout/")
 def logout():
     logout_user()
     return redirect(url_for('home'))

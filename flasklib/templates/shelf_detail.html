@@ -17,33 +17,33 @@
         <header>
             <div id="header-inner">
                 <div id="page-heading">
-                    <a href="home">
+                    <a href="{{ url_for('home') }}">
                         <h1>eKnihovna</h1>
                     </a>
                 </div>
 
                 <div id="nav">
                     {% if current_user.is_authenticated %}
-                        <a href="search" class="nav-item">
+                        <a href="{{ url_for('search') }}" class="nav-item">
                             <span>Search</span>
                         </a>
-                        <a href="myLibrary" class="nav-item">
+                        <a href="{{ url_for('myLibrary') }}" class="nav-item">
                             <span>My Library</span>
                         </a>
-                        <a href="myShelves" class="nav-item">
+                        <a href="{{ url_for('myShelves') }}" class="nav-item" id="nav-selected">
                             <span>My Shelves</span>
                         </a>
-                        <a href="myWishlist" class="nav-item">
+                        <a href="{{ url_for('myWishlist') }}" class="nav-item">
                             <span>My Wishlist</span>
                         </a>
-                        <a href="logout" class="nav-item">
+                        <a href="{{ url_for('logout') }}" class="nav-item">
                             <span>Logout</span>
                         </a>
                     {% else %}
-                        <a href="login" class="nav-item">
+                        <a href="{{ url_for('login') }}" class="nav-item">
                             <span>Login</span>
                         </a>
-                        <a href="register" class="nav-item">
+                        <a href="{{ url_for('register') }}" class="nav-item">
                             <span>Register</span>
                         </a>
                     {% endif %}
@@ -81,65 +81,67 @@
                     </div>
 
                     <!-- if dake knihy v shelfe -->
-                    <div id="content-detail-list">
-                        <h3>Titles</h3>
-                        <table>
-                            <!-- jeden item ako v author_detail.html + tlacitko -->
-                            <tr class="list-item">
-                                <td class="list-item-inner">
-                                    <img src="../static/hery.jpg" alt="img" height="70">
-                                    <div class="list-item-text">
-                                        <span class="title-name">Harry Potter</span>
-                                        <span class="title-year">2004</span>
-                                        <br>
-                                        <span class="title-author">J. K. Rowling</span>
-                                        <br>
-                                        <span class="title-genre">fantasy</span>
-                                    </div>
-                                    <div class="list-item-tag-list">
-                                        <span class="tag-item">owned</span>
-                                        <span class="tag-item">read</span>
-                                    </div>
-                                    <div class="list-item-button">
-                                        <p>SHELF</p>
-                                        <form method="POST" class="form-button-icon">
-                                            <!-- post request s remove=title.isbn -->
-                                            <button name="remove" value="isbn_value" class="btn-del">
-                                                <!-- value=title_in_library.isbn -->
-                                                <i class="fas fa-times"></i>
-                                                <span class="tooltip">remove</span>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr class="list-item">
-                                <td class="list-item-inner">
-                                    <img src="../static/hery2.jpg" alt="img" height="70">
-                                    <div class="list-item-text">
-                                        <span class="title-name">Harry Potter 2</span>
-                                        <span class="title-year">2005</span>
-                                        <br>
-                                        <span class="title-author">J. K. Rowling</span>
-                                        <br>
-                                        <span class="title-genre">fantasy</span>
-                                    </div>
-                                    <div class="list-item-tag-list">
-                                        <span class="tag-item">reading</span>
-                                    </div>
-                                    <div class="list-item-button">
-                                        <p>SHELF</p>
-                                        <form method="POST" class="form-button-icon">
-                                            <button name="remove" value="library" class="btn-del">
-                                                <i class="fas fa-times"></i>
-                                                <span class="tooltip">remove</span>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
+                    <!-- if shelf.counter > 0 -->
+                        <div id="content-detail-list">
+                            <h3>Titles ({{ shelf.counter }})</h3>
+                            <table>
+                                <!-- jeden item ako v author_detail.html + tlacitko -->
+                                <tr class="list-item">
+                                    <td class="list-item-inner">
+                                        <img src="../static/hery.jpg" alt="img" height="70">
+                                        <div class="list-item-text">
+                                            <span class="title-name">Harry Potter</span>
+                                            <span class="title-year">2004</span>
+                                            <br>
+                                            <span class="title-author">J. K. Rowling</span>
+                                            <br>
+                                            <span class="title-genre">fantasy</span>
+                                        </div>
+                                        <div class="list-item-tag-list">
+                                            <span class="tag-item">owned</span>
+                                            <span class="tag-item">read</span>
+                                        </div>
+                                        <div class="list-item-button">
+                                            <p>SHELF</p>
+                                            <form method="POST" class="form-button-icon">
+                                                <!-- post request s remove=title.isbn -->
+                                                <button name="remove" value="isbn_value" class="btn-del">
+                                                    <!-- value=title_in_library.isbn -->
+                                                    <i class="fas fa-times"></i>
+                                                    <span class="tooltip">remove</span>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="list-item">
+                                    <td class="list-item-inner">
+                                        <img src="../static/hery2.jpg" alt="img" height="70">
+                                        <div class="list-item-text">
+                                            <span class="title-name">Harry Potter 2</span>
+                                            <span class="title-year">2005</span>
+                                            <br>
+                                            <span class="title-author">J. K. Rowling</span>
+                                            <br>
+                                            <span class="title-genre">fantasy</span>
+                                        </div>
+                                        <div class="list-item-tag-list">
+                                            <span class="tag-item">reading</span>
+                                        </div>
+                                        <div class="list-item-button">
+                                            <p>SHELF</p>
+                                            <form method="POST" class="form-button-icon">
+                                                <button name="remove" value="isbn_value" class="btn-del">
+                                                    <i class="fas fa-times"></i>
+                                                    <span class="tooltip">remove</span>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    <!-- endif -->
                 </div>
             </div>
         </main>
@@ -162,13 +164,13 @@
                     <form action="" method="POST">
                         <div class="input-row">
                             <label for="name" class="required-label">Name: </label>
-                            <input type="text" name="name" id="name" required="required">
+                            <input type="text" name="name" id="name" required="required" value="{{shelf.name}}">
                         </div>
                         <div class="input-row">
                             <label for="text">Description: </label>
-                            <textarea name="text" id="text" rows="5"></textarea>
+                            <textarea name="text" id="text" rows="5">{{shelf.desc}}</textarea>
                         </div>
-                        <button name="note" value="add" class="btn-add" type="submit">
+                        <button name="shelf" value="edit" class="btn-add" type="submit">
                             <i class="fas fa-check"></i>
                         </button>
                         <br>

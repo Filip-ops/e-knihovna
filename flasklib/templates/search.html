@@ -17,33 +17,33 @@
         <header>
             <div id="header-inner">
                 <div id="page-heading">
-                    <a href="home">
+                    <a href="{{ url_for('home') }}">
                         <h1>eKnihovna</h1>
                     </a>
                 </div>
 
                 <div id="nav">
                     {% if current_user.is_authenticated %}
-                        <a href="search" class="nav-item">
+                        <a href="{{ url_for('search') }}" class="nav-item" id="nav-selected">
                             <span>Search</span>
                         </a>
-                        <a href="myLibrary" class="nav-item">
+                        <a href="{{ url_for('myLibrary') }}" class="nav-item">
                             <span>My Library</span>
                         </a>
-                        <a href="myShelves" class="nav-item">
+                        <a href="{{ url_for('myShelves') }}" class="nav-item">
                             <span>My Shelves</span>
                         </a>
-                        <a href="myWishlist" class="nav-item">
+                        <a href="{{ url_for('myWishlist') }}" class="nav-item">
                             <span>My Wishlist</span>
                         </a>
-                        <a href="logout" class="nav-item">
+                        <a href="{{ url_for('logout') }}" class="nav-item">
                             <span>Logout</span>
                         </a>
                     {% else %}
-                        <a href="login" class="nav-item">
+                        <a href="{{ url_for('login') }}" class="nav-item">
                             <span>Login</span>
                         </a>
-                        <a href="register" class="nav-item">
+                        <a href="{{ url_for('register') }}" class="nav-item">
                             <span>Register</span>
                         </a>
                     {% endif %}
@@ -58,7 +58,7 @@
                     <h2>Search</h2>
                 </div>
                 <div id="content">
-                    <form action="" class="form-search">
+                    <form action="" method="post" class="form-search">
                         <label><input type="text" name="search" size="30"></label>
                         <input type="submit" value="Search" name="button_search">
                         <div class="search_filter">
@@ -71,50 +71,54 @@
                     <!--<p id="result-count">2 results</p>-->
 
                     <div class="list-wrapper">
-                        <table>
-                            {% for title in titles: %}
-                            <tr class="list-item">
-                                <td class="list-item-inner">
-                                    <img src={{title.img}} alt="img" height="70">
-                                    <div class="list-item-text">
-                                        <span class="title-name">{{title.name}}</span>
-                                        <span class="title-year">{{title.release_year}}</span>
-                                        <br>
-                                        <span class="title-author">{{title.author.name}}</span>
-                                        <br>
-                                        <span class="title-genre">{{title.genre}}</span>
-                                    </div>
-                                    <div class="list-item-tag-list">
-                                    </div>
-                                    <!-- vdzy tieto 2 tlacitka -->
-                                    <div class="list-item-button">
-                                        <p>LIBRARY</p>
-                                        <!-- on press sends post request s add_lib=title.isbn -->
-                                        <!-- vytvori sa title_in_library -->
-                                        <form method="POST" class="form-button-icon">
-                                            <button name="add_lib" value="isbn_value" class="btn-add">
-                                                <!--# isbn_value=title.isbn -->
-                                                <i class="fas fa-plus"></i>
-                                                <span class="tooltip">add</span>
-                                            </button>
-                                        </form>
-                                    </div>
-                                    <div class="list-item-button">
-                                        <p>WISHLIST</p>
-                                        <!-- on press sends post request s add_wl=title.isbn -->
-                                        <!-- vytvori sa title_in_wishlist -->
-                                        <form method="POST" class="form-button-icon">
-                                            <button name="add_wl" value="isbn_value" class="btn-add">
-                                                <!-- isbn_value=title.isbn -->
-                                                <i class="fas fa-plus"></i>
-                                                <span class="tooltip">add</span>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </table>
+                        {% if titles %}
+                            <table>
+                                {% for title in titles %}
+                                <tr class="list-item">
+                                    <td class="list-item-inner">
+                                        <img src={{title.img}} alt="img" height="70">
+                                        <div class="list-item-text">
+                                            <span class="title-name">{{title.name}}</span>
+                                            <span class="title-year">{{title.release_year}}</span>
+                                            <br>
+                                            <span class="title-author">{{title.author.name}}</span>
+                                            <br>
+                                            <span class="title-genre">{{title.genre}}</span>
+                                        </div>
+                                        <div class="list-item-tag-list">
+                                        </div>
+                                        <!-- vdzy tieto 2 tlacitka -->
+                                        <div class="list-item-button">
+                                            <p>LIBRARY</p>
+                                            <!-- on press sends post request s add_lib=title.isbn -->
+                                            <!-- vytvori sa title_in_library -->
+                                            <form method="POST" class="form-button-icon">
+                                                <button name="add_lib" value="isbn_value" class="btn-add">
+                                                    <!--# isbn_value=title.isbn -->
+                                                    <i class="fas fa-plus"></i>
+                                                    <span class="tooltip">add</span>
+                                                </button>
+                                            </form>
+                                        </div>
+                                        <div class="list-item-button">
+                                            <p>WISHLIST</p>
+                                            <!-- on press sends post request s add_wl=title.isbn -->
+                                            <!-- vytvori sa title_in_wishlist -->
+                                            <form method="POST" class="form-button-icon">
+                                                <button name="add_wl" value="isbn_value" class="btn-add">
+                                                    <!-- isbn_value=title.isbn -->
+                                                    <i class="fas fa-plus"></i>
+                                                    <span class="tooltip">add</span>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </table>
+                        {% else %}
+                            <p>No matching titles.</p>
+                        {% endif %}
                     </div>
                 </div>
             </div>

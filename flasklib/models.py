@@ -8,12 +8,12 @@ from flask_login import current_user
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
-    
+
 
 book_shelf = db.Table('book_shelf',
-    db.Column('shelf_id', db.Integer, db.ForeignKey('shelf.id'), primary_key=True),
-    db.Column('library_title_id', db.Integer, db.ForeignKey('library_title.id'), primary_key=True)
-)
+                      db.Column('shelf_id', db.Integer, db.ForeignKey('shelf.id'), primary_key=True),
+                      db.Column('library_title_id', db.Integer, db.ForeignKey('library_title.id'), primary_key=True)
+                      )
 
 
 class User(db.Model, UserMixin):
@@ -25,6 +25,7 @@ class User(db.Model, UserMixin):
     wishlist_titles = db.relationship('Wishlist_title', backref='w_user')
     library_titles = db.relationship('Library_title', backref='l_user')
 
+
 class Author(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(20), nullable=False)
@@ -32,6 +33,7 @@ class Author(db.Model):
     died = db.Column(db.Integer)
 
     titles = db.relationship('Title', backref='author')
+
 
 class Title(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -46,12 +48,14 @@ class Title(db.Model):
     library_titles = db.relationship('Library_title', backref='l_title')
     notes = db.relationship('Note', backref='n_title')
 
+
 class Wishlist_title(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     date_added = db.Column(db.DateTime, default=datetime.utcnow)
 
     user = db.Column(db.Integer, db.ForeignKey('user.id'))
     title = db.Column(db.Integer, db.ForeignKey('title.id'))
+
 
 class Library_title(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -60,7 +64,8 @@ class Library_title(db.Model):
 
     user = db.Column(db.Integer, db.ForeignKey('user.id'))
     title = db.Column(db.Integer, db.ForeignKey('title.id'))
-    shelfs = db.relationship('Shelf', secondary=book_shelf,back_populates='library_titles')
+    shelfs = db.relationship('Shelf', secondary=book_shelf, back_populates='library_titles')
+
 
 class Note(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -71,12 +76,11 @@ class Note(db.Model):
 
     title = db.Column(db.Integer, db.ForeignKey('title.id'))
 
+
 class Shelf(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     desc = db.Column(db.String(50), nullable=False)
     user = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
-    library_titles = db.relationship('Library_title', secondary=book_shelf,back_populates='shelfs')
-
-
+    library_titles = db.relationship('Library_title', secondary=book_shelf, back_populates='shelfs')
