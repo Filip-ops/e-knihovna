@@ -1,3 +1,8 @@
+"""
+    :Author: xputala00
+    Model classes for database
+""" 
+
 from datetime import datetime
 from sqlalchemy.orm import backref
 from flasklib import db, login_manager

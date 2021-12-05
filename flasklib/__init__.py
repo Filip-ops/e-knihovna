@@ -1,3 +1,7 @@
+"""
+    :Author: xputala00
+    Global variable initialization
+""" 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
