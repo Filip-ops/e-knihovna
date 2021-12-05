@@ -26,7 +26,7 @@ def home():
         return render_template('home.html', titles=titles)
     
 @app.route("/myLibrary/", methods=['GET', 'POST'])
-def search():
+def myLibrary():
     if current_user.is_authenticated:
         titles = Title.query.order_by(Title.name).all()
         if request.method == "POST":
