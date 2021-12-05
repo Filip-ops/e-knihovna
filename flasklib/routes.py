@@ -19,9 +19,8 @@ admin.add_view(ModelView(Shelf, db.session))
 @app.route("/")
 @app.route("/home/", methods=['GET', 'POST'])
 def home():
-    
     if current_user.is_authenticated:
-        titles = Library_title.query.filter_by(user = current_user.id)
+        titles = Library_title.query.filter_by(user=current_user.id)
         return render_template('home.html', titles=titles, user=current_user)
     else:
         return render_template('home.html')
@@ -30,24 +29,49 @@ def home():
 @app.route("/myLibrary/", methods=['GET', 'POST'])
 def myLibrary():
     if current_user.is_authenticated:
-        titles = Title.query.all()
-        # if request.method == "POST":
-        #     if request.form.get("button_search") == "Search":
-        #         name_title = request.form.get("search")
-        #         filter_type = request.form.get("search_filter")
-        #         if filter_type == "all":
-        #             titles = Title.query.join(Author).filter(or_(Title.name.op('~*')(name_title),
-        #                                                          Author.name.op('~*')(name_title),
-        #                                                          Title.genre.op('~*')(name_title))).order_by(
-        #                 Title.name).all()
-        #         elif filter_type == "title":
-        #             titles = Title.query.filter(Title.name.op('~*')(name_title)).order_by(Title.name).all()
-        #         elif filter_type == "author":
-        #             titles = Title.query.join(Author).filter(Author.name.op('~*')(name_title)).order_by(
-        #                 Title.name).all()
-        #         else:
-        #             titles = Title.query.filter(Title.genre.op('~*')(name_title)).order_by(Title.name).all()
-        return render_template('my_library.html', titles=titles)
+        lib_titles = Library_title.query.filter_by(user=current_user.id)
+        titles = [Title.query.get(lib_title.id) for lib_title in lib_titles.all()]
+        result = None
+        bad_isbn = None
+        if request.method == "POST":
+            if request.form.get("button_search") == "Search":
+                name_title = request.form.get("search")
+                filter_type = request.form.get("search_filter")
+                if filter_type == "all":
+                    titles = lib_titles.join(Title).join(Author).filter(
+                        or_(Title.name.op('~*')(name_title),
+                            Author.name.op('~*')(name_title),
+                            Title.genre.op('~*')(name_title))).order_by(
+                        Title.name).all()
+                elif filter_type == "title":
+                    titles = lib_titles.join(Title).filter(Title.name.op('~*')(name_title)).order_by(Title.name).all()
+                elif filter_type == "author":
+                    titles = lib_titles.join(Title).join(Author).filter(Author.name.op('~*')(name_title)).order_by(
+                        Title.name).all()
+                else:
+                    titles = lib_titles.join(Title).filter(Title.genre.op('~*')(name_title)).order_by(Title.name).all()
+            if request.form.get("button_add") == "Add":
+                isbn = request.form.get("isbn")
+                title = Title.query.get(isbn)
+                if not title:
+                    result = False
+                    bad_isbn = isbn
+                else:
+                    lib_title = Library_title(id=title.id, page=-1, user=current_user.id, title=title.id)
+                    db.session.add(lib_title)
+                    db.session.commit()
+                    result = True
+                    lib_titles = Library_title.query.filter_by(user=current_user.id)
+                    titles = [Title.query.get(lib_title.id) for lib_title in lib_titles.all()]
+            if request.form.get("remove"):
+                title_id = request.form.get("remove")
+                item = Library_title.query.get(title_id)
+                db.session.delete(item)
+                db.session.commit()
+                lib_titles = Library_title.query.filter_by(user=current_user.id)
+                titles = [Title.query.get(lib_title.id) for lib_title in lib_titles.all()]
+
+        return render_template('my_library.html', titles=titles, result=result, bad_isbn=bad_isbn)
     else:
         return redirect(url_for('home'))
 
@@ -55,7 +79,7 @@ def myLibrary():
 @app.route("/myShelves/", methods=['GET', 'POST'])
 def myShelves():
     if current_user.is_authenticated:
-        shelves = Shelf.query.filter_by(user = current_user.id)
+        shelves = Shelf.query.filter_by(user=current_user.id)
         if request.method == "POST":
             name = request.form.get("name")
             desc = request.form.get("text")
@@ -145,7 +169,7 @@ def showTitle(id):
     title = Title.query.get(id)
     notes = Note.query
     if current_user.is_authenticated:
-        shelves = Shelf.query.filter_by(user = current_user.id)
+        shelves = Shelf.query.filter_by(user=current_user.id)
         if request.method == "POST":
             if request.form.get("remove_tag"):  # if name == value
                 pass
@@ -167,7 +191,7 @@ def showTitle(id):
 
             if request.form.get("wishlist") == "add":
                 pass
-            
+
             if request.form.get("wishlist") == "remove":
                 pass
 
@@ -194,7 +218,7 @@ def showTitle(id):
 
             if request.form.get("wishlist") == "remove":
                 pass
-            
+
 
         else:
             pass
@@ -261,6 +285,13 @@ def register():
         db.session.add(user)
         db.session.commit()
         flash('Account created successfully! You can log in now', 'Success')
+        shelf_owned = Shelf(name='Owned', desc='All the books you own.', user=user.id)
+        shelf_read = Shelf(name='Read', desc='All the books you have already read.', user=user.id)
+        shelf_reading = Shelf(name='Reading', desc='All the books you are currently reading.', user=user.id)
+        db.session.add(shelf_owned)
+        db.session.add(shelf_read)
+        db.session.add(shelf_reading)
+        db.session.commit()
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
