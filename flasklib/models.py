@@ -46,7 +46,6 @@ class Title(db.Model):
     author_id = db.Column(db.Integer, db.ForeignKey('author.id'))
     wishlist_titles = db.relationship('Wishlist_title', backref='w_title')
     library_titles = db.relationship('Library_title', backref='l_title')
-    notes = db.relationship('Note', backref='n_title')
 
 
 class Wishlist_title(db.Model):
@@ -65,6 +64,7 @@ class Library_title(db.Model):
     user = db.Column(db.Integer, db.ForeignKey('user.id'))
     title = db.Column(db.Integer, db.ForeignKey('title.id'))
     shelfs = db.relationship('Shelf', secondary=book_shelf, back_populates='library_titles')
+    notes = db.relationship('Note', backref='n_library_titles')
 
 
 class Note(db.Model):
@@ -73,8 +73,9 @@ class Note(db.Model):
     text = db.Column(db.String(1000), nullable=False)
     start_page = db.Column(db.Integer, nullable=False)
     end_page = db.Column(db.Integer, nullable=False)
+    color = db.Column(db.String(20), nullable=False)
 
-    title = db.Column(db.Integer, db.ForeignKey('title.id'))
+    library_title = db.Column(db.Integer, db.ForeignKey('library_title.id'))
 
 
 class Shelf(db.Model):
