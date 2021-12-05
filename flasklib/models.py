@@ -1,5 +1,5 @@
 """
-    :Author: xputala00
+    :Author: xputal00
     Model classes for database
 """ 
 
