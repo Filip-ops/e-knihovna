@@ -24,7 +24,8 @@ def home():
         return render_template('home.html', titles=titles, user=current_user)
     else:
         return render_template('home.html', titles=titles)
-    
+
+
 @app.route("/myLibrary/", methods=['GET', 'POST'])
 def myLibrary():
     if current_user.is_authenticated:
@@ -41,7 +42,8 @@ def myLibrary():
                 elif filter_type == "title":
                     titles = Title.query.filter(Title.name.op('~*')(name_title)).order_by(Title.name).all()
                 elif filter_type == "author":
-                    titles = Title.query.join(Author).filter(Author.name.op('~*')(name_title)).order_by(Title.name).all()
+                    titles = Title.query.join(Author).filter(Author.name.op('~*')(name_title)).order_by(
+                        Title.name).all()
                 else:
                     titles = Title.query.filter(Title.genre.op('~*')(name_title)).order_by(Title.name).all()
         return render_template('my_library.html', titles=titles)
@@ -85,9 +87,24 @@ def search():
                 elif filter_type == "title":
                     titles = Title.query.filter(Title.name.op('~*')(name_title)).order_by(Title.name).all()
                 elif filter_type == "author":
-                    titles = Title.query.join(Author).filter(Author.name.op('~*')(name_title)).order_by(Title.name).all()
+                    titles = Title.query.join(Author).filter(Author.name.op('~*')(name_title)).order_by(
+                        Title.name).all()
                 else:
                     titles = Title.query.filter(Title.genre.op('~*')(name_title)).order_by(Title.name).all()
+            elif request.form.get("add_lib"):
+                title_id = request.form.get("add_lib")
+                title = Title.query.get(title_id)
+                lib_title = Library_title(date_added=datetime.now(), page=-1, user=current_user, title=title)
+                db.session.add(lib_title)
+                db.session.commit()
+                titles = Title.query.order_by(Title.name).all()
+            elif request.form.get("add_wl"):
+                title_id = request.form.get("add_wl")
+                title = Title.query.get(title_id)
+                wl_title = Wishlist_title(date_added=datetime.now(), user=current_user, title=title)
+                db.session.add(wl_title)
+                db.session.commit()
+                titles = Title.query.order_by(Title.name).all()
         return render_template('search.html', titles=titles)
     else:
         return redirect(url_for('home'))
@@ -161,7 +178,7 @@ def showShelf(id):
         if request.form.get("remove"):
             title_id = request.form.get("remove")
             # remove title with title_id from this shelf
-            title = db.session.query(Library_title).filter(Library_title.id==title_id).first()
+            title = db.session.query(Library_title).filter(Library_title.id == title_id).first()
             db.session.delete(title)
             db.session.commit()
 

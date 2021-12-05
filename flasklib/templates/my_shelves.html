@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu">
     <link rel="icon" sizes="180x180" href="../static/favicon.ico">
-    <link rel="stylesheet" href="../static/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script src="https://kit.fontawesome.com/307091ac57.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -186,6 +186,6 @@
         </div>
     </div>
 
-    <script src="../static/create_tag.js"></script>
+    <script src="{{ url_for('static', filename='create_tag.js') }}"></script>
 </body>
 </html>

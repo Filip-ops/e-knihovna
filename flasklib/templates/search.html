@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu">
     <link rel="icon" sizes="180x180" href="../static/favicon.ico">
-    <link rel="stylesheet" href="../static/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script src="https://kit.fontawesome.com/307091ac57.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -93,7 +93,7 @@
                                             <!-- on press sends post request s add_lib=title.isbn -->
                                             <!-- vytvori sa title_in_library -->
                                             <form method="POST" class="form-button-icon">
-                                                <button name="add_lib" value="isbn_value" class="btn-add">
+                                                <button name="add_lib" value="{{ title.id }}" class="btn-add">
                                                     <!--# isbn_value=title.isbn -->
                                                     <i class="fas fa-plus"></i>
                                                     <span class="tooltip">add</span>
@@ -105,7 +105,7 @@
                                             <!-- on press sends post request s add_wl=title.isbn -->
                                             <!-- vytvori sa title_in_wishlist -->
                                             <form method="POST" class="form-button-icon">
-                                                <button name="add_wl" value="isbn_value" class="btn-add">
+                                                <button name="add_wl" value="{{ title.id }}" class="btn-add">
                                                     <!-- isbn_value=title.isbn -->
                                                     <i class="fas fa-plus"></i>
                                                     <span class="tooltip">add</span>
