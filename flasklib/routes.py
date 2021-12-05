@@ -108,7 +108,6 @@ def showTitle(id):
 @app.route("/showShelf/<int:id>", methods=['GET', 'POST'])
 def showShelf(id):
     shelf = Shelf.query.get(id)
-
     if request.method == "POST":
         if request.form.get("shelf") == "remove":  # if name == value
             db.session.delete(shelf)
@@ -127,7 +126,7 @@ def showShelf(id):
 
     else:
         pass
-    return render_template('shelf_detail.html', shelf=shelf)
+    return render_template('shelf_detail.html', shelf=shelf, titles=shelf.library_titles)
 
 
 ############################################################################################################################################
