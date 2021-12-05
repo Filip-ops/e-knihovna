@@ -86,7 +86,7 @@ def myLibrary():
         return redirect(url_for('home'))
 
 """
-    :Author: xdudaj02
+    :Author: xputal00
     myShelves() fetches user's shelves which are then used in view and can be edited.
     :return: returns shelves page with fetched data
 """
@@ -385,7 +385,7 @@ def showShelf(id):
     return render_template('shelf_detail.html', shelf=shelf, titles=shelf.library_titles)
 
 """
-    :Author: xputal00
+    :Author: xsapak05
     login() fetches user's data from db and compares with input.
     :return: returns home page with fetched data when successfull else login page
 """
