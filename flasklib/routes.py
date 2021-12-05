@@ -119,7 +119,6 @@ def showShelf(id):
             # remove title with title_id from this shelf
             title = db.session.query(Library_title).filter(Library_title.id==title_id).first()
             db.session.delete(title)
-            #Shelf.query.filter_by(library_titles=title_id).delete()
             db.session.commit()
 
         if request.form.get("shelf") == "edit":
