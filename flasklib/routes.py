@@ -26,9 +26,22 @@ def home():
         return render_template('home.html', titles=titles)
 
 
-@app.route("/myLibrary/", methods=['GET', 'POST'])
+@app.route("/myLibrary")
 def myLibrary():
-    return render_template('my_library.html')
+    if current_user.is_authenticated:
+        titles = Title.query.order_by(Title.name)
+        if request.method == "POST":
+            name_title = request.form.get("search")
+            filter_type = request.form.get("search_filter")
+            if filter_type == "title":
+                titles = Title.query.filter(Title.name.op('~')(name_title)).order_by(Title.name)
+            elif filter_type == "author":
+                titles = Title.query.filter(Title.author.name.op('~')(name_title)).order_by(Title.name)
+            else:
+                titles = Title.query.filter(Title.genre.op('~')(name_title)).order_by(Title.name)
+        return render_template('my_library.html')
+    else:
+        return redirect(url_for('home'))
 
 
 @app.route("/myShelves/", methods=['GET', 'POST'])
