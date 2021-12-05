@@ -30,23 +30,23 @@ def home():
 @app.route("/myLibrary/", methods=['GET', 'POST'])
 def myLibrary():
     if current_user.is_authenticated:
-        titles = Title.query.order_by(Title.library_titles.l_user.id == current_user).all()
-        if request.method == "POST":
-            if request.form.get("button_search") == "Search":
-                name_title = request.form.get("search")
-                filter_type = request.form.get("search_filter")
-                if filter_type == "all":
-                    titles = Title.query.join(Author).filter(or_(Title.name.op('~*')(name_title),
-                                                                 Author.name.op('~*')(name_title),
-                                                                 Title.genre.op('~*')(name_title))).order_by(
-                        Title.name).all()
-                elif filter_type == "title":
-                    titles = Title.query.filter(Title.name.op('~*')(name_title)).order_by(Title.name).all()
-                elif filter_type == "author":
-                    titles = Title.query.join(Author).filter(Author.name.op('~*')(name_title)).order_by(
-                        Title.name).all()
-                else:
-                    titles = Title.query.filter(Title.genre.op('~*')(name_title)).order_by(Title.name).all()
+        titles = Title.query.all()
+        # if request.method == "POST":
+        #     if request.form.get("button_search") == "Search":
+        #         name_title = request.form.get("search")
+        #         filter_type = request.form.get("search_filter")
+        #         if filter_type == "all":
+        #             titles = Title.query.join(Author).filter(or_(Title.name.op('~*')(name_title),
+        #                                                          Author.name.op('~*')(name_title),
+        #                                                          Title.genre.op('~*')(name_title))).order_by(
+        #                 Title.name).all()
+        #         elif filter_type == "title":
+        #             titles = Title.query.filter(Title.name.op('~*')(name_title)).order_by(Title.name).all()
+        #         elif filter_type == "author":
+        #             titles = Title.query.join(Author).filter(Author.name.op('~*')(name_title)).order_by(
+        #                 Title.name).all()
+        #         else:
+        #             titles = Title.query.filter(Title.genre.op('~*')(name_title)).order_by(Title.name).all()
         return render_template('my_library.html', titles=titles)
     else:
         return redirect(url_for('home'))
@@ -97,19 +97,38 @@ def search():
                     titles = Title.query.filter(Title.genre.op('~*')(name_title)).order_by(Title.name).all()
             elif request.form.get("add_lib"):
                 title_id = request.form.get("add_lib")
-                title = Title.query.get(title_id)
-                lib_title = Library_title(date_added=datetime.now(), page=-1, user=current_user, title=title)
+                lib_title = Library_title(id=title_id, page=-1, user=current_user.id, title=title_id)
                 db.session.add(lib_title)
                 db.session.commit()
                 titles = Title.query.order_by(Title.name).all()
             elif request.form.get("add_wl"):
                 title_id = request.form.get("add_wl")
-                title = Title.query.get(title_id)
-                wl_title = Wishlist_title(date_added=datetime.now(), user=current_user, title=title)
+                wl_title = Wishlist_title(id=title_id, user=current_user.id, title=title_id)
                 db.session.add(wl_title)
                 db.session.commit()
                 titles = Title.query.order_by(Title.name).all()
-        return render_template('search.html', titles=titles)
+            elif request.form.get("remove_lib"):
+                title_id = request.form.get("remove_lib")
+                item = Library_title.query.get(title_id)
+                db.session.delete(item)
+                db.session.commit()
+            elif request.form.get("remove_wl"):
+                title_id = request.form.get("remove_wl")
+                item = Wishlist_title.query.get(title_id)
+                db.session.delete(item)
+                db.session.commit()
+        title_dict = {}
+        for title in titles:
+            item = [False, False]
+            print(Library_title.query.get(title.id))
+            print(Wishlist_title.query.get(title.id))
+            if Library_title.query.get(title.id):
+                item[0] = True
+            if Wishlist_title.query.get(title.id):
+                item[1] = True
+            title_dict[title] = item
+        print(title_dict)
+        return render_template('search.html', titles=title_dict)
     else:
         return redirect(url_for('home'))
 
