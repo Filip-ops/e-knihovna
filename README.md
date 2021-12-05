@@ -47,8 +47,8 @@ Both local project and deployed web is running on the same online database. Ever
 When made changes to ```models.py``` files, you have to run:
 
 - ```$ heroku run python``` 
-  ```>>>from flasklib import db```
-  ```>>>db.create_all()```
-  ```>>>exit()```
+- ```>>>from flasklib import db```
+- ```>>>db.create_all()```
+- ```>>>exit()```
 
 which will update (create/delete/...) corresponding DB tables.
