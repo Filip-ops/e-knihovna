@@ -21,10 +21,8 @@ admin.add_view(ModelView(Shelf, db.session))
 @app.route("/home/", methods=['GET', 'POST'])
 def home():
     if current_user.is_authenticated:
-        lib_titles = Library_title.query.filter_by(user=current_user.id)
-        titles = lib_titles
-        # todo display currently reading
-        return render_template('home.html', titles=titles, user=current_user)
+        shelf = Shelf.query.filter_by(name='Reading', user=current_user.id).first()
+        return render_template('home.html', titles=shelf.library_titles, user=current_user)
     else:
         return render_template('home.html')
 
@@ -195,10 +193,6 @@ def search():
         title_dict = {}
         for title in titles:
             item = [False, False]
-            print(Library_title.query.join(Title).filter(Title.isbn == title.isbn,
-                                                         Library_title.user == current_user.id).all())
-            print(Wishlist_title.query.join(Title).filter(Title.isbn == title.isbn,
-                                                          Wishlist_title.user == current_user.id).all())
             if len(Library_title.query.join(Title).filter(Title.isbn == title.isbn,
                                                           Library_title.user == current_user.id).all()) > 0:
                 item[0] = True
