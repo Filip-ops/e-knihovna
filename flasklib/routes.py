@@ -182,7 +182,7 @@ def showTitle(id):
 
             if request.form.get("remove_note"):
                 note_id = request.form.get("remove_note")
-                Note.query.get(id=note_id).delete()
+                Note.query.filter_by(id=note_id).delete()
                 #db.session.delete(note)
                 db.session.commit()
                 
