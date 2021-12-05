@@ -319,9 +319,7 @@ input[type='submit'] {
 }
 
 .note-list-item-text p {
-    /*white-space: nowrap;*/
-    overflow: hidden;
-    text-overflow: ellipsis;
+    overflow-wrap: break-word;
 }
 
 .note-list-item-button {
