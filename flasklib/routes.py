@@ -51,7 +51,7 @@ def myLibrary():
 
 @app.route("/myShelves/", methods=['GET', 'POST'])
 def myShelves():
-    shelves = Shelf.query.all()
+    shelves = Shelf.query
     if request.method == "POST":
         name = request.form.get("name")
         desc = request.form.get("text")
