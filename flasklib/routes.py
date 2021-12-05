@@ -44,7 +44,7 @@ def myLibrary():
                     titles = Title.query.join(Author).filter(Author.name.op('~*')(name_title)).order_by(Title.name).all()
                 else:
                     titles = Title.query.filter(Title.genre.op('~*')(name_title)).order_by(Title.name).all()
-        return render_template('search.html', titles=titles)
+        return render_template('my_library.html', titles=titles)
     else:
         return redirect(url_for('home'))
 
