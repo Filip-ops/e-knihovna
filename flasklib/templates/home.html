@@ -19,29 +19,35 @@
         <header>
             <div id="header-inner">
                 <div id="page-heading">
-                    <a href="">
+                    <a href="home">
                         <h1>eKnihovna</h1>
                     </a>
                 </div>
 
                 <div id="nav">
-                    <a href="search" class="nav-item">
-                        <span>Search</span>
-                    </a>
-                    <a href="myLibrary" class="nav-item">
-                        <span>My Library</span>
-                    </a>
-                    <a href="myShelves" class="nav-item">
-                        <span>My Shelves</span>
-                    </a>
-                    <a href="myWishlist" class="nav-item">
-                        <span>My Wishlist</span>
-                    </a>
                     {% if current_user.is_authenticated %}
-                        <a href="logout">Log out</a>
+                        <a href="search" class="nav-item">
+                            <span>Search</span>
+                        </a>
+                        <a href="myLibrary" class="nav-item">
+                            <span>My Library</span>
+                        </a>
+                        <a href="myShelves" class="nav-item">
+                            <span>My Shelves</span>
+                        </a>
+                        <a href="myWishlist" class="nav-item">
+                            <span>My Wishlist</span>
+                        </a>
+                        <a href="logout" class="nav-item">
+                            <span>Logout</span>
+                        </a>
                     {% else %}
-                        <a href="login">Log in</a>
-                        <a href="register">Sign up</a>
+                        <a href="login" class="nav-item">
+                            <span>Login</span>
+                        </a>
+                        <a href="register" class="nav-item">
+                            <span>Register</span>
+                        </a>
                     {% endif %}
                 </div>
             </div>
@@ -50,39 +56,39 @@
         <main>
             <div id="main-inner">
                 {% if user %}
-                <p id="welcome-text">Welcome to your eKnihovna {{user.name}}!</p> <!-- user.username -->
-                <br>
-                <!-- if su v databaze title_in_library s tagom reading -->
-                <h3>Currently reading</h3>
-                <table>
-                    <!-- jeden item -->
-                    {% for title in titles %}
-                    <tr class="list-item">
-                        <td class="list-item-inner">
-                            <div class="list-item-page">
-                                <p>PAGE</p>
-                                <span>{{title.page}}</span> <!-- title_in_library.page -->
-                            </div>
-                            <img src="../static/hery2.jpg" alt="img" height="70">
-                            <!-- title_in_library.title.picture -->
-                            <div class="list-item-text">
-                                <a class="title-name" href="{{ url_for('showTitle', id=title.id)}}">{{title.title}}</a>
-                                <!-- title_in_library.title.name -->
-                                <span class="title-year">2005</span> <!-- title_in_library.title.year -->
-                                <br>
-                                <a class="title-author" href="showAuthor">J. K. Rowling</a>
-                                <!-- title_in_library.title.author -->
-                                <br>
-                                <span class="title-genre">fantasy</span> <!-- title_in_library.title.genre -->
-                            </div>
-                            <div class="list-item-tag-list">
-                            </div>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </table>
+                    <p id="welcome-text">Welcome to your eKnihovna {{user.name}}!</p> <!-- user.username -->
+                    <br>
+                    <!-- if su v databaze title_in_library s tagom reading -->
+                    <h3>Currently reading</h3>
+                    <table>
+                        <!-- jeden item -->
+                        {% for title in titles %}
+                        <tr class="list-item">
+                            <td class="list-item-inner">
+                                <div class="list-item-page">
+                                    <p>PAGE</p>
+                                    <span>{{title.page}}</span> <!-- title_in_library.page -->
+                                </div>
+                                <img src="../static/hery2.jpg" alt="img" height="70">
+                                <!-- title_in_library.title.picture -->
+                                <div class="list-item-text">
+                                    <a class="title-name" href="{{ url_for('showTitle', id=title.id)}}">{{title.title}}</a>
+                                    <!-- title_in_library.title.name -->
+                                    <span class="title-year">2005</span> <!-- title_in_library.title.year -->
+                                    <br>
+                                    <a class="title-author" href="showAuthor">J. K. Rowling</a>
+                                    <!-- title_in_library.title.author -->
+                                    <br>
+                                    <span class="title-genre">fantasy</span> <!-- title_in_library.title.genre -->
+                                </div>
+                                <div class="list-item-tag-list">
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
                 {%else%}
-                <p id="welcome-text">Welcome to eKnihovna, please log in!</p>
+                    <p id="welcome-text">Welcome to eKnihovna, please <a href="login" class="small-link">log in</a>!</p>
                 {% endif %}
             </div>
         </main>

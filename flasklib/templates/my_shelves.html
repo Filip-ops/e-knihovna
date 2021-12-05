@@ -1,4 +1,4 @@
-       <!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -23,23 +23,29 @@
                 </div>
 
                 <div id="nav">
-                    <a href="search" class="nav-item">
-                        <span>Search</span>
-                    </a>
-                    <a href="myLibrary" class="nav-item">
-                        <span>My Library</span>
-                    </a>
-                    <a href="myShelves" class="nav-item">
-                        <span>My Shelves</span>
-                    </a>
-                    <a href="myWishlist" class="nav-item">
-                        <span>My Wishlist</span>
-                    </a>
                     {% if current_user.is_authenticated %}
-                        <a href="logout">Log out</a>
+                        <a href="search" class="nav-item">
+                            <span>Search</span>
+                        </a>
+                        <a href="myLibrary" class="nav-item">
+                            <span>My Library</span>
+                        </a>
+                        <a href="myShelves" class="nav-item">
+                            <span>My Shelves</span>
+                        </a>
+                        <a href="myWishlist" class="nav-item">
+                            <span>My Wishlist</span>
+                        </a>
+                        <a href="logout" class="nav-item">
+                            <span>Logout</span>
+                        </a>
                     {% else %}
-                        <a href="login">Log in</a>
-                        <a href="register">Sign up</a>
+                        <a href="login" class="nav-item">
+                            <span>Login</span>
+                        </a>
+                        <a href="register" class="nav-item">
+                            <span>Register</span>
+                        </a>
                     {% endif %}
                 </div>
             </div>

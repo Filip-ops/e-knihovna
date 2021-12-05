@@ -496,7 +496,7 @@ button:hover {
 }
 
 .button:link, .button:visited, .button:active, button, input[type='submit'], input[type='text'], input[type='number'],
-textarea, input[type='color'] {
+textarea, input[type='color'], input[type='password'] {
     display: inline-block;
     padding: 11px;
     border-radius: 10px;
@@ -508,7 +508,7 @@ textarea, input[type='color'] {
 
 .button:hover, button:hover, input[type='submit']:hover, input[type='text']:hover, input[type='text']:focus,
 input[type='number']:hover, input[type='number']:focus, textarea:hover, textarea:focus, input[type='color']:hover,
-input[type='color']:focus {
+input[type='color']:focus, input[type='password']:hover, input[type='password']:focus {
     padding: 10px;
     border: 2px solid black;
     color: black;
@@ -536,14 +536,15 @@ input[type='submit']:hover {
     border-radius: 5px;
 }
 
-input[type='text'], input[type='number'], input[type='color'], textarea {
+input[type='text'], input[type='number'], input[type='color'], input[type='password'], textarea {
     background: white;
     padding: 4px 4px;
     border-radius: 5px;
 }
 
 input[type='text']:hover, input[type='text']:focus, input[type='number']:hover, input[type='number']:focus,
-textarea:hover, textarea:focus, input[type='color']:hover, input[type='color']:focus {
+textarea:hover, textarea:focus, input[type='color']:hover, input[type='color']:focus, input[type='password']:hover,
+input[type='password']:focus {
     font-weight: normal;
     background: white;
     padding: 3px 3px;
@@ -835,4 +836,8 @@ svg circle .selected-color {
 
 label[for='search'] {
     padding: 0;
+}
+
+.small-link:hover, .small-link:link, .small-link:visited, .small-link:active {
+    text-decoration: underline;
 }

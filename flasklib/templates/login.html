@@ -17,84 +17,107 @@
         <header>
             <div id="header-inner">
                 <div id="page-heading">
-                    <a href="">
+                    <a href="home">
                         <h1>eKnihovna</h1>
                     </a>
                 </div>
 
                 <div id="nav">
-                    <a href="search" class="nav-item">
-                        <span>Search</span>
-                    </a>
-                    <a href="myLibrary" class="nav-item">
-                        <span>My Library</span>
-                    </a>
-                    <a href="myShelves" class="nav-item">
-                        <span>My Shelves</span>
-                    </a>
-                    <a href="myWishlist" class="nav-item">
-                        <span>My Wishlist</span>
-                    </a>
                     {% if current_user.is_authenticated %}
-                        <a href="logout">Log out</a>
+                        <a href="search" class="nav-item">
+                            <span>Search</span>
+                        </a>
+                        <a href="myLibrary" class="nav-item">
+                            <span>My Library</span>
+                        </a>
+                        <a href="myShelves" class="nav-item">
+                            <span>My Shelves</span>
+                        </a>
+                        <a href="myWishlist" class="nav-item">
+                            <span>My Wishlist</span>
+                        </a>
+                        <a href="logout" class="nav-item">
+                            <span>Logout</span>
+                        </a>
                     {% else %}
-                        <a href="login">Log in</a>
-                        <a href="register">Sign up</a>
+                        <a href="login" class="nav-item">
+                            <span>Login</span>
+                        </a>
+                        <a href="register" class="nav-item">
+                            <span>Register</span>
+                        </a>
                     {% endif %}
                 </div>
-            </div>
         </header>
-    </div>
-    <div class="special_margin">
-        <div class="content-section">
-            <form method="POST" action="">
-                {{ form.hidden_tag() }}
-                <fieldset class="form-group">
-                    <legend class="border-bottom mb-4">Log in</legend>
-                    <div class="form-group">
-                        {{ form.email.label(class="form-control-label") }}
-                        {% if form.email.errors %}
-                            {{ form.email(class="form-control form-control-lg is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in form.email.errors %}
-                                    <span>{{ error }}</span>
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            {{ form.email(class="form-control form-control-lg") }}
-                        {% endif %}
-                    </div>
-                    <div class="form-group">
-                        {{ form.password.label(class="form-control-label", text="Heslo") }}
-                        {% if form.password.errors %}
-                            {{ form.password(class="form-control form-control-lg is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in form.password.errors %}
-                                    <span>{{ error }}</span>
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            {{ form.password(class="form-control form-control-lg") }}
-                        {% endif %}
-                    </div>
-                    <div class="form-check">
-                        {{ form.remember(class="form-check-input") }}
-                        {{ form.remember.label(class="form-check-label", text="Zapamatovat si") }}
-                    </div>
-                </fieldset>
-                <div class="form-group">
-                    {{ form.submit(class="btn btn-outline-info") }}
+
+        <main>
+            <div id="main-inner">
+                <div id="content-header">
+                    <h2>Login</h2>
                 </div>
-                <small class="text-muted ml-2">
-                    <a href="#">Forgot password?</a>
-                </small>
-            </form>
-        </div>
-        <div class="border-top pt-3">
-            <small class="text-muted">
-                Don't have an account? <a class="ml-2" href="register">Sign up here</a>
-            </small>
-        </div>
+                <div id="content">
+                    <div class="special_margin">
+                        <div class="content-section">
+                            <form method="POST" action="">
+                                {{ form.hidden_tag() }}
+                                <fieldset class="form-group">
+                                    <legend class="border-bottom mb-4">Log in</legend>
+                                    <div class="form-group">
+                                        {{ form.email.label(class="form-control-label") }}
+                                        {% if form.email.errors %}
+                                            {{ form.email(class="form-control form-control-lg is-invalid") }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.email.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            {{ form.email(class="form-control form-control-lg") }}
+                                        {% endif %}
+                                    </div>
+                                    <div class="form-group">
+                                        {{ form.password.label(class="form-control-label", text="Password") }}
+                                        {% if form.password.errors %}
+                                            {{ form.password(class="form-control form-control-lg is-invalid") }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.password.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            {{ form.password(class="form-control form-control-lg") }}
+                                        {% endif %}
+                                    </div>
+                                    <div class="form-check">
+                                        {{ form.remember(class="form-check-input") }}
+                                        {{ form.remember.label(class="form-check-label", text="Remember me") }}
+                                    </div>
+                                </fieldset>
+                                <div class="form-group">
+                                    {{ form.submit(class="btn btn-outline-info") }}
+                                </div>
+                                <!--
+                                <small class="text-muted ml-2">
+                                    <a href="#">Forgot password?</a>
+                                </small>
+                                -->
+                            </form>
+                        </div>
+                        <div class="border-top pt-3">
+                            <small class="text-muted">
+                                Don't have an account? <a class="ml-2" href="register">Sign up here</a>
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <div id="footer-inner">
+                <span>&copy 2021, eKnihovna</span>
+            </div>
+        </footer>
     </div>
 </body>
 </html>
@@ -110,9 +133,10 @@ var sticky = navbar.offsetTop;
 console.log(sticky);
 // Add the sticky class to the navbar when you reach its scroll position. Remove "sticky" when you leave the scroll position
 function myFunction() {
-if (window.pageYOffset > sticky) {
-   navbar.classList.add("sticky")
-} else {
-   navbar.classList.remove("sticky");
+    if (window.pageYOffset > sticky) {
+       navbar.classList.add("sticky")
+    } else {
+       navbar.classList.remove("sticky");
+    }
 }
-}
+</script>
