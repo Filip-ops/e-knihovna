@@ -125,7 +125,8 @@ def showAuthor(id):
 def showTitle(id):
     title = Title.query.get(id)
     if current_user.is_authenticated:
-        shelves = Library_title.query.filter_by(user = current_user.id).shelfs
+        titles = Library_title.query.filter_by(user = current_user.id)
+        shelves = titles.shelfs
         if request.method == "POST":
             if request.form.get("remove_tag"):  # if name == value
                 pass
