@@ -17,7 +17,7 @@ admin.add_view(ModelView(Note, db.session))
 admin.add_view(ModelView(Shelf, db.session))
 
 """
-    :Author:
+    :Author: xputal00
     home() fetches user's titles which are then used in view.
     :return: returns home page with fetched data
 """
@@ -31,9 +31,9 @@ def home():
         return render_template('home.html')
 
 """
-    :Author:
-    myLibrary() fetches user's titles which are then used in view.
-    :return: returns home page with fetched data
+    :Author: xputal00
+    myLibrary() fetches user's library which are then used in view.
+    :return: returns library page with fetched data
 """
 @app.route("/myLibrary/", methods=['GET', 'POST'])
 def myLibrary():
@@ -85,7 +85,11 @@ def myLibrary():
     else:
         return redirect(url_for('home'))
 
-
+"""
+    :Author: xdudaj02
+    myShelves() fetches user's shelves which are then used in view and can be edited.
+    :return: returns shelves page with fetched data
+"""
 @app.route("/myShelves/", methods=['GET', 'POST'])
 def myShelves():
     if current_user.is_authenticated:
@@ -106,7 +110,11 @@ def myShelves():
         return redirect(url_for('home'))
     return render_template('my_shelves.html', shelves=shelves)
 
-
+"""
+    :Author: xdudaj02
+    myWishlist() fetches user's titles in wishlist which are then used in view and can be interacted with.
+    :return: returns wishlist page with fetched data
+"""
 @app.route("/myWishlist/", methods=['GET', 'POST'])
 def myWishlist():
     if current_user.is_authenticated:
@@ -151,7 +159,11 @@ def myWishlist():
     else:
         return redirect(url_for('home'))
 
-
+"""
+    :Author: xdudaj02
+    search() fetches titles which are then used in view and can be searched through.
+    :return: returns search page with fetched data
+"""
 @app.route("/search/", methods=['GET', 'POST'])
 def search():
     if current_user.is_authenticated:
@@ -212,14 +224,22 @@ def search():
     else:
         return redirect(url_for('home'))
 
-
+"""
+    :Author: xsapak05
+    showAuthor() fetches authors which are then used in view.
+    :return: returns author page with fetched data
+"""
 @app.route("/showAuthor/<int:id>/", methods=['GET', 'POST'])
 def showAuthor(id):
     author = Author.query.get(id)
     titles = Title.query.filter_by(author_id=id)
     return render_template('author_detail.html', author=author, titles=titles)
 
-
+"""
+    :Author: xsapak05/xdudaj02
+    showTitle() fetches user's titles which are then used in view and edits title data in database
+    :return: returns title page with fetched data
+"""
 @app.route("/showTitle/<int:id>/", methods=['GET', 'POST'])
 def showTitle(id):
     if current_user.is_authenticated:
@@ -327,7 +347,11 @@ def showTitle(id):
     return render_template('title_detail.html', title=title, shelves=not_shelves, my_shelves=my_shelves, notes=notes,
                            reading=reading, lib_title=lib_title, wl_title=wl_title)
 
-
+"""
+    :Author: xsapak05
+    showShelf() fetches user's shelves data which are then used in view.
+    :return: returns shelf page with fetched data
+"""
 @app.route("/showShelf/<int:id>", methods=['GET', 'POST'])
 def showShelf(id):
     shelf = Shelf.query.get(id)
@@ -354,9 +378,11 @@ def showShelf(id):
             pass
     return render_template('shelf_detail.html', shelf=shelf, titles=shelf.library_titles)
 
-
-############################################################################################################################################
-
+"""
+    :Author: xputal00
+    login() fetches user's data from db and compares with input.
+    :return: returns home page with fetched data when successfull else login page
+"""
 @app.route("/login/", methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
@@ -372,7 +398,11 @@ def login():
             flash('Login unsuccessfull! Check password and mail address', 'Error')
     return render_template('login.html', title='Login', form=form)
 
-
+"""
+    :Author: xputal00
+    register() inserts user's data into db.
+    :return: returns login/register page
+"""
 @app.route("/register/", methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
@@ -395,7 +425,11 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
-
+"""
+    :Author: xputal00
+    logout()
+    :return: returns home page with fetched data
+"""
 @app.route("/logout/")
 def logout():
     logout_user()
