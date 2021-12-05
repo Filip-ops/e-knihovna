@@ -70,7 +70,7 @@
                                         <p>PAGE</p>
                                         <span>{{title.page}}</span> <!-- title_in_library.page -->
                                     </div>
-                                    <img src="../static/hery2.jpg" alt="img" height="70">
+                                    <img src="{{title.img}}" alt="img" height="70">
                                     <!-- title_in_library.title.picture -->
                                     <div class="list-item-text">
                                         <a class="title-name" href="{{ url_for('showTitle', id=title.l_title.id)}}">{{title.l_title.name}}</a>

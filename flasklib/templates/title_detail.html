@@ -56,7 +56,7 @@
             <div id="main-inner">
                 <div id="content-detail">
                     <div id="content-detail-header">
-                        <img src="../static/hery2.jpg" alt="" height="200">
+                        <img src="{{title.img}}" alt="" height="200">
                         <div class="detail-desc">
                             <h2 class="detail-name">{{title.name}}</h2>
                             <p><a class="detail-author" href="{{ url_for('showAuthor', id=title.author_id)}}">{{title.author.name}}</a></p>
