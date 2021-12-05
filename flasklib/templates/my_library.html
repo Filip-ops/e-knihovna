@@ -66,15 +66,19 @@
                         <input type="submit" name="button_add" value="Add">
                     </form>
                     <!-- if title s isbn=isbn doesnt exist -> display this, replace isbn_value -->
-                    <p class="err-msg">Sorry, there is no title with this isbn in the database. Contact the
-                        <a class="err-link" href="mailto:admin@eknihovna.com?subject=Missing title&body=isbn_value">admin</a>.
-                    </p>
+                    {% if result == False %}
+                        <p class="err-msg">Sorry, there is no title with this isbn in the database. Contact the
+                            <a class="err-link" href="mailto:admin@eknihovna.com?subject=Missing title&body={{ bad_isbn }}">admin</a>.
+                        </p>
                     <!-- if title s isbn=isbn exists -> create title_in_library and display this -->
                     <!-- ked sa prida mohlo by to redirectnut na jeho detail aby sa dalo pridat do policiek a hovadiny
                     lebo sa mi tam nechcelo robit daky pridavaci form -->
-                    <p class="ok-msg">Title successfully added to your library.</p>
+                    {% elif result == True %}
+                        <p class="ok-msg">Title successfully added to your library.</p>
                     <!-- if not post -> display this -->
-                    <p></p>
+                    {% else %}
+                        <p></p>
+                    {% endif %}
 
                     <h3>Search My Titles</h3>
                     <!-- post method: v search je hladany retazeca a v search_filter je co sa sf_x kde x je co sa prehladava -->
@@ -98,10 +102,10 @@
                                     <td class="list-item-inner">
                                         <img src={{title.img}} alt="img" height="70">
                                         <div class="list-item-text">
-                                            <span class="title-name">{{title.name}}</span>
+                                            <a class="title-name" href="{{ url_for('showTitle', id=title.id)}}">{{title.name}}</a>
                                             <span class="title-year">{{title.release_year}}</span>
                                             <br>
-                                            <span class="title-author">{{title.author.name}}</span>
+                                            <a class="title-author" href="{{ url_for('showAuthor', id=title.author_id)}}">{{title.author.name}}</a>
                                             <br>
                                             <span class="title-genre">{{title.genre}}</span>
                                         </div>
@@ -113,7 +117,7 @@
                                             <!-- on press send post request with remove=title_in_library.title.isbn -->
                                             <!-- odstrani sa title_in_library -->
                                             <form method="POST" class="form-button-icon">
-                                                <button name="remove" value="isbn_value" class="btn-del">
+                                                <button name="remove" value="{{ title.id }}" class="btn-del">
                                                     <!-- isbn_value=title_in_library.title.isbn -->
                                                     <i class="fas fa-times"></i>
                                                     <span class="tooltip">remove</span>
