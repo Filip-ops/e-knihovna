@@ -216,14 +216,11 @@ def showTitle(id):
 
             if request.form.get("tag") == "add":
                 selected = request.form.get("selected")
-                #libraryTitle = Library_title(page=0,user=current_user.id,title=id)
                 libraryTitle = Library_title.query.filter_by(title=id).first()
                 for s_id in selected:
                     shelf = Shelf.query.get(s_id)
                     shelf.library_titles.append(libraryTitle)
 
-                    
-                #db.session.add(libraryTitle)
                 db.session.commit()
 
 
@@ -257,7 +254,6 @@ def showTitle(id):
             if request.form.get("remove_note"):
                 note_id = request.form.get("remove_note")
                 Note.query.filter_by(id=note_id).delete()
-                #db.session.delete(note)
                 db.session.commit()
                 
             if request.form.get("note") == "remove":
