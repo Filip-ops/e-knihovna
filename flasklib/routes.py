@@ -111,7 +111,7 @@ def showShelf(id):
 
     if request.method == "POST":
         if request.form.get("shelf") == "remove":  # if name == value
-            shelf.delete()
+            db.session.delete(shelf)
             db.session.commit()
             return redirect(url_for('myShelves'))
 
