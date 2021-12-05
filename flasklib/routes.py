@@ -24,7 +24,7 @@ def home():
         titles = Library_title.query.filter_by(user = current_user.id)
         return render_template('home.html', titles=titles, user=current_user)
     else:
-        return render_template('home.html', titles=titles)
+        return render_template('home.html')
 
 
 @app.route("/myLibrary/", methods=['GET', 'POST'])
