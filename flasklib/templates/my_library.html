@@ -91,64 +91,42 @@
                     </form>
 
                     <div class="list-wrapper">
-                        <table>
-                            <!-- title item - same ako v author_detail.html + tlacitka -->
-                            <tr class="list-item">
-                                <td class="list-item-inner">
-                                    <img src="../static/hery.jpg" alt="img" height="70">
-                                    <div class="list-item-text">
-                                        <span class="title-name">Harry Potter</span>
-                                        <span class="title-year">2004</span>
-                                        <br>
-                                        <span class="title-author">J. K. Rowling</span>
-                                        <br>
-                                        <span class="title-genre">fantasy</span>
-                                    </div>
-                                    <div class="list-item-tag-list">
-                                        <span class="tag-item">owned</span>
-                                        <span class="tag-item">read</span>
-                                    </div>
-                                    <!-- vzdy tento jeden button -->
-                                    <div class="list-item-button">
-                                        <p>LIBRARY</p>
-                                        <!-- on press send post request with remove=title_in_library.title.isbn -->
-                                        <!-- odstrani sa title_in_library -->
-                                        <form method="POST" class="form-button-icon">
-                                            <button name="remove" value="isbn_value" class="btn-del">
-                                                <!-- isbn_value=title_in_library.title.isbn -->
-                                                <i class="fas fa-times"></i>
-                                                <span class="tooltip">remove</span>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr class="list-item">
-                                <td class="list-item-inner">
-                                    <img src="../static/hery2.jpg" alt="img" height="70">
-                                    <div class="list-item-text">
-                                        <span class="title-name">Harry Potter 2</span>
-                                        <span class="title-year">2005</span>
-                                        <br>
-                                        <span class="title-author">J. K. Rowling</span>
-                                        <br>
-                                        <span class="title-genre">fantasy</span>
-                                    </div>
-                                    <div class="list-item-tag-list">
-                                        <span class="tag-item">reading</span>
-                                    </div>
-                                    <div class="list-item-button">
-                                        <p>LIBRARY</p>
-                                        <form method="POST" class="form-button-icon">
-                                            <button name="remove" value="library" class="btn-del">
-                                                <i class="fas fa-times"></i>
-                                                <span class="tooltip">remove</span>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
+                        {% if titles %}
+                            <table>
+                                {% for title in titles %}
+                                <tr class="list-item">
+                                    <td class="list-item-inner">
+                                        <img src={{title.img}} alt="img" height="70">
+                                        <div class="list-item-text">
+                                            <span class="title-name">{{title.name}}</span>
+                                            <span class="title-year">{{title.release_year}}</span>
+                                            <br>
+                                            <span class="title-author">{{title.author.name}}</span>
+                                            <br>
+                                            <span class="title-genre">{{title.genre}}</span>
+                                        </div>
+                                        <div class="list-item-tag-list">
+                                        </div>
+                                        <!-- vdzy tieto 2 tlacitka -->
+                                        <div class="list-item-button">
+                                            <p>LIBRARY</p>
+                                            <!-- on press send post request with remove=title_in_library.title.isbn -->
+                                            <!-- odstrani sa title_in_library -->
+                                            <form method="POST" class="form-button-icon">
+                                                <button name="remove" value="isbn_value" class="btn-del">
+                                                    <!-- isbn_value=title_in_library.title.isbn -->
+                                                    <i class="fas fa-times"></i>
+                                                    <span class="tooltip">remove</span>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </table>
+                        {% else %}
+                            <p>No matching titles.</p>
+                        {% endif %}
                     </div>
                 </div>
             </div>
