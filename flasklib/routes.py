@@ -1,5 +1,6 @@
 from datetime import datetime
 from flask import render_template, url_for, flash, redirect, request
+from sqlalchemy.sql.expression import select
 from flasklib import app, db, bcrypt, admin
 from flask_login import login_user, current_user, logout_user, login_required
 from flasklib.models import User, Author, Title, Wishlist_title, Library_title, Note, Shelf
@@ -151,11 +152,16 @@ def showTitle(id):
                 pass
 
             if request.form.get("tag") == "add":
-                here = request.form.get("selected")
-                libraryTitle = Library_title(page=0,user=current_user.id,title=id,shelfs=here)
+                selected = request.form.get("selected")
+                libraryTitle = Library_title(page=0,user=current_user.id,title=id)
+                for s_id in selected:
+                    shelf = Shelf.query.get(id=s_id)
+                    shelf.library_titles = libraryTitle
+                    db.session.add(shelf)
+                    
                 db.session.add(libraryTitle)
                 db.session.commit()
-                
+
 
             if request.form.get("tag") == "remove":
                 pass
