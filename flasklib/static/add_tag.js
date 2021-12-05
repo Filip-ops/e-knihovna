@@ -1,3 +1,4 @@
+/* Author: xdudaj02 */
 let modal_tag = document.getElementById("add-tag-modal");
 
 let btn_tag = document.getElementById("add-tag-btn");
