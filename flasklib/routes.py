@@ -16,7 +16,11 @@ admin.add_view(ModelView(Library_title, db.session))
 admin.add_view(ModelView(Note, db.session))
 admin.add_view(ModelView(Shelf, db.session))
 
-
+"""
+    :Author:
+    home() fetches user's titles which are then used in view.
+    :return: returns home page with fetched data
+""" 
 @app.route("/")
 @app.route("/home/", methods=['GET', 'POST'])
 def home():
@@ -26,7 +30,11 @@ def home():
     else:
         return render_template('home.html')
 
-
+"""
+    :Author:
+    myLibrary() fetches user's titles which are then used in view.
+    :return: returns home page with fetched data
+""" 
 @app.route("/myLibrary/", methods=['GET', 'POST'])
 def myLibrary():
     if current_user.is_authenticated:
