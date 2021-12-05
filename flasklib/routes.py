@@ -117,7 +117,7 @@ def showShelf(id):
         if request.form.get("remove"):
             title_id = request.form.get("remove")
             # remove title with title_id from this shelf
-            title = Library_title.query.filter_by(id=title_id)
+            title = db.session.query(Library_title).filter(Library_title.id==title_id).first()
             db.session.delete(title)
             #Shelf.query.filter_by(library_titles=title_id).delete()
             db.session.commit()
