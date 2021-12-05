@@ -1,3 +1,4 @@
+/* Author: xdudaj02 */
 let page_start = document.getElementById("page_start");
 let page_end = document.getElementById("page_end");
 

@@ -1,3 +1,4 @@
+/* Author: xdudaj02 */
 let modal_note = document.getElementById("add-note-modal");
 
 let btn_note = document.getElementById("add-note-btn");
