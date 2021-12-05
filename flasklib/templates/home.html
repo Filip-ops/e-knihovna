@@ -73,11 +73,11 @@
                                     <img src="../static/hery2.jpg" alt="img" height="70">
                                     <!-- title_in_library.title.picture -->
                                     <div class="list-item-text">
-                                        <a class="title-name" href="{{ url_for('showTitle', id=title.id)}}">{{title.l_title.name}}</a>
+                                        <a class="title-name" href="{{ url_for('showTitle', id=title.l_title.id)}}">{{title.l_title.name}}</a>
                                         <!-- title_in_library.title.name -->
                                         <span class="title-year">{{title.l_title.release_year}}</span> <!-- title_in_library.title.year -->
                                         <br>
-                                        <a class="title-author" href="{{ url_for('showAuthor', id=title.l_title.author_id)}}">{{title.l_title.author_id}}</a>
+                                        <a class="title-author" href="{{ url_for('showAuthor', id=title.l_title.author_id)}}">{{title.l_title.author.name}}</a>
                                         <!-- title_in_library.title.author -->
                                         <br>
                                         <span class="title-genre">{{title.l_title.genre}}</span> <!-- title_in_library.title.genre -->
