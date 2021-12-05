@@ -73,7 +73,7 @@ class Note(db.Model):
     text = db.Column(db.String(1000), nullable=False)
     start_page = db.Column(db.Integer, nullable=False)
     end_page = db.Column(db.Integer, nullable=False)
-    color = db.Column(db.String(20), nullable=False)
+    color = db.Column(db.String(20), nullable=True)
 
     library_title = db.Column(db.Integer, db.ForeignKey('library_title.id'))
 
