@@ -180,7 +180,7 @@ def showTitle(id):
                 selected = request.form.get("selected")
                 libraryTitle = Library_title(page=0,user=current_user.id,title=id)
                 for s_id in selected:
-                    shelf = Shelf.query.filter_by(id=s_id)
+                    shelf = Shelf.query.get(s_id)
                     shelf.library_titles.append(libraryTitle)
 
                     
