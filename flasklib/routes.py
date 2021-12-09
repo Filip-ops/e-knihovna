@@ -31,7 +31,7 @@ def home():
         return render_template('home.html')
 
 """
-    :Author: xputal00
+    :Author: xdudaj02
     myLibrary() fetches user's library which are then used in view.
     :return: returns library page with fetched data
 """
