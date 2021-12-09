@@ -1,5 +1,5 @@
 """
-    :Author: xputala00
+    :Author: xputal00
     Forms templates used in registration and login
 """ 
 from flask.app import Flask
