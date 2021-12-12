@@ -65,14 +65,14 @@
                     <p>Add title to your library by entering its isbn or find a title in the Search section.</p>
                     <!-- on submit through post method sends isbn value in isbn -->
                     <form action="" method="post" class="isbn-form">
-                        <label for="isbn">ISBN: </label>
-                        <input type="number" min="1" name="isbn" id="isbn">
+                        <label for="isbn"><b>ISBN: </b></label>
+                        <input type="text" name="isbn" id="isbn">
                         <input type="submit" name="button_add" value="Add">
                     </form>
                     <!-- if title s isbn=isbn doesnt exist -> display this, replace isbn_value -->
                     {% if result == False %}
                         <p class="err-msg">Sorry, there is no title with this isbn in the database. Contact the
-                            <a class="err-link" href="mailto:admin@eknihovna.com?subject=Missing title&body={{ bad_isbn }}">admin</a>.
+                            <a class="err-link" href="mailto:admin@eknihovna.com?subject=Missing title {{ bad_isbn }}&body=Please add this title.">admin</a>.
                         </p>
                     <!-- if title s isbn=isbn exists -> create title_in_library and display this -->
                     <!-- ked sa prida mohlo by to redirectnut na jeho detail aby sa dalo pridat do policiek a hovadiny

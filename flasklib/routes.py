@@ -61,7 +61,7 @@ def myLibrary():
                     titles = lib_titles.join(Title).filter(Title.genre.op('~*')(name_title)).order_by(Title.name).all()
             if request.form.get("button_add") == "Add":
                 isbn = request.form.get("isbn")
-                title = Title.query.get(isbn)
+                title = Title.query.filter_by(isbn=isbn).first()
                 if not title:
                     result = False
                     bad_isbn = isbn
@@ -71,7 +71,7 @@ def myLibrary():
                     db.session.commit()
                     result = True
                     lib_titles = Library_title.query.filter_by(user=current_user.id)
-                    titles = [Title.query.get(lib_title.id) for lib_title in lib_titles.all()]
+                    titles = [Title.query.get(lib_title.title) for lib_title in lib_titles.all()]
             if request.form.get("remove"):
                 title_isbn = request.form.get("remove")
                 title = Title.query.filter_by(isbn=title_isbn).first()
@@ -79,7 +79,7 @@ def myLibrary():
                 db.session.delete(item)
                 db.session.commit()
                 lib_titles = Library_title.query.filter_by(user=current_user.id)
-                titles = [Title.query.get(lib_title.id) for lib_title in lib_titles.all()]
+                titles = [Title.query.get(lib_title.title) for lib_title in lib_titles.all()]
 
         return render_template('my_library.html', titles=titles, result=result, bad_isbn=bad_isbn)
     else:
