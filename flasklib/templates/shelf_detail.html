@@ -95,10 +95,10 @@
                                         <td class="list-item-inner">
                                             <img src="{{ title.l_title.img }}" alt="img" height="70">
                                             <div class="list-item-text">
-                                                <span class="title-name">{{title.l_title.name}}</span>
+                                                <a class="title-name" href="{{ url_for('showTitle', id=title.l_title.id)}}">{{title.l_title.name}}</a>
                                                 <span class="title-year">{{title.l_title.release_year}}</span>
                                                 <br>
-                                                <span class="title-author">{{title.l_title.author.name}}</span>
+                                                <a class="title-author" href="{{ url_for('showAuthor', id=title.l_title.author_id)}}">{{title.l_title.author.name}}</a>
                                                 <br>
                                                 <span class="title-genre">{{title.l_title.genre}}</span>
                                             </div>
