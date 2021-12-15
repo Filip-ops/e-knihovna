@@ -42,23 +42,28 @@ def myLibrary():
         titles = [Title.query.get(lib_title.title) for lib_title in lib_titles.all()]
         result = None
         bad_isbn = None
+        searched = False
         if request.method == "POST":
             if request.form.get("button_search") == "Search":
+                searched = True
                 name_title = request.form.get("search")
                 filter_type = request.form.get("search_filter")
                 if filter_type == "all":
-                    titles = lib_titles.join(Title).join(Author).filter(
+                    lib_titles = lib_titles.join(Title).join(Author).filter(
                         or_(Title.name.op('~*')(name_title),
                             Author.name.op('~*')(name_title),
-                            Title.genre.op('~*')(name_title))).order_by(
-                        Title.name).all()
+                            Title.genre.op('~*')(name_title))).order_by(Title.name)
+                    titles = [Title.query.get(lib_title.title) for lib_title in lib_titles.all()]
                 elif filter_type == "title":
-                    titles = lib_titles.join(Title).filter(Title.name.op('~*')(name_title)).order_by(Title.name).all()
+                    lib_titles = lib_titles.join(Title).filter(Title.name.op('~*')(name_title)).order_by(Title.name)
+                    titles = [Title.query.get(lib_title.title) for lib_title in lib_titles.all()]
                 elif filter_type == "author":
-                    titles = lib_titles.join(Title).join(Author).filter(Author.name.op('~*')(name_title)).order_by(
-                        Title.name).all()
+                    lib_titles = lib_titles.join(Title).join(Author).filter(Author.name.op('~*')(name_title)).order_by(
+                        Title.name)
+                    titles = [Title.query.get(lib_title.title) for lib_title in lib_titles.all()]
                 else:
-                    titles = lib_titles.join(Title).filter(Title.genre.op('~*')(name_title)).order_by(Title.name).all()
+                    lib_titles = lib_titles.join(Title).filter(Title.genre.op('~*')(name_title)).order_by(Title.name)
+                    titles = [Title.query.get(lib_title.title) for lib_title in lib_titles.all()]
             if request.form.get("button_add") == "Add":
                 isbn = request.form.get("isbn")
                 title = Title.query.filter_by(isbn=isbn).first()
@@ -81,7 +86,7 @@ def myLibrary():
                 lib_titles = Library_title.query.filter_by(user=current_user.id)
                 titles = [Title.query.get(lib_title.title) for lib_title in lib_titles.all()]
 
-        return render_template('my_library.html', titles=titles, result=result, bad_isbn=bad_isbn)
+        return render_template('my_library.html', titles=titles, result=result, bad_isbn=bad_isbn, search=searched)
     else:
         return redirect(url_for('home'))
 
@@ -103,7 +108,9 @@ def myShelves():
             shelf = Shelf(name=name, desc=desc, user=current_user.id)
             db.session.add(shelf)
             db.session.commit()
-            return render_template('my_shelves.html', shelves=shelves)
+            shelf_list = Shelf.query.filter_by(user=current_user.id).all()
+            for shelf in shelf_list:
+                shelves[shelf] = len(shelf.library_titles)
         else:
             pass
     else:
@@ -120,29 +127,36 @@ def myWishlist():
     if current_user.is_authenticated:
         wl_titles = Wishlist_title.query.filter_by(user=current_user.id)
         titles = [Title.query.get(lib_title.title) for lib_title in wl_titles.all()]
+        searched = False
         if request.method == "POST":
             if request.form.get("button_search") == "Search":
+                searched = True
                 name_title = request.form.get("search")
                 filter_type = request.form.get("search_filter")
                 if filter_type == "all":
-                    titles = wl_titles.join(Title).join(Author).filter(
+                    wl_titles = wl_titles.join(Title).join(Author).filter(
                         or_(Title.name.op('~*')(name_title),
                             Author.name.op('~*')(name_title),
-                            Title.genre.op('~*')(name_title))).order_by(
-                        Title.name).all()
+                            Title.genre.op('~*')(name_title))).order_by(Title.name)
+                    titles = [Title.query.get(wl_title.title) for wl_title in wl_titles.all()]
                 elif filter_type == "title":
-                    titles = wl_titles.join(Title).filter(Title.name.op('~*')(name_title)).order_by(Title.name).all()
+                    wl_titles = wl_titles.join(Title).filter(Title.name.op('~*')(name_title)).order_by(Title.name)
+                    titles = [Title.query.get(wl_title.title) for wl_title in wl_titles.all()]
                 elif filter_type == "author":
-                    titles = wl_titles.join(Title).join(Author).filter(Author.name.op('~*')(name_title)).order_by(
-                        Title.name).all()
+                    wl_titles = wl_titles.join(Title).join(Author).filter(Author.name.op('~*')(name_title)).order_by(
+                        Title.name)
+                    titles = [Title.query.get(wl_title.title) for wl_title in wl_titles.all()]
                 else:
-                    titles = wl_titles.join(Title).filter(Title.genre.op('~*')(name_title)).order_by(Title.name).all()
+                    wl_titles = wl_titles.join(Title).filter(Title.genre.op('~*')(name_title)).order_by(Title.name)
+                    titles = [Title.query.get(wl_title.title) for wl_title in wl_titles.all()]
             if request.form.get("remove"):
                 title_isbn = request.form.get("remove")
                 title = Title.query.filter_by(isbn=title_isbn).first()
                 item = Wishlist_title.query.filter_by(title=title.id).first()
                 db.session.delete(item)
                 db.session.commit()
+                wl_titles = Wishlist_title.query.filter_by(user=current_user.id)
+                titles = [Title.query.get(wl_title.title) for wl_title in wl_titles.all()]
             if request.form.get("add"):
                 title_isbn = request.form.get("add")
                 title = Title.query.filter_by(isbn=title_isbn).first()
@@ -151,11 +165,11 @@ def myWishlist():
                 db.session.delete(item)
                 db.session.add(lib_title)
                 db.session.commit()
+                wl_titles = Wishlist_title.query.filter_by(user=current_user.id)
+                titles = [Title.query.get(wl_title.title) for wl_title in wl_titles.all()]
 
-            lib_titles = Wishlist_title.query.filter_by(user=current_user.id)
-            titles = [Title.query.get(lib_title.id) for lib_title in lib_titles.all()]
 
-        return render_template('my_wishlist.html', titles=titles)
+        return render_template('my_wishlist.html', titles=titles, search=searched)
     else:
         return redirect(url_for('home'))
 

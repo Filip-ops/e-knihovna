@@ -91,7 +91,7 @@
                         <input type="text" name="search" id="search" size="30">
                         <input type="submit" name="button_search" value="Search">
                         <div class="search_filter">
-                            <label><input type="radio" checked="checked" name="search_filter" id="sf_all"> all</label>
+                            <label><input type="radio" value="all" checked="checked" name="search_filter" id="sf_all"> all</label>
                             <label><input type="radio" value="title" name="search_filter" id="sf_title"> title</label>
                             <label><input type="radio" value="author" name="search_filter" id="sf_author"> author</label>
                             <label><input type="radio" value="genre" name="search_filter" id="sf_genre"> genre</label>
@@ -133,7 +133,11 @@
                                 {% endfor %}
                             </table>
                         {% else %}
-                            <p>You dont have any titles in your library.</p>
+                            {% if search %}
+                                <p>No matching titles in your library.</p>
+                            {% else %}
+                                <p>You dont have any titles in your library.</p>
+                            {% endif %}
                         {% endif %}
                     </div>
                 </div>

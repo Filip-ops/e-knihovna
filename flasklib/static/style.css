@@ -505,9 +505,25 @@ textarea, input[type='color'], input[type='password'] {
     font-family: 'Archivo', sans-serif;
 }
 
-.button:hover, button:hover, input[type='submit']:hover, input[type='text']:hover, input[type='text']:focus,
-input[type='number']:hover, input[type='number']:focus, textarea:hover, textarea:focus, input[type='color']:hover,
-input[type='color']:focus, input[type='password']:hover, input[type='password']:focus {
+.button:hover, button:hover, input[type='submit']:hover, input[type='text']:hover, input[type='number']:hover,
+textarea:hover, input[type='color']:hover, input[type='password']:hover {
+    padding: 10px;
+    border: 2px solid black;
+    color: black;
+    font-weight: bolder;
+    box-shadow:
+            -1px 0 1px lightgrey,
+            -1px 1px 1px lightgrey,
+            -1px -1px 1px lightgrey,
+            1px 0 1px lightgrey,
+            1px -1px 1px lightgrey,
+            1px 1px 1px lightgrey,
+            0 -1px 1px lightgrey,
+            0 1px 1px lightgrey;
+}
+
+input[type='text']:focus, input[type='number']:focus, textarea:focus,
+input[type='color']:focus, input[type='password']:focus {
     padding: 10px;
     border: 2px solid black;
     color: black;
@@ -541,9 +557,16 @@ input[type='text'], input[type='number'], input[type='color'], input[type='passw
     border-radius: 5px;
 }
 
-input[type='text']:hover, input[type='text']:focus, input[type='number']:hover, input[type='number']:focus,
-textarea:hover, textarea:focus, input[type='color']:hover, input[type='color']:focus, input[type='password']:hover,
-input[type='password']:focus {
+input[type='text']:hover, input[type='number']:hover, textarea:hover,
+input[type='color']:hover, input[type='password']:hover {
+    font-weight: normal;
+    background: white;
+    padding: 3px 3px;
+    border-radius: 5px;
+}
+
+input[type='text']:focus, input[type='number']:focus, textarea:focus,
+input[type='color']:focus, input[type='password']:focus {
     font-weight: normal;
     background: white;
     padding: 3px 3px;

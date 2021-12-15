@@ -62,15 +62,15 @@
                     <h2>My Wishlist</h2>
                 </div>
                 <div id="content">
-                    <form action="" class="form-search">
+                    <form action="" method="post" class="form-search">
                         <label for="search"></label>
                         <input type="text" name="search" size="30" id="search">
                         <input type="submit" name="button_search" value="Search">
                         <div class="search_filter">
-                            <label><input type="radio" checked="checked" name="search_filter" id="search_filter_all"> all</label>
-                            <label><input type="radio" value="title" name="search_filter" id="search_filter_title"> title</label>
-                            <label><input type="radio" value="author" name="search_filter" id="search_filter_author"> author</label>
-                            <label><input type="radio" value="genre" name="search_filter" id="search_filter_genre"> genre</label>
+                            <label><input type="radio" value="all" checked="checked" name="search_filter" id="sf_all"> all</label>
+                            <label><input type="radio" value="title" name="search_filter" id="sf_title"> title</label>
+                            <label><input type="radio" value="author" name="search_filter" id="sf_author"> author</label>
+                            <label><input type="radio" value="genre" name="search_filter" id="sf_genre"> genre</label>
                         </div>
                     </form>
 
@@ -120,6 +120,12 @@
                                     </tr>
                                 {% endfor %}
                             </table>
+                        {% else %}
+                            {% if search %}
+                                <p>No matching titles in your wishlist.</p>
+                            {% else %}
+                                <p>You dont have any titles in your wishlist.</p>
+                            {% endif %}
                         {% endif %}
                     </div>
                 </div>
