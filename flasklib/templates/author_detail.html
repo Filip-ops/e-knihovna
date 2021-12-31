@@ -65,7 +65,11 @@
                         <div class="detail-desc">
                             <h2 class="detail-name">{{author.name}}</h2> <!-- author.name -->
                             <p class="detail-author">Great Britain</p> <!-- author.country -->
-                            <p class="detail-other">{{author.born}} - {{author.died}}</p> <!-- author.born - author.died -->
+                            {% if author.died %}
+                                <p class="detail-other">{{author.born}} - {{author.died}}</p> <!-- author.born - author.died -->
+                            {% else %}
+                                <p class="detail-other">{{author.born}} - present</p> <!-- author.born - author.died -->
+                            {% endif %}
                             <!-- died moze byt null a vtedy sa da ze present #-->
                         </div>
                     </div>
