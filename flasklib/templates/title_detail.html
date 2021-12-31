@@ -86,6 +86,9 @@
                                 {% if lib_title %}
                                     <!-- default sa zobrazi -->
                                     <div class="detail-tag-item">
+                                        {% if not my_shelves %}
+                                            <span>Add to shelf</span>
+                                        {% endif %}
                                         <div class="form-button-icon">
                                             <!-- calls add title to shelf pop up -->
                                             <button name="tag" value="add" class="btn-add-tag" id="add-tag-btn">
@@ -174,63 +177,65 @@
                         </form>
                     {% endif %}
                     <!-- note_list -->
-                    <div id="content-detail-list">
-                        <div class="heading-w-button">
-                            <h3>My Notes</h3>
-                            <!-- vola add note popup -->
-                            <button name="note" value="add" class="btn-add" id="add-note-btn">
-                                <span><i class="fas fa-plus-circle"></i> New Note</span>
-                            </button>
+                    {% if lib_title %}
+                        <div id="content-detail-list">
+                            <div class="heading-w-button">
+                                <h3>My Notes</h3>
+                                <!-- vola add note popup -->
+                                <button name="note" value="add" class="btn-add" id="add-note-btn">
+                                    <span><i class="fas fa-plus-circle"></i> New Note</span>
+                                </button>
+                            </div>
+                            <!-- if title_in_library ma dake notes -->
+                            <table>
+                                <!-- for note in poznamky k tomuto title_in_library -->
+                                <!-- jedna note item -->
+                                {% for note in notes %}
+                                    <tr class="note-list-item">
+                                        <td class="note-list-item-color">
+                                            <svg width="8px" height="50px">
+                                                <rect width="8px" height="50px" style="fill: {{ note.color }}"></rect> <!-- note.color -->
+                                            </svg>
+                                        </td>
+                                        <td class="note-list-item-page">
+                                            <p>PAGE</p>
+                                            {% if note.end_page != note.start_page %}
+                                                <span>{{note.start_page}} - {{note.end_page}}</span>
+                                            {% else %}
+                                                <span>{{note.start_page}}</span> <!-- note.page_start - note.page_end if note.page_end else note.page_start -->
+                                            {% endif %}
+                                        </td>
+                                        <td class="note-list-item-name">
+                                            <p>{{note.name}}</p> <!-- note.name -->
+                                        </td>
+                                        <td class="note-list-item-text">
+                                            <p>{{note.text}}</p> <!-- note.text -->
+                                        </td>
+                                        <!-- default tlacitka -->
+                                        <td class="note-list-item-button">
+                                            <div class="form-button-icon">
+                                                <button name="edit_note" value="{{note.id}}" class="btn-edit">
+                                                    <i class="fas fa-edit"></i>
+                                                    <span class="tooltip">edit</span>
+                                                </button>
+                                            </div>
+                                        </td>
+                                        <td class="note-list-item-button">
+                                            <!-- post request s remove_note=note.id -->
+                                            <!-- odstrani note -->
+                                            <form method="POST" class="form-button-icon">
+                                                <button name="remove_note" value="{{note.id}}" class="btn-del">
+                                                    <!-- id_value=note.id -->
+                                                    <i class="fas fa-trash"></i>
+                                                    <span class="tooltip">remove</span>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
                         </div>
-                        <!-- if title_in_library ma dake notes -->
-                        <table>
-                            <!-- for note in poznamky k tomuto title_in_library -->
-                            <!-- jedna note item -->
-                            {% for note in notes %}
-                                <tr class="note-list-item">
-                                    <td class="note-list-item-color">
-                                        <svg width="8px" height="50px">
-                                            <rect width="8px" height="50px" style="fill: {{ note.color }}"></rect> <!-- note.color -->
-                                        </svg>
-                                    </td>
-                                    <td class="note-list-item-page">
-                                        <p>PAGE</p>
-                                        {% if note.end_page != note.start_page %}
-                                            <span>{{note.start_page}} - {{note.end_page}}</span>
-                                        {% else %}
-                                            <span>{{note.start_page}}</span> <!-- note.page_start - note.page_end if note.page_end else note.page_start -->
-                                        {% endif %}
-                                    </td>
-                                    <td class="note-list-item-name">
-                                        <p>{{note.name}}</p> <!-- note.name -->
-                                    </td>
-                                    <td class="note-list-item-text">
-                                        <p>{{note.text}}</p> <!-- note.text -->
-                                    </td>
-                                    <!-- default tlacitka -->
-                                    <td class="note-list-item-button">
-                                        <div class="form-button-icon">
-                                            <button name="edit_note" value="{{note.id}}" class="btn-edit">
-                                                <i class="fas fa-edit"></i>
-                                                <span class="tooltip">edit</span>
-                                            </button>
-                                        </div>
-                                    </td>
-                                    <td class="note-list-item-button">
-                                        <!-- post request s remove_note=note.id -->
-                                        <!-- odstrani note -->
-                                        <form method="POST" class="form-button-icon">
-                                            <button name="remove_note" value="{{note.id}}" class="btn-del">
-                                                <!-- id_value=note.id -->
-                                                <i class="fas fa-trash"></i>
-                                                <span class="tooltip">remove</span>
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        </table>
-                    </div>
+                    {% endif %}
                 </div>
             </div>
         </main>
