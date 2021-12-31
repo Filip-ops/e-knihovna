@@ -262,6 +262,10 @@ input[type='submit'] {
     align-items: center;
 }
 
+.list-item-button-empty {
+    margin-left: 64px;
+}
+
 .list-item-button p, .list-item-page p,.btn-desc {
     font-size: 10px;
     text-align: center;

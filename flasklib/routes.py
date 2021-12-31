@@ -201,6 +201,10 @@ def search():
             elif request.form.get("add_lib"):
                 title_isbn = request.form.get("add_lib")
                 title = Title.query.filter_by(isbn=title_isbn).first()
+                if len(Wishlist_title.query.join(Title).filter(Title.isbn == title_isbn,
+                                                               Wishlist_title.user == current_user.id).all()) > 0:
+                    item = Wishlist_title.query.filter_by(title=title.id).first()
+                    db.session.delete(item)
                 lib_title = Library_title(page=0, user=current_user.id, title=title.id)
                 db.session.add(lib_title)
                 db.session.commit()

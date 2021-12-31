@@ -105,8 +105,21 @@
                                                     </button>
                                                 </form>
                                             </div>
+                                            <div class="list-item-button-empty"></div>
 
                                         {% elif status[1] %}
+                                            <div class="list-item-button">
+                                                <p>LIBRARY</p>
+                                                <!-- on press sends post request s add_lib=title.isbn -->
+                                                <!-- vytvori sa title_in_library -->
+                                                <form method="POST" class="form-button-icon">
+                                                    <button name="add_lib" value="{{ title.isbn }}" class="btn-add">
+                                                        <!--# isbn_value=title.isbn -->
+                                                        <i class="fas fa-plus"></i>
+                                                        <span class="tooltip">add</span>
+                                                    </button>
+                                                </form>
+                                            </div>
                                             <div class="list-item-button">
                                                 <p>WISHLIST</p>
                                                 <!-- on press sends post request s add_wl=title.isbn -->
