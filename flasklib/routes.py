@@ -40,6 +40,7 @@ def myLibrary():
     if current_user.is_authenticated:
         lib_titles = Library_title.query.filter_by(user=current_user.id)
         titles = [Title.query.get(lib_title.title) for lib_title in lib_titles.all()]
+        titles.sort(key=lambda x: x.name)
         result = None
         bad_isbn = None
         searched = False
@@ -98,7 +99,7 @@ def myLibrary():
 @app.route("/myShelves/", methods=['GET', 'POST'])
 def myShelves():
     if current_user.is_authenticated:
-        shelf_list = Shelf.query.filter_by(user=current_user.id).all()
+        shelf_list = Shelf.query.filter_by(user=current_user.id).order_by(Shelf.name).all()
         shelves = {}
         for shelf in shelf_list:
             shelves[shelf] = len(shelf.library_titles)
@@ -108,7 +109,7 @@ def myShelves():
             shelf = Shelf(name=name, desc=desc, user=current_user.id)
             db.session.add(shelf)
             db.session.commit()
-            shelf_list = Shelf.query.filter_by(user=current_user.id).all()
+            shelf_list = Shelf.query.filter_by(user=current_user.id).order_by(Shelf.name).all()
             for shelf in shelf_list:
                 shelves[shelf] = len(shelf.library_titles)
         else:
