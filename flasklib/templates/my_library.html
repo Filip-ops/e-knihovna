@@ -101,7 +101,7 @@
                     <div class="list-wrapper">
                         {% if titles %}
                             <table>
-                                {% for title in titles %}
+                                {% for title, shelves in titles %}
                                     <tr class="list-item">
                                         <td class="list-item-inner">
                                             <img src={{title.img}} alt="img" height="70">
@@ -114,6 +114,9 @@
                                                 <span class="title-genre">{{title.genre}}</span>
                                             </div>
                                             <div class="list-item-tag-list">
+                                                {% for shelf in shelves %}
+                                                    <span class="tag-item">{{ shelf.name }}</span>
+                                                {% endfor %}
                                             </div>
                                             <!-- vdzy tieto 2 tlacitka -->
                                             <div class="list-item-button">

@@ -283,6 +283,11 @@ input[type='submit'] {
     text-align: center;
 }
 
+#note-table {
+    width: 100%;
+    table-layout: fixed;
+}
+
 .note-list-item {
     height: 50px;
     border-top: 1px solid lightgrey;
@@ -290,12 +295,12 @@ input[type='submit'] {
 }
 
 .note-list-item-color {
-    max-width: 20px;
+    width: 2%;
     padding: 4px 10px 4px 0;
 }
 
 .note-list-item-page {
-    max-width: 160px;
+    width: 8%;
     padding: 0 10px;
 }
 
@@ -311,15 +316,14 @@ input[type='submit'] {
 }
 
 .note-list-item-name {
-    max-width: 120px;
+    width: 14%;
     text-align: center;
     padding: 0 10px;
 }
 
 .note-list-item-text {
     color: darkgrey;
-    min-width: 50px;
-    max-width: 450px;
+    width: 60%;
     padding: 0 10px;
 }
 
@@ -328,7 +332,7 @@ input[type='submit'] {
 }
 
 .note-list-item-button {
-    max-width: 50px;
+    width: 8%;
 }
 
 .form-button-icon button, .form-button-wrapper button {

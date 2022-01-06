@@ -87,7 +87,15 @@ def myLibrary():
                 lib_titles = Library_title.query.filter_by(user=current_user.id)
                 titles = [Title.query.get(lib_title.title) for lib_title in lib_titles.all()]
 
-        return render_template('my_library.html', titles=titles, result=result, bad_isbn=bad_isbn, search=searched)
+        temp = Library_title.query.filter_by(user=current_user.id).join(Title).order_by(Title.name).all()
+        shelf_list = []
+        for title in temp:
+            shelves = Shelf.query.filter_by(user=current_user.id)
+            my_shelves = shelves.filter(Shelf.library_titles.any(id=title.id)).all()
+            shelf_list.append(my_shelves)
+
+        return render_template('my_library.html', titles=zip(titles, shelf_list), result=result, bad_isbn=bad_isbn,
+                               search=searched)
     else:
         return redirect(url_for('home'))
 
