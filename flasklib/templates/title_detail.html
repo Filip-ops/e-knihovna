@@ -167,10 +167,10 @@
                     <!-- zobrazi sa len ked existuje title_in_library a je v policke reading -->
                     <!-- on enter post request page = new page value -->
                     {% if reading %}
-                        <form action="" method="POST" class="form-page-input">
+                        <form method="post" class="form-page-input" onsubmit="return func()">
                             <label>
                                 <span>You're on page: </span>
-                                <input type="number" name="page" value="{{ lib_title.page }}" class="page-input"> <!-- title_in_library.page -->
+                                <input type="number" name="page" value="{{ lib_title.page }}" class="page-input" id="page-input"> <!-- title_in_library.page -->
                                 <i class="fas fa-pencil-alt"></i>
                                 <span class="tooltip">Confirm by pressing Enter.</span>
                             </label>
@@ -324,8 +324,27 @@
         </div>
     </div>
 
+    <script>
+        function pageNumFunc(value) {
+            const xhttp = new XMLHttpRequest();
+            xhttp.open("POST", "{{ url_for('showTitle', id=title.id)}}", true);
+            xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhttp.send(JSON.stringify({ "page": value }));
+            return false;
+        }
+        function func() {
+            const xhttp = new XMLHttpRequest();
+            xhttp.open("POST", "{{ url_for('showTitle', id=title.id)}}", true);
+            xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            const value = document.getElementById('page-input');
+            xhttp.send(JSON.stringify({ "page": value.value }));
+            document.activeElement.blur()
+            return false;
+        }
+    </script>
     <script src="{{ url_for('static', filename='add_note.js') }}"></script>
     <script src="{{ url_for('static', filename='add_tag.js') }}"></script>
     <script src="{{ url_for('static', filename='page_form.js') }}"></script>
+
 </body>
 </html>

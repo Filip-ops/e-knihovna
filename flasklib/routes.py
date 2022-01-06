@@ -291,6 +291,10 @@ def showTitle(id):
             reading = False
 
         if request.method == "POST":
+            if request.json:
+                lib_title.page = request.json['page']
+                db.session.commit()
+
             if request.form.get("remove_tag"):  # if name == value
                 shelf_id = request.form.get("remove_tag")
                 shelf = Shelf.query.get(shelf_id)
@@ -356,9 +360,9 @@ def showTitle(id):
 
                 pass
 
-            if request.form.get("page"):
-                lib_title.page = request.form.get("page")
-                db.session.commit()
+            # if request.form.get("page"):
+            #     lib_title.page = request.form.get("page")
+            #     db.session.commit()
 
             lib_title = Library_title.query.filter_by(title=id, user=current_user.id).first()
             wl_title = Wishlist_title.query.filter_by(title=id, user=current_user.id).first()
