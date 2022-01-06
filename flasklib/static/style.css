@@ -323,7 +323,7 @@ input[type='submit'] {
 
 .note-list-item-text {
     color: darkgrey;
-    width: 60%;
+    width: 62%;
     padding: 0 10px;
 }
 
@@ -332,7 +332,7 @@ input[type='submit'] {
 }
 
 .note-list-item-button {
-    width: 8%;
+    width: 7%;
 }
 
 .form-button-icon button, .form-button-wrapper button {
