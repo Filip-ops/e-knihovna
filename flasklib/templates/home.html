@@ -94,6 +94,7 @@
                     {% endif %}
                 {%else%}
                     <p id="welcome-text">Welcome to eKnihovna, please <a href="{{ url_for('login') }}" class="small-link">log in</a>!</p>
+                    <p id="info-text"></p>
                 {% endif %}
             </div>
         </main>
@@ -104,6 +105,27 @@
             </div>
         </footer>
     </div>
-</body>
 
+    <script>
+        function func() {
+            const xhttp = new XMLHttpRequest();
+            xhttp.open("POST", "{{ url_for('home')}}", true);
+            xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;");
+            xhttp.send();
+
+            xhttp.onreadystatechange = function() {
+                if ((xhttp.readyState === 4) && (xhttp.status === 200)) {
+                    const pole = JSON.parse(xhttp.responseText);
+                    const time = pole['time'];
+                    const users = pole['users'];
+                    document.getElementById("info-text").innerHTML = 'Current time: ' + time + '<br>Users active: ' + users;
+                    console.log(document.getElementById("info-text").innerHTML);
+                }
+            }
+        }
+
+        setInterval(func, 1000);
+    </script>
+
+</body>
 </html>
