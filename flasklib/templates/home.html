@@ -60,7 +60,7 @@
             <div id="main-inner">
                 {% if user %}
                     <p id="welcome-text">Welcome to your eKnihovna <b>{{user.username}}</b>!</p> <!-- user.username -->
-                    <p id="info-text"></p>
+                    <p id="info-text"><b>Current time: </b><br><b>Users: </b></p>
                     <br>
                     <!-- if su v databaze title_in_library s tagom reading -->
                     {% if titles %}
@@ -95,7 +95,7 @@
                     {% endif %}
                 {%else%}
                     <p id="welcome-text">Welcome to eKnihovna, please <a href="{{ url_for('login') }}" class="small-link">log in</a>!</p>
-                    <p id="info-text"></p>
+                    <p id="info-text"><b>Current time: </b><br><b>Users: </b></p>
                 {% endif %}
             </div>
         </main>
@@ -119,7 +119,7 @@
                     const pole = JSON.parse(xhttp.responseText);
                     const time = pole['time'];
                     const users = pole['users'];
-                    document.getElementById("info-text").innerHTML = 'Current time: ' + time + '<br>Users active: ' + users;
+                    document.getElementById("info-text").innerHTML = '<b>Current time:</b> ' + time + '<br><b>Users:</b> ' + users;
                     console.log(document.getElementById("info-text").innerHTML);
                 }
             }

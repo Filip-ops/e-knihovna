@@ -1,4 +1,5 @@
 from datetime import datetime
+import pytz
 from flask import render_template, url_for, flash, redirect, request, jsonify
 from sqlalchemy.sql.expression import select
 from flasklib import app, db, bcrypt, admin
@@ -25,8 +26,8 @@ admin.add_view(ModelView(Shelf, db.session))
 @app.route("/home/", methods=['GET', 'POST'])
 def home():
     if request.method == "POST":
-        data = {'users': 1, 'time': datetime.now()}
-        print(data)
+        tz = pytz.timezone('Europe/Prague')
+        data = {'users': User.query.count(), 'time': datetime.now(tz)}
         return jsonify(data)
     if current_user.is_authenticated:
         shelf = Shelf.query.filter_by(name='Reading', user=current_user.id).first()
