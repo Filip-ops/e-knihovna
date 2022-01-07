@@ -60,6 +60,7 @@
             <div id="main-inner">
                 {% if user %}
                     <p id="welcome-text">Welcome to your eKnihovna <b>{{user.username}}</b>!</p> <!-- user.username -->
+                    <p id="info-text"></p>
                     <br>
                     <!-- if su v databaze title_in_library s tagom reading -->
                     {% if titles %}
