@@ -605,7 +605,7 @@ input[class='page-input']:focus, input[class='page-input']:hover {
     width: 60px;
     font-family: 'Archivo', sans-serif;
     color: darkslategrey;
-    padding: 4px 3px 2px 3px;
+    padding: 3px 3px 3px 3px;
     font-size: 20px;
     font-weight: bold;
     box-shadow: none;
