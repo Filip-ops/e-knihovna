@@ -300,7 +300,7 @@ input[type='submit'] {
 }
 
 .note-list-item-page {
-    width: 8%;
+    width: 14%;
     padding: 0 10px;
 }
 
@@ -323,7 +323,7 @@ input[type='submit'] {
 
 .note-list-item-text {
     color: darkgrey;
-    width: 62%;
+    width: 56%;
     padding: 0 10px;
 }
 
