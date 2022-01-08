@@ -60,7 +60,7 @@
             <div id="main-inner">
                 {% if user %}
                     <p id="welcome-text">Welcome to your eKnihovna <b>{{user.username}}</b>!</p> <!-- user.username -->
-                    <p id="info-text"><b>Current time: </b><br><b>Users: </b></p>
+                    <p id="info-text"><b>Current time: </b>{{ time }}<br><b>Users: </b>{{ users }}</p>
                     <br>
                     <!-- if su v databaze title_in_library s tagom reading -->
                     {% if titles %}
@@ -95,7 +95,7 @@
                     {% endif %}
                 {%else%}
                     <p id="welcome-text">Welcome to eKnihovna, please <a href="{{ url_for('login') }}" class="small-link">log in</a>!</p>
-                    <p id="info-text"><b>Current time: </b><br><b>Users: </b></p>
+                    <p id="info-text"><b>Current time: </b>{{ time }}<br><b>Users: </b>{{ users }}</p>
                 {% endif %}
             </div>
         </main>

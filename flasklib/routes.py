@@ -25,15 +25,18 @@ admin.add_view(ModelView(Shelf, db.session))
 @app.route("/")
 @app.route("/home/", methods=['GET', 'POST'])
 def home():
+    tz = pytz.timezone('Europe/Prague')
+    curr_time = datetime.now(tz).strftime("%a, %d %b %Y, %H:%M")
+    n_users = User.query.count()
     if request.method == "POST":
-        tz = pytz.timezone('Europe/Prague')
-        data = {'users': User.query.count(), 'time': datetime.now(tz)}
+        data = {'users': n_users, 'time': curr_time}
         return jsonify(data)
     if current_user.is_authenticated:
         shelf = Shelf.query.filter_by(name='Reading', user=current_user.id).first()
-        return render_template('home.html', titles=shelf.library_titles, user=current_user)
+        return render_template('home.html', titles=shelf.library_titles, user=current_user, time=curr_time,
+                               users=n_users)
     else:
-        return render_template('home.html')
+        return render_template('home.html', time=curr_time, users=n_users)
 
 """
     :Author: xdudaj02
@@ -399,6 +402,9 @@ def showTitle(id):
 @app.route("/showShelf/<int:id>", methods=['GET', 'POST'])
 def showShelf(id):
     shelf = Shelf.query.get(id)
+    default = False
+    if shelf.id <= 3:
+        default = True
     if current_user.is_authenticated:
         if request.method == "POST":
             if request.form.get("shelf") == "remove":  # if name == value
@@ -420,7 +426,7 @@ def showShelf(id):
 
         else:
             pass
-    return render_template('shelf_detail.html', shelf=shelf, titles=shelf.library_titles)
+    return render_template('shelf_detail.html', shelf=shelf, titles=shelf.library_titles, default=default)
 
 """
     :Author: xsapak05

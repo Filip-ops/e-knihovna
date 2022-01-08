@@ -65,22 +65,24 @@
                         </div>
                         <!-- default tlacitka -->
                         <div class="detail-button-area">
-                            <div class="form-button-wrapper">
-                                <!-- vola edit shelf popup -->
-                                <button name="shelf" value="edit" class="btn-edit" id="create-tag-btn">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <p class="btn-desc">EDIT SHELF</p>
-                            </div>
-                            <div class="form-button-wrapper">
-                                <!-- post request s shelf=remove -->
-                                <form method="POST" class="form-button-icon">
-                                    <button name="shelf" value="remove" class="btn-del">
-                                        <i class="fas fa-trash"></i>
+                            {% if not default %}
+                                <div class="form-button-wrapper">
+                                    <!-- vola edit shelf popup -->
+                                    <button name="shelf" value="edit" class="btn-edit" id="create-tag-btn">
+                                        <i class="fas fa-edit"></i>
                                     </button>
-                                </form>
-                                <p class="btn-desc">REMOVE SHELF</p>
-                            </div>
+                                    <p class="btn-desc">EDIT SHELF</p>
+                                </div>
+                                <div class="form-button-wrapper">
+                                    <!-- post request s shelf=remove -->
+                                    <form method="POST" class="form-button-icon">
+                                        <button name="shelf" value="remove" class="btn-del">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                    <p class="btn-desc">REMOVE SHELF</p>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
 
