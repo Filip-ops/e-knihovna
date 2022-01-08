@@ -199,23 +199,25 @@ def myWishlist():
 def search():
     if current_user.is_authenticated:
         titles = Title.query.order_by(Title.name).all()
+
+        if request.args.get("search"):
+            name_title = request.args.get("search")
+            filter_type = request.args.get("search_filter")
+            if filter_type == "all":
+                titles = Title.query.join(Author).filter(or_(Title.name.op('~*')(name_title),
+                                                             Author.name.op('~*')(name_title),
+                                                             Title.genre.op('~*')(name_title))).order_by(
+                    Title.name).all()
+            elif filter_type == "title":
+                titles = Title.query.filter(Title.name.op('~*')(name_title)).order_by(Title.name).all()
+            elif filter_type == "author":
+                titles = Title.query.join(Author).filter(Author.name.op('~*')(name_title)).order_by(
+                    Title.name).all()
+            else:
+                titles = Title.query.filter(Title.genre.op('~*')(name_title)).order_by(Title.name).all()
+
         if request.method == "POST":
-            if request.form.get("button_search") == "Search":
-                name_title = request.form.get("search")
-                filter_type = request.form.get("search_filter")
-                if filter_type == "all":
-                    titles = Title.query.join(Author).filter(or_(Title.name.op('~*')(name_title),
-                                                                 Author.name.op('~*')(name_title),
-                                                                 Title.genre.op('~*')(name_title))).order_by(
-                        Title.name).all()
-                elif filter_type == "title":
-                    titles = Title.query.filter(Title.name.op('~*')(name_title)).order_by(Title.name).all()
-                elif filter_type == "author":
-                    titles = Title.query.join(Author).filter(Author.name.op('~*')(name_title)).order_by(
-                        Title.name).all()
-                else:
-                    titles = Title.query.filter(Title.genre.op('~*')(name_title)).order_by(Title.name).all()
-            elif request.form.get("add_lib"):
+            if request.form.get("add_lib"):
                 title_isbn = request.form.get("add_lib")
                 title = Title.query.filter_by(isbn=title_isbn).first()
                 if len(Wishlist_title.query.join(Title).filter(Title.isbn == title_isbn,
