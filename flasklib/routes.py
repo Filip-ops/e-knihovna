@@ -302,8 +302,20 @@ def showTitle(id):
 
         if request.method == "POST":
             if request.json:
+                name = request.json['name']
+                start_page = request.json['start_page']
+                end_page = request.json['end_page']
+                text = request.json['text']
+                color = request.json['color']
+                note = Note(name=name, start_page=start_page, text=text, end_page=end_page, color=color,
+                            library_title=lib_title.id)
+                db.session.add(note)
+                db.session.commit()
+                data = {'name': name, 'start_page': start_page, 'end_page': end_page, 'text': text, 'color': color}
+                
                 lib_title.page = request.json['page']
                 db.session.commit()
+                return jsonify(data)
 
             if request.form.get("remove_tag"):  # if name == value
                 shelf_id = request.form.get("remove_tag")
