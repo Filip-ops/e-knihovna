@@ -280,7 +280,7 @@
                             <textarea name="text" id="text" rows="5" maxlength="1000"></textarea>
                         </div>
                         <!-- on click post request -->
-                        <input type = "button" onclick = "foo()" value = "Display"> 
+                        <!--<input type = "button" onclick = "foo()" value = "Display">-->
                         <button name="note" value="add" class="btn-add">
                             <i class="fas fa-check"></i>
                         </button>
@@ -329,7 +329,7 @@
                     const page_end = pole['page_end'];
                     const color = pole['color'];
                     const text = pole['text']; 
-                    document.getElementById("pg").innerHTML = '<p>PAGE' + page_start + '-' + page_end '</p>';
+                    document.getElementById("pg").innerHTML = '<p>PAGE' + page_start + '-' + page_end + '</p>';
                     document.getElementById("col").innerHTML = '<rect width="8px" height="50px" style="fill:' + color +' "></rect>';
                     document.getElementById("nm").innerHTML = '<p>' + name + '</p>';
                     document.getElementById("txt").innerHTML = '<p>' + text + '</p>';

@@ -302,16 +302,16 @@ def showTitle(id):
 
         if request.method == "POST":
             if request.json:
-                name = request.json['name']
-                start_page = request.json['start_page']
-                end_page = request.json['end_page']
-                text = request.json['text']
-                color = request.json['color']
-                note = Note(name=name, start_page=start_page, text=text, end_page=end_page, color=color,
-                            library_title=lib_title.id)
-                db.session.add(note)
-                db.session.commit()
-                data = {'name': name, 'start_page': start_page, 'end_page': end_page, 'text': text, 'color': color}
+                # name = request.json['name']
+                # start_page = request.json['start_page']
+                # end_page = request.json['end_page']
+                # text = request.json['text']
+                # color = request.json['color']
+                # note = Note(name=name, start_page=start_page, text=text, end_page=end_page, color=color,
+                #             library_title=lib_title.id)
+                # db.session.add(note)
+                # db.session.commit()
+                # data = {'name': name, 'start_page': start_page, 'end_page': end_page, 'text': text, 'color': color}
                 
                 print(request.json)
                 if request.json['event'] == 'page':
@@ -346,8 +346,6 @@ def showTitle(id):
                     not_shelves_format = {x: y for x, y in zip(not_shelves_ids, not_shelves_names)}
                     print(not_shelves_format)
                     return make_response(jsonify({'success': True, 'not_shelves': not_shelves_format}), 200)
-
-                return jsonify(data)
 
             if request.form.get("remove_tag"):  # if name == value
                 shelf_id = request.form.get("remove_tag")
@@ -389,7 +387,7 @@ def showTitle(id):
             if request.form.get("wishlist") == "remove":
                 db.session.delete(wl_title)
                 db.session.commit()
-            """
+
             if request.form.get("note") == "add":
                 name = request.form.get("name")
                 start_page = request.form.get("page_start")
@@ -400,9 +398,7 @@ def showTitle(id):
                             library_title=lib_title.id)
                 db.session.add(note)
                 db.session.commit()
-                data = {'name': name, 'start_page': start_page, 'end_page': end_page, 'text': text, 'color': color}
-                return jsonify(data)
-            """
+
             if request.form.get("remove_note"):
                 note_id = request.form.get("remove_note")
                 note = Note.query.get(note_id)
