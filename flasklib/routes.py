@@ -315,7 +315,7 @@ def showTitle(id):
                 
                 lib_title.page = request.json['page']
                 db.session.commit()
-                
+
                 return jsonify(data)
 
             if request.form.get("remove_tag"):  # if name == value
@@ -359,7 +359,7 @@ def showTitle(id):
             if request.form.get("wishlist") == "remove":
                 db.session.delete(wl_title)
                 db.session.commit()
-
+            """
             if request.form.get("note") == "add":
                 name = request.form.get("name")
                 start_page = request.form.get("page_start")
@@ -372,7 +372,7 @@ def showTitle(id):
                 db.session.commit()
                 data = {'name': name, 'start_page': start_page, 'end_page': end_page, 'text': text, 'color': color}
                 return jsonify(data)
-
+            """
             if request.form.get("remove_note"):
                 note_id = request.form.get("remove_note")
                 note = Note.query.get(note_id)
