@@ -357,6 +357,8 @@ def showTitle(id):
                             library_title=lib_title.id)
                 db.session.add(note)
                 db.session.commit()
+                data = {'name': name, 'start_page': start_page, 'end_page': end_page, 'text': text, 'color': color}
+                return jsonify(data)
 
             if request.form.get("remove_note"):
                 note_id = request.form.get("remove_note")

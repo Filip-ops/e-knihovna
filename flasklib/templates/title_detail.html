@@ -258,7 +258,7 @@
                     <!-- post request s note=add a hodnotami pre novy notev : name, page_start, page_end, color, text -->
                     <!-- not sure about the color ze co to posle a ako sa to bude ukladat ta hodnota, hadam to bude
                     hexa hodnota a nebude je treba dako specialne riesit -->
-                    <form action="" method="POST">
+                    <form action="" method="POST" onsubmit="return foo()">
                         <div class="input-row">
                             <label for="name" class="required-label">Name: </label>
                             <input type="text" name="name" id="name" required="required" maxlength="30">
@@ -325,6 +325,19 @@
     </div>
 
     <script>
+        function foo(){
+            const xhttp = new XMLHttpRequest();
+            xhttp.open("POST", "{{ url_for('showTitle', id=title.id)}}", true);
+            xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            const name = document.getElementById('name');
+            const page_start = document.getElementById('page_start');
+            const page_end = document.getElementById('page_end');
+            const color = document.getElementById('color');
+            const text = document.getElementById('text');
+            xhttp.send(JSON.stringify({ "name": name.value,"page_start": page_start.value,"page_end": page_end.value,"color": color.value,"text": text.value }));
+            document.activeElement.blur()
+            return false;
+        }
         function pageNumFunc(value) {
             const xhttp = new XMLHttpRequest();
             xhttp.open("POST", "{{ url_for('showTitle', id=title.id)}}", true);
