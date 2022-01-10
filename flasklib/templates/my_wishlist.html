@@ -62,17 +62,19 @@
                     <h2>My Wishlist</h2>
                 </div>
                 <div id="content">
-                    <form action="" method="post" class="form-search">
-                        <label for="search"></label>
-                        <input type="text" name="search" size="30" id="search">
-                        <input type="submit" name="button_search" value="Search">
-                        <div class="search_filter">
-                            <label><input type="radio" value="all" checked="checked" name="search_filter" id="sf_all"> all</label>
-                            <label><input type="radio" value="title" name="search_filter" id="sf_title"> title</label>
-                            <label><input type="radio" value="author" name="search_filter" id="sf_author"> author</label>
-                            <label><input type="radio" value="genre" name="search_filter" id="sf_genre"> genre</label>
-                        </div>
-                    </form>
+                    {% if titles %}
+                        <form action="" method="post" class="form-search">
+                            <label for="search"></label>
+                            <input type="text" name="search" size="30" id="search">
+                            <input type="submit" name="button_search" value="Search">
+                            <div class="search_filter">
+                                <label><input type="radio" value="all" checked="checked" name="search_filter" id="sf_all"> all</label>
+                                <label><input type="radio" value="title" name="search_filter" id="sf_title"> title</label>
+                                <label><input type="radio" value="author" name="search_filter" id="sf_author"> author</label>
+                                <label><input type="radio" value="genre" name="search_filter" id="sf_genre"> genre</label>
+                            </div>
+                        </form>
+                {% endif %}
 
                     <div class="list-wrapper">
                         {% if titles %}

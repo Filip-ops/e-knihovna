@@ -1,6 +1,6 @@
 from datetime import datetime
 import pytz
-from flask import render_template, url_for, flash, redirect, request, jsonify
+from flask import render_template, url_for, flash, redirect, request, jsonify, make_response
 from sqlalchemy.sql.expression import select
 from flasklib import app, db, bcrypt, admin
 from flask_login import login_user, current_user, logout_user, login_required
@@ -96,13 +96,13 @@ def myLibrary():
                 titles = [Title.query.get(lib_title.title) for lib_title in lib_titles.all()]
 
         temp = Library_title.query.filter_by(user=current_user.id).join(Title).order_by(Title.name).all()
-        shelf_list = []
-        for title in temp:
+        title_dict = {}
+        for lib_title, title in zip(temp, titles):
             shelves = Shelf.query.filter_by(user=current_user.id)
-            my_shelves = shelves.filter(Shelf.library_titles.any(id=title.id)).all()
-            shelf_list.append(my_shelves)
+            my_shelves = shelves.filter(Shelf.library_titles.any(id=lib_title.id)).all()
+            title_dict[title] = my_shelves
 
-        return render_template('my_library.html', titles=zip(titles, shelf_list), result=result, bad_isbn=bad_isbn,
+        return render_template('my_library.html', titles=title_dict, result=result, bad_isbn=bad_isbn,
                                search=searched)
     else:
         return redirect(url_for('home'))
@@ -313,8 +313,39 @@ def showTitle(id):
                 db.session.commit()
                 data = {'name': name, 'start_page': start_page, 'end_page': end_page, 'text': text, 'color': color}
                 
-                lib_title.page = request.json['page']
-                db.session.commit()
+                print(request.json)
+                if request.json['event'] == 'page':
+                    lib_title.page = request.json['page']
+                    db.session.commit()
+                elif request.json['event'] == 'move':
+                    if request.json['where'] == 'lib' and request.json['action'] == 'add':
+                        lib_title = Library_title(page=0, user=current_user.id, title=title.id)
+                        if wl_title:
+                            db.session.delete(wl_title)
+                        db.session.add(lib_title)
+                        db.session.commit()
+                        return make_response(jsonify({'success': True}), 200)
+                    elif request.json['where'] == 'lib' and request.json['action'] == 'del':
+                        db.session.delete(lib_title)
+                        db.session.commit()
+                        return make_response(jsonify({'success': True}), 200)
+                    elif request.json['where'] == 'wl' and request.json['action'] == 'add':
+                        wl_title = Wishlist_title(user=current_user.id, title=title.id)
+                        db.session.add(wl_title)
+                        db.session.commit()
+                        return make_response(jsonify({'success': True}), 200)
+                    elif request.json['where'] == 'wl' and request.json['action'] == 'del':
+                        print('hey')
+                        db.session.delete(wl_title)
+                        db.session.commit()
+                        return make_response(jsonify({'success': True}), 200)
+                elif request.json['event'] == 'not_shelf':
+                    not_shelves = shelves.filter(~Shelf.library_titles.any(id=lib_title.id)).all()
+                    not_shelves_ids = [int(x.id) for x in not_shelves]
+                    not_shelves_names = [str(x.name) for x in not_shelves]
+                    not_shelves_format = {x: y for x, y in zip(not_shelves_ids, not_shelves_names)}
+                    print(not_shelves_format)
+                    return make_response(jsonify({'success': True, 'not_shelves': not_shelves_format}), 200)
 
                 return jsonify(data)
 
@@ -349,7 +380,6 @@ def showTitle(id):
             if request.form.get("library") == "remove":
                 db.session.delete(lib_title)
                 db.session.commit()
-                pass
 
             if request.form.get("wishlist") == "add":
                 wl_title = Wishlist_title(user=current_user.id, title=title.id)
@@ -420,7 +450,7 @@ def showTitle(id):
 def showShelf(id):
     shelf = Shelf.query.get(id)
     default = False
-    if shelf.id <= 3:
+    if shelf.name in ['Owned', 'Read', 'Reading']:
         default = True
     if current_user.is_authenticated:
         if request.method == "POST":

@@ -84,24 +84,26 @@
                         <p></p>
                     {% endif %}
 
-                    <h3>Search My Titles</h3>
-                    <!-- post method: v search je hladany retazeca a v search_filter je co sa sf_x kde x je co sa prehladava -->
-                    <form action="" method="post" class="form-search">
-                        <label for="search"></label>
-                        <input type="text" name="search" id="search" size="30">
-                        <input type="submit" name="button_search" value="Search">
-                        <div class="search_filter">
-                            <label><input type="radio" value="all" checked="checked" name="search_filter" id="sf_all"> all</label>
-                            <label><input type="radio" value="title" name="search_filter" id="sf_title"> title</label>
-                            <label><input type="radio" value="author" name="search_filter" id="sf_author"> author</label>
-                            <label><input type="radio" value="genre" name="search_filter" id="sf_genre"> genre</label>
-                        </div>
-                    </form>
+                    <h3>My Titles</h3>
+                    {% if titles %}
+                        <!-- post method: v search je hladany retazec a v search_filter je co sa sf_x kde x je co sa prehladava -->
+                        <form action="" method="post" class="form-search">
+                            <label for="search"></label>
+                            <input type="text" name="search" id="search" size="30">
+                            <input type="submit" name="button_search" value="Search">
+                            <div class="search_filter">
+                                <label><input type="radio" value="all" checked="checked" name="search_filter" id="sf_all"> all</label>
+                                <label><input type="radio" value="title" name="search_filter" id="sf_title"> title</label>
+                                <label><input type="radio" value="author" name="search_filter" id="sf_author"> author</label>
+                                <label><input type="radio" value="genre" name="search_filter" id="sf_genre"> genre</label>
+                            </div>
+                        </form>
+                    {% endif %}
 
                     <div class="list-wrapper">
                         {% if titles %}
                             <table>
-                                {% for title, shelves in titles %}
+                                {% for title, shelves in titles.items() %}
                                     <tr class="list-item">
                                         <td class="list-item-inner">
                                             <img src={{title.img}} alt="img" height="70">

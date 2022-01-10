@@ -33,15 +33,17 @@ page_end.oninput = function () {
 }
 
 let add_tag = document.getElementsByClassName('btn-add-tag')[0]
-add_tag.onmouseover = function() {
-    add_tag.parentElement.parentElement.style.border = "1px solid black"
-    add_tag.parentElement.parentElement.style.color = "black"
-    add_tag.parentElement.parentElement.style.boxShadow = "-1px 0 1px lightgreen, -1px 1px 1px lightgreen, " +
-        "-1px -1px 1px lightgreen, 1px 0 1px lightgreen, 1px -1px 1px lightgreen, 1px 1px 1px lightgreen, " +
-        "0 -1px 1px lightgreen, 0 1px 1px lightgreen"
-};
-add_tag.onmouseout = function() {
-    add_tag.parentElement.parentElement.style.border = "1px solid lightgrey"
-    add_tag.parentElement.parentElement.style.color = "darkgrey"
-    add_tag.parentElement.parentElement.style.boxShadow = "none"
-};
+if (add_tag != null) {
+    add_tag.onmouseover = function() {
+        add_tag.parentElement.parentElement.style.border = "1px solid black"
+        add_tag.parentElement.parentElement.style.color = "black"
+        add_tag.parentElement.parentElement.style.boxShadow = "-1px 0 1px lightgreen, -1px 1px 1px lightgreen, " +
+            "-1px -1px 1px lightgreen, 1px 0 1px lightgreen, 1px -1px 1px lightgreen, 1px 1px 1px lightgreen, " +
+            "0 -1px 1px lightgreen, 0 1px 1px lightgreen"
+    };
+    add_tag.onmouseout = function() {
+        add_tag.parentElement.parentElement.style.border = "1px solid lightgrey"
+        add_tag.parentElement.parentElement.style.color = "darkgrey"
+        add_tag.parentElement.parentElement.style.boxShadow = "none"
+    };
+}

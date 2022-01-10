@@ -66,7 +66,7 @@
                             <p><a class="detail-author" href="{{ url_for('showAuthor', id=title.author_id)}}">{{title.author.name}}</a></p>
                             <p class="detail-other">{{title.release_year}}</p>
                             <p class="detail-other">{{title.genre}}</p>
-                            <div class="detail-tag-list">
+                            <div class="detail-tag-list" id="detail-tag-list">
                                 {% if my_shelves %}
                                     <!-- for shelf in policky v ktorych je tento title_in_library -->
                                     {% for shelf in my_shelves %}
@@ -105,9 +105,9 @@
                             <!-- zobrazi sa ked existuje title_in_library s title.isbn a je v policke reading -->
                             {% if reading %}
                                 <div class="form-button-wrapper">
-                                    <form method="POST" class="form-button-icon">
+                                    <form method="post" class="form-button-icon">
                                         <!-- odstrani z policky reading a prida do policky read -->
-                                        <button name="reading" value="done" class="btn-finish">
+                                        <button name="reading" value="done" class="btn-finish" id="reading-action">
                                             <i class="fas fa-check-circle"></i>
                                         </button>
                                     </form>
@@ -117,48 +117,50 @@
                             <!-- zobrazi sa ked neexistuje title_in_library pre tento title -->
                             {% if not lib_title %}
                                 <div class="form-button-wrapper">
-                                    <form method="POST" class="form-button-icon">
+                                    <div class="form-button-icon">
                                         <!-- vytvori title_in_library, isbn netreba poslat, bude v url -->
-                                        <button name="library" value="add" class="btn-add">
+                                        <button name="library" value="add" class="btn-add" id="lib-action" onclick="return lib_action()">
                                             <i class="fas fa-plus-circle"></i>
                                         </button>
-                                    </form>
+                                    </div>
                                     <p class="btn-desc">ADD TO LIBRARY</p>
                                 </div>
                             {% endif %}
                             <!-- zobrazi sa ked existuje title_in_library pre tento title -->
                             {% if lib_title %}
                                 <div class="form-button-wrapper">
-                                    <form method="POST" class="form-button-icon">
+                                    <div class="form-button-icon">
                                         <!-- odstrani title_in_library -->
-                                        <button name="library" value="remove" class="btn-del">
+                                        <button name="library" value="remove" class="btn-del" id="lib-action" onclick="return lib_action()">
                                             <i class="fas fa-trash"></i>
                                         </button>
-                                    </form>
+                                    </div>
                                     <p class="btn-desc">REMOVE FROM LIBRARY</p>
+                                </div>
+                                <div class="form-button-wrapper" id="wl-button-wrapper">
                                 </div>
                             {% endif %}
                             <!-- zobrazi sa ked neexistuje title_in_wishlist pre tento title -->
                             {% if not wl_title and not lib_title %}
-                                <div class="form-button-wrapper">
-                                    <form method="POST" class="form-button-icon">
+                                <div class="form-button-wrapper" id="wl-button-wrapper">
+                                    <div class="form-button-icon">
                                         <!-- vytvori sa title_in_wishlist, isbn v url -->
-                                        <button name="wishlist" value="add" class="btn-add">
+                                        <button name="wishlist" value="add" class="btn-add" id="wl-action" onclick="return wl_action()">
                                             <i class="fas fa-plus-circle"></i>
                                         </button>
-                                    </form>
+                                    </div>
                                     <p class="btn-desc">ADD TO WISHLIST</p>
                                 </div>
                             {% endif %}
                             <!-- zobrazi sa ked existuje title_in_wishlist pre tento title -->
                             {% if wl_title %}
-                                <div class="form-button-wrapper">
-                                    <form method="POST" class="form-button-icon">
+                                <div class="form-button-wrapper" id="wl-button-wrapper">
+                                    <div class="form-button-icon">
                                         <!-- odstrani title_in_wishlist -->
-                                        <button name="wishlist" value="remove" class="btn-del">
+                                        <button name="wishlist" value="remove" class="btn-del" id="wl-action" onclick="return wl_action()">
                                             <i class="fas fa-trash"></i>
                                         </button>
-                                    </form>
+                                    </div>
                                     <p class="btn-desc">REMOVE FROM WISHLIST</p>
                                 </div>
                             {% endif %}
@@ -167,7 +169,7 @@
                     <!-- zobrazi sa len ked existuje title_in_library a je v policke reading -->
                     <!-- on enter post request page = new page value -->
                     {% if reading %}
-                        <form method="post" class="form-page-input" onsubmit="return func()">
+                        <form method="post" class="form-page-input" onsubmit="return page_num()">
                             <label>
                                 <span>You're on page: </span>
                                 <input type="number" name="page" value="{{ lib_title.page }}" class="page-input" id="page-input"> <!-- title_in_library.page -->
@@ -177,8 +179,8 @@
                         </form>
                     {% endif %}
                     <!-- note_list -->
-                    {% if lib_title %}
-                        <div id="content-detail-list">
+                    <div id="content-detail-list">
+                        {% if lib_title %}
                             <div class="heading-w-button">
                                 <h3>My Notes</h3>
                                 <!-- vola add note popup -->
@@ -233,8 +235,8 @@
                                     </tr>
                                 {% endfor %}
                             </table>
-                        </div>
-                    {% endif %}
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </main>
@@ -297,29 +299,10 @@
                 <i class="fas fa-times" id="add-tag-close"></i>
             </div>
             <div class="modal-body">
-                <div class="modal-form">
+                <div class="modal-form" id="not-shelves-list">
                     <!-- post request with array: selected[] containing shelf.id values  -->
                     <!-- prida title do vsetkych policiek co su v selected -->
-                    {% if shelves %}
-                        <form action="" method="POST">
-                            <!-- for shelf in policky v ktorych este neni tento title -->
-                            <!-- jeden item -->
-                            {% for shelf in shelves %}
-                                <div class="checkbox-item">
-                                    <input type="checkbox" name="selected" id="{{shelf.id}}" value="{{shelf.id}}">
-                                    <!-- id alebo value (radsej obidva)=shelf.id -->
-                                    <label for="{{shelf.id}}">{{shelf.name}}</label> <!-- shelf.name -->
-                                </div>
-                            {% endfor %}
-                            <!-- post request on click -->
-                            <button name="tag" value="add" class="btn-add" type="submit">
-                                <i class="fas fa-check"></i>
-                            </button>
-                            <br>
-                        </form>
-                    {% else %}
-                        <p>This title is already added to all of your shelves.</p>
-                    {% endif %}
+                    <p>This title is already added to all of your shelves.</p>
                 </div>
             </div>
         </div>
@@ -357,25 +340,168 @@
                 }
             }
         }
-        function pageNumFunc(value) {
-            const xhttp = new XMLHttpRequest();
-            xhttp.open("POST", "{{ url_for('showTitle', id=title.id)}}", true);
-            xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-            xhttp.send(JSON.stringify({ "page": value }));
-            return false;
-        }
-        function func() {
+        function page_num() {
             const xhttp = new XMLHttpRequest();
             xhttp.open("POST", "{{ url_for('showTitle', id=title.id)}}", true);
             xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
             const value = document.getElementById('page-input');
-            xhttp.send(JSON.stringify({ "page": value.value }));
+            xhttp.send(JSON.stringify({ "event": "page", "page": value.value }));
             document.activeElement.blur()
             return false;
         }
     </script>
-    <script src="{{ url_for('static', filename='add_note.js') }}"></script>
-    <script src="{{ url_for('static', filename='add_tag.js') }}"></script>
+
+    <script>
+        set_add_tag();
+        set_add_note();
+        function lib_action() {
+            let new_class = '';
+            let type = '';
+            if (document.getElementById("lib-action").className === "btn-del") {
+                new_class = "btn-add";
+                type = "del";
+            } else if (document.getElementById("lib-action").className === "btn-add") {
+                new_class = "btn-del";
+                type = "add";
+            } else {
+                return false;
+            }
+
+            const xhttp = new XMLHttpRequest();
+            xhttp.open("POST", "{{ url_for('showTitle', id=title.id)}}", true);
+            xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhttp.send(JSON.stringify({ "event": "move", "action": type, "where": "lib" }));
+
+            xhttp.onreadystatechange = function() {
+                if ((xhttp.readyState === 4) && (xhttp.status === 200)) {
+                    document.getElementById("lib-action").className = new_class;
+                    document.getElementById("lib-action").onclick = function (){
+                        return lib_action(type);
+                    };
+                    if (type === "add") {
+                        document.getElementById("lib-action").innerHTML = `<i class="fas fa-trash"></i>`
+                        document.getElementById("lib-action").parentElement.nextElementSibling.innerHTML = "REMOVE FROM LIBRARY";
+                        document.getElementById("wl-button-wrapper").innerHTML = "";
+                        document.getElementById("detail-tag-list").innerHTML = `<div class="detail-tag-item"><span>Add to shelf</span><div class="form-button-icon"><button name="tag" value="add" class="btn-add-tag" id="add-tag-btn"><i class="fas fa-plus"></i><span class="tooltip"">add</span></button></div></div>`;
+                        document.getElementById("content-detail-list").innerHTML = `<div class="heading-w-button"><h3>My Notes</h3><button name="note" value="add" class="btn-add" id="add-note-btn"><span><i class="fas fa-plus-circle"></i> New Note</span></button></div><table id="note-table"></table>`;
+                        set_add_tag();
+                        set_add_note();
+                    }
+                    else {
+                        document.getElementById("lib-action").innerHTML = `<i class="fas fa-plus-circle"></i>`
+                        document.getElementById("lib-action").parentElement.nextElementSibling.innerHTML = "ADD TO LIBRARY";
+                        document.getElementById("wl-button-wrapper").innerHTML = `<div class="form-button-icon"><button name="wishlist" value="add" class="btn-add" id="wl-action" onclick="return wl_action()"><i class="fas fa-plus-circle"></i></button></div><p class="btn-desc">ADD TO WISHLIST</p>`;
+                        document.getElementById("detail-tag-list").innerHTML = "";
+                        document.getElementById("content-detail-list").innerHTML = "";
+                    }
+                }
+            }
+            return false;
+        }
+        function wl_action() {
+            let new_class = '';
+            let type = '';
+            if (document.getElementById("wl-action").className === "btn-del") {
+                new_class = "btn-add";
+                type = "del";
+            } else if (document.getElementById("wl-action").className === "btn-add") {
+                new_class = "btn-del";
+                type = "add";
+            } else {
+                return false;
+            }
+
+            const xhttp = new XMLHttpRequest();
+            xhttp.open("POST", "{{ url_for('showTitle', id=title.id)}}", true);
+            xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhttp.send(JSON.stringify({ "event": "move", "action": type, "where": "wl" }));
+
+            xhttp.onreadystatechange = function() {
+                if ((xhttp.readyState === 4) && (xhttp.status === 200)) {
+                    document.getElementById("wl-action").className = new_class;
+                    document.getElementById("wl-action").onclick = function (){
+                        return wl_action(type);
+                    };
+                    if (type === "add") {
+                        document.getElementById("wl-action").innerHTML = `<i class="fas fa-trash"></i>`
+                        document.getElementById("wl-action").parentElement.nextElementSibling.innerHTML = "REMOVE FROM WISHLIST";
+                    }
+                    else {
+                        document.getElementById("wl-action").innerHTML = `<i class="fas fa-plus-circle"></i>`
+                        document.getElementById("wl-action").parentElement.nextElementSibling.innerHTML = "ADD TO WISHLIST";
+                    }
+                }
+            }
+            return false;
+        }
+        function set_add_tag() {
+            let modal_tag = document.getElementById("add-tag-modal");
+            let btn_tag = document.getElementById("add-tag-btn");
+            let close_tag = document.getElementById("add-tag-close");
+
+            if (btn_tag != null) {
+                btn_tag.onclick = function () {
+                    const xhttp = new XMLHttpRequest();
+                    xhttp.open("POST", "{{ url_for('showTitle', id=title.id)}}", true);
+                    xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                    xhttp.send(JSON.stringify({"event": "not_shelf"}));
+                    xhttp.onreadystatechange = function () {
+                        if ((xhttp.readyState === 4) && (xhttp.status === 200)) {
+                            let not_shelves_list = document.getElementById("not-shelves-list");
+                            let modal_string = `<form action="" method="POST">`
+                            const response = JSON.parse(xhttp.responseText);
+                            for (let key in response['not_shelves']) {
+                                modal_string += `<div class="checkbox-item"><input type="checkbox" name="selected" id="`+ key + `" value="`+ key + `"><label for="`+ key + `">`+ response['not_shelves'][key] + `</label></div>`;
+                            }
+                            modal_string += `<button name="tag" value="add" class="btn-add" type="submit"><i class="fas fa-check"></i></button><br></form>`;
+                            not_shelves_list.innerHTML = modal_string
+                            modal_tag.style.display = "block";
+                        }
+                    }
+                };
+                btn_tag.onmouseover = function() {
+                    btn_tag.parentElement.parentElement.style.border = "1px solid black"
+                    btn_tag.parentElement.parentElement.style.color = "black"
+                    btn_tag.parentElement.parentElement.style.boxShadow = "-1px 0 1px lightgreen, -1px 1px 1px lightgreen, " +
+                        "-1px -1px 1px lightgreen, 1px 0 1px lightgreen, 1px -1px 1px lightgreen, 1px 1px 1px lightgreen, " +
+                        "0 -1px 1px lightgreen, 0 1px 1px lightgreen"
+                };
+                btn_tag.onmouseout = function() {
+                    btn_tag.parentElement.parentElement.style.border = "1px solid lightgrey"
+                    btn_tag.parentElement.parentElement.style.color = "darkgrey"
+                    btn_tag.parentElement.parentElement.style.boxShadow = "none"
+                };
+            }
+
+            if (close_tag != null) {
+                close_tag.onclick = function () {
+                    modal_tag.style.display = "none";
+                };
+            }
+
+            return false;
+        }
+
+        function set_add_note() {
+            let modal_note = document.getElementById("add-note-modal");
+            let btn_note = document.getElementById("add-note-btn");
+            let close_note = document.getElementById("add-note-close");
+
+            if (btn_note != null) {
+                btn_note.onclick = function() {
+                    modal_note.style.display = "block";
+                }
+            }
+
+            if (close_note != null) {
+                close_note.onclick = function () {
+                    modal_note.style.display = "none";
+                }
+            }
+
+        }
+    </script>
+
     <script src="{{ url_for('static', filename='page_form.js') }}"></script>
 
 </body>
