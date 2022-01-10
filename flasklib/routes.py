@@ -315,6 +315,7 @@ def showTitle(id):
                 
                 lib_title.page = request.json['page']
                 db.session.commit()
+                
                 return jsonify(data)
 
             if request.form.get("remove_tag"):  # if name == value
