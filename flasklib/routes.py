@@ -53,6 +53,17 @@ def myLibrary():
         bad_isbn = None
         searched = False
         if request.method == "POST":
+            if request.json:
+                print(request.json)
+
+                if request.json['event'] == 'remove':
+                    title_isbn = request.json['id']
+                    title = Title.query.filter_by(isbn=title_isbn).first()
+                    item = Library_title.query.filter_by(title=title.id, user=current_user.id).first()
+                    db.session.delete(item)
+                    db.session.commit()
+                    return make_response(jsonify({'success': True}), 200)
+
             if request.form.get("button_search") == "Search":
                 searched = True
                 name_title = request.form.get("search")

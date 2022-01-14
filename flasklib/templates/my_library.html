@@ -87,7 +87,7 @@
                     <h3>My Titles</h3>
                     {% if titles %}
                         <!-- post method: v search je hladany retazec a v search_filter je co sa sf_x kde x je co sa prehladava -->
-                        <form action="" method="post" class="form-search">
+                        <form action="" method="post" class="form-search" id="visible_if_any">
                             <label for="search"></label>
                             <input type="text" name="search" id="search" size="30">
                             <input type="submit" name="button_search" value="Search">
@@ -120,18 +120,18 @@
                                                     <span class="tag-item">{{ shelf.name }}</span>
                                                 {% endfor %}
                                             </div>
-                                            <!-- vdzy tieto 2 tlacitka -->
+                                            <!-- vdzy toto tlacitko -->
                                             <div class="list-item-button">
                                                 <p>LIBRARY</p>
                                                 <!-- on press send post request with remove=title_in_library.title.isbn -->
                                                 <!-- odstrani sa title_in_library -->
-                                                <form method="POST" class="form-button-icon">
-                                                    <button name="remove" value="{{ title.isbn }}" class="btn-del">
+                                                <div class="form-button-icon">
+                                                    <button name="remove" value="{{ title.isbn }}" class="btn-del" onclick="return lib_action('{{ title.isbn }}')">
                                                         <!-- isbn_value=title_in_library.title.isbn -->
                                                         <i class="fas fa-times"></i>
                                                         <span class="tooltip">remove</span>
                                                     </button>
-                                                </form>
+                                                </div>
                                             </div>
                                         </td>
                                     </tr>
@@ -155,5 +155,33 @@
             </div>
         </footer>
     </div>
+
+    <script>
+        function lib_action(lib_title_id) {
+            const buttons = document.getElementsByClassName("btn-del");
+            let btn_pressed;
+            for(let x = 0; x < buttons.length; x++)
+                if(buttons[x].value === lib_title_id)
+                    btn_pressed = buttons[x];
+
+            const xhttp = new XMLHttpRequest();
+            xhttp.open("POST", "{{ url_for('myLibrary')}}", true);
+            xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhttp.send(JSON.stringify({ "event": "remove", "id": lib_title_id }));
+
+            xhttp.onreadystatechange = function() {
+                if ((xhttp.readyState === 4) && (xhttp.status === 200)) {
+                    let parent = btn_pressed.parentElement.parentElement.parentElement.parentElement.parentElement;
+                    btn_pressed.parentElement.parentElement.parentElement.parentElement.remove();
+                    if (parent.innerHTML.trim().length === 0) {
+                        document.getElementById("visible_if_any").remove();
+                        parent.parentElement.parentElement.innerHTML = `<p>You dont have any titles in your library.</p>`;
+                    }
+                }
+            }
+            return false;
+        }
+    </script>
+
 </body>
 </html>
