@@ -100,7 +100,7 @@ def myLibrary():
             if request.form.get("remove"):
                 title_isbn = request.form.get("remove")
                 title = Title.query.filter_by(isbn=title_isbn).first()
-                item = Library_title.query.filter_by(title=title.id).first()
+                item = Library_title.query.filter_by(title=title.id, user=current_user.id).first()
                 db.session.delete(item)
                 db.session.commit()
                 lib_titles = Library_title.query.filter_by(user=current_user.id)
@@ -180,7 +180,7 @@ def myWishlist():
             if request.form.get("remove"):
                 title_isbn = request.form.get("remove")
                 title = Title.query.filter_by(isbn=title_isbn).first()
-                item = Wishlist_title.query.filter_by(title=title.id).first()
+                item = Wishlist_title.query.filter_by(title=title.id, user=current_user.id).first()
                 db.session.delete(item)
                 db.session.commit()
                 wl_titles = Wishlist_title.query.filter_by(user=current_user.id)
@@ -188,7 +188,7 @@ def myWishlist():
             if request.form.get("add"):
                 title_isbn = request.form.get("add")
                 title = Title.query.filter_by(isbn=title_isbn).first()
-                item = Wishlist_title.query.filter_by(title=title.id).first()
+                item = Wishlist_title.query.filter_by(title=title.id, user=current_user.id).first()
                 lib_title = Library_title(page=0, user=current_user.id, title=title.id)
                 db.session.delete(item)
                 db.session.add(lib_title)
