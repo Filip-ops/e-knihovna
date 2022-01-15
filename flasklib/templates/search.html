@@ -97,13 +97,13 @@
                                                 <p>LIBRARY</p>
                                                 <!-- on press sends post request s add_lib=title.isbn -->
                                                 <!-- vytvori sa title_in_library -->
-                                                <form method="POST" class="form-button-icon">
-                                                    <button name="remove_lib" value="{{ title.isbn }}" class="btn-del">
+                                                <div class="form-button-icon">
+                                                    <button name="remove_lib" value="{{ title.isbn }}" class="btn-del" onclick="return lib_action('{{ title.isbn }}', 'del')">
                                                         <!--# isbn_value=title.isbn -->
                                                         <i class="fas fa-times"></i>
                                                         <span class="tooltip">remove</span>
                                                     </button>
-                                                </form>
+                                                </div>
                                             </div>
                                             <div class="list-item-button-empty"></div>
 
@@ -112,50 +112,50 @@
                                                 <p>LIBRARY</p>
                                                 <!-- on press sends post request s add_lib=title.isbn -->
                                                 <!-- vytvori sa title_in_library -->
-                                                <form method="POST" class="form-button-icon">
-                                                    <button name="add_lib" value="{{ title.isbn }}" class="btn-add">
+                                                <div class="form-button-icon">
+                                                    <button name="add_lib" value="{{ title.isbn }}" class="btn-add" onclick="return lib_action('{{ title.isbn }}', 'add')">
                                                         <!--# isbn_value=title.isbn -->
                                                         <i class="fas fa-plus"></i>
                                                         <span class="tooltip">add</span>
                                                     </button>
-                                                </form>
+                                                </div>
                                             </div>
                                             <div class="list-item-button">
                                                 <p>WISHLIST</p>
                                                 <!-- on press sends post request s add_wl=title.isbn -->
                                                 <!-- vytvori sa title_in_wishlist -->
-                                                <form method="POST" class="form-button-icon">
-                                                    <button name="remove_wl" value="{{ title.isbn }}" class="btn-del">
+                                                <div class="form-button-icon">
+                                                    <button name="remove_wl" value="{{ title.isbn }}" class="btn-del" onclick="return wl_action('{{ title.isbn }}', 'del')">
                                                         <!-- isbn_value=title.isbn -->
                                                         <i class="fas fa-times"></i>
                                                         <span class="tooltip">remove</span>
                                                     </button>
-                                                </form>
+                                                </div>
                                             </div>
                                         {% else %}
                                             <div class="list-item-button">
                                                 <p>LIBRARY</p>
                                                 <!-- on press sends post request s add_lib=title.isbn -->
                                                 <!-- vytvori sa title_in_library -->
-                                                <form method="POST" class="form-button-icon">
-                                                    <button name="add_lib" value="{{ title.isbn }}" class="btn-add">
+                                                <div class="form-button-icon">
+                                                    <button name="add_lib" value="{{ title.isbn }}" class="btn-add" onclick="return lib_action('{{ title.isbn }}', 'add')">
                                                         <!--# isbn_value=title.isbn -->
                                                         <i class="fas fa-plus"></i>
                                                         <span class="tooltip">add</span>
                                                     </button>
-                                                </form>
+                                                </div>
                                             </div>
                                             <div class="list-item-button">
                                                 <p>WISHLIST</p>
                                                 <!-- on press sends post request s add_wl=title.isbn -->
                                                 <!-- vytvori sa title_in_wishlist -->
-                                                <form method="POST" class="form-button-icon">
-                                                    <button name="add_wl" value="{{ title.isbn }}" class="btn-add">
+                                                <div class="form-button-icon">
+                                                    <button name="add_wl" value="{{ title.isbn }}" class="btn-add" onclick="return wl_action('{{ title.isbn }}', 'add')">
                                                         <!-- isbn_value=title.isbn -->
                                                         <i class="fas fa-plus"></i>
                                                         <span class="tooltip">add</span>
                                                     </button>
-                                                </form>
+                                                </div>
                                             </div>
 
                                         {% endif %}
@@ -177,5 +177,111 @@
             </div>
         </footer>
     </div>
+
+    <script>
+        function lib_action(isbn, type) {
+            let new_class = '';
+            let old_class = '';
+            let new_name = '';
+            let old_name = '';
+            let new_type = '';
+            if (type === "del") {
+                old_class = "btn-del";
+                new_class = "btn-add";
+                old_name = "remove_lib";
+                new_name = "add_lib";
+                new_type = "add";
+            } else if (type === "add") {
+                old_class = "btn-add";
+                new_class = "btn-del";
+                old_name = "add_lib";
+                new_name = "remove_lib";
+                new_type = "del";
+            } else {
+                return false;
+            }
+
+            const buttons = document.getElementsByClassName(old_class);
+            let btn_pressed;
+            for(let x = 0; x < buttons.length; x++)
+                if((buttons[x].value === isbn) && (buttons[x].name === old_name))
+                    btn_pressed = buttons[x];
+
+            const xhttp = new XMLHttpRequest();
+            xhttp.open("POST", "{{ url_for('search')}}", true);
+            xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhttp.send(JSON.stringify({ "event": "move", "action": type, "where": "lib", "id": isbn }));
+
+            xhttp.onreadystatechange = function() {
+                if ((xhttp.readyState === 4) && (xhttp.status === 200)) {
+                    btn_pressed.className = new_class;
+                    btn_pressed.name = new_name;
+                    btn_pressed.setAttribute("onclick", "return lib_action('" + isbn + "', '" + new_type + "')");
+
+                    if (type === "del") {
+                        btn_pressed.innerHTML = `<i class="fas fa-plus"></i><span class="tooltip">add</span>`;
+                        btn_pressed.parentElement.parentElement.nextElementSibling.className = 'list-item-button';
+                        btn_pressed.parentElement.parentElement.nextElementSibling.innerHTML = `<p>WISHLIST</p><div class="form-button-icon"><button name="add_wl" value="`+ isbn + `" class="btn-add" onclick="return wl_action('`+ isbn + `', 'add')"><i class="fas fa-plus"></i><span class="tooltip">add</span></button></div>`;
+                    } else if (type === "add") {
+                        btn_pressed.innerHTML = `<i class="fas fa-times"></i><span class="tooltip">delete</span>`;
+                        btn_pressed.parentElement.parentElement.nextElementSibling.className = 'list-item-button-empty';
+                        btn_pressed.parentElement.parentElement.nextElementSibling.innerHTML = ``;
+                    }
+                }
+            }
+            return false;
+        }
+
+        function wl_action(isbn, type) {
+            let new_class = '';
+            let old_class = '';
+            let new_name = '';
+            let old_name = '';
+            let new_type = '';
+            if (type === "del") {
+                old_class = "btn-del";
+                new_class = "btn-add";
+                old_name = "remove_wl";
+                new_name = "add_wl";
+                new_type = "add";
+            } else if (type === "add") {
+                old_class = "btn-add";
+                new_class = "btn-del";
+                old_name = "add_wl";
+                new_name = "remove_wl";
+                new_type = "del";
+            } else {
+                return false;
+            }
+
+            const buttons = document.getElementsByClassName(old_class);
+            let btn_pressed;
+            for(let x = 0; x < buttons.length; x++)
+                if((buttons[x].value === isbn) && (buttons[x].name === old_name))
+                    btn_pressed = buttons[x];
+
+            const xhttp = new XMLHttpRequest();
+            xhttp.open("POST", "{{ url_for('search')}}", true);
+            xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhttp.send(JSON.stringify({ "event": "move", "action": type, "where": "wl", "id": isbn }));
+
+            xhttp.onreadystatechange = function() {
+                if ((xhttp.readyState === 4) && (xhttp.status === 200)) {
+                    btn_pressed.className = new_class;
+                    btn_pressed.name = new_name;
+                    btn_pressed.setAttribute("onclick", "return wl_action('" + isbn + "', '" + new_type + "')");
+
+                    if (type === "del") {
+                        btn_pressed.innerHTML = `<i class="fas fa-plus"></i><span class="tooltip">add</span>`;
+                    } else if (type === "add") {
+
+                        btn_pressed.innerHTML = `<i class="fas fa-times"></i><span class="tooltip">delete</span>`;
+                    }
+                }
+            }
+            return false;
+        }
+    </script>
+
 </body>
 </html>

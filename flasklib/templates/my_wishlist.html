@@ -142,17 +142,17 @@
     </div>
 
     <script>
-        function lib_action(wl_title_id) {
+        function lib_action(isbn) {
             const buttons = document.getElementsByClassName("btn-add");
             let btn_pressed;
             for(let x = 0; x < buttons.length; x++)
-                if(buttons[x].value === wl_title_id)
+                if(buttons[x].value === isbn)
                     btn_pressed = buttons[x];
 
             const xhttp = new XMLHttpRequest();
             xhttp.open("POST", "{{ url_for('myWishlist')}}", true);
             xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-            xhttp.send(JSON.stringify({ "event": "add", "id": wl_title_id }));
+            xhttp.send(JSON.stringify({ "event": "add", "id": isbn }));
 
             xhttp.onreadystatechange = function() {
                 if ((xhttp.readyState === 4) && (xhttp.status === 200)) {
@@ -167,17 +167,17 @@
             return false;
         }
 
-        function wl_action(wl_title_id) {
+        function wl_action(isbn) {
             const buttons = document.getElementsByClassName("btn-del");
             let btn_pressed;
             for(let x = 0; x < buttons.length; x++)
-                if(buttons[x].value === wl_title_id)
+                if(buttons[x].value === isbn)
                     btn_pressed = buttons[x];
 
             const xhttp = new XMLHttpRequest();
             xhttp.open("POST", "{{ url_for('myWishlist')}}", true);
             xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-            xhttp.send(JSON.stringify({ "event": "del", "id": wl_title_id }));
+            xhttp.send(JSON.stringify({ "event": "del", "id": isbn }));
 
             xhttp.onreadystatechange = function() {
                 if ((xhttp.readyState === 4) && (xhttp.status === 200)) {

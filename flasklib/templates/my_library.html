@@ -157,17 +157,17 @@
     </div>
 
     <script>
-        function lib_action(lib_title_id) {
+        function lib_action(isbn) {
             const buttons = document.getElementsByClassName("btn-del");
             let btn_pressed;
             for(let x = 0; x < buttons.length; x++)
-                if(buttons[x].value === lib_title_id)
+                if(buttons[x].value === isbn)
                     btn_pressed = buttons[x];
 
             const xhttp = new XMLHttpRequest();
             xhttp.open("POST", "{{ url_for('myLibrary')}}", true);
             xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-            xhttp.send(JSON.stringify({ "event": "remove", "id": lib_title_id }));
+            xhttp.send(JSON.stringify({ "event": "remove", "id": isbn }));
 
             xhttp.onreadystatechange = function() {
                 if ((xhttp.readyState === 4) && (xhttp.status === 200)) {

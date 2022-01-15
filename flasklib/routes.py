@@ -22,6 +22,8 @@ admin.add_view(ModelView(Shelf, db.session))
     home() fetches user's titles which are then used in view.
     :return: returns home page with fetched data
 """
+
+
 @app.route("/")
 @app.route("/home/", methods=['GET', 'POST'])
 def home():
@@ -38,11 +40,14 @@ def home():
     else:
         return render_template('home.html', time=curr_time, users=n_users)
 
+
 """
     :Author: xdudaj02
     myLibrary() fetches user's library which are then used in view.
     :return: returns library page with fetched data
 """
+
+
 @app.route("/myLibrary/", methods=['GET', 'POST'])
 def myLibrary():
     if current_user.is_authenticated:
@@ -118,11 +123,14 @@ def myLibrary():
     else:
         return redirect(url_for('home'))
 
+
 """
     :Author: xputal00
     myShelves() fetches user's shelves which are then used in view and can be edited.
     :return: returns shelves page with fetched data
 """
+
+
 @app.route("/myShelves/", methods=['GET', 'POST'])
 def myShelves():
     if current_user.is_authenticated:
@@ -145,11 +153,14 @@ def myShelves():
         return redirect(url_for('home'))
     return render_template('my_shelves.html', shelves=shelves)
 
+
 """
     :Author: xdudaj02
     myWishlist() fetches user's titles in wishlist which are then used in view and can be interacted with.
     :return: returns wishlist page with fetched data
 """
+
+
 @app.route("/myWishlist/", methods=['GET', 'POST'])
 def myWishlist():
     if current_user.is_authenticated:
@@ -216,16 +227,18 @@ def myWishlist():
                 wl_titles = Wishlist_title.query.filter_by(user=current_user.id)
                 titles = [Title.query.get(wl_title.title) for wl_title in wl_titles.all()]
 
-
         return render_template('my_wishlist.html', titles=titles, search=searched)
     else:
         return redirect(url_for('home'))
+
 
 """
     :Author: xdudaj02
     search() fetches titles which are then used in view and can be searched through.
     :return: returns search page with fetched data
 """
+
+
 @app.route("/search/", methods=['GET', 'POST'])
 def search():
     if current_user.is_authenticated:
@@ -248,12 +261,47 @@ def search():
                 titles = Title.query.filter(Title.genre.op('~*')(name_title)).order_by(Title.name).all()
 
         if request.method == "POST":
+            if request.json:
+                print(request.json)
+
+                if request.json['event'] == 'move':
+                    title_isbn = request.json['id']
+                    if request.json['where'] == 'lib' and request.json['action'] == 'add':
+                        title = Title.query.filter_by(isbn=title_isbn).first()
+                        lib_title = Library_title(page=0, user=current_user.id, title=title.id)
+                        in_wl = Wishlist_title.query.join(Title).filter(Title.isbn == title_isbn,
+                                                                        Wishlist_title.user == current_user.id).all()
+                        if len(in_wl) > 0:
+                            item = Wishlist_title.query.filter_by(user=current_user.id, title=title.id).first()
+                            db.session.delete(item)
+                        db.session.add(lib_title)
+                        db.session.commit()
+                        return make_response(jsonify({'success': True}), 200)
+                    elif request.json['where'] == 'lib' and request.json['action'] == 'del':
+                        title = Title.query.filter_by(isbn=title_isbn).first()
+                        item = Library_title.query.filter_by(user=current_user.id, title=title.id).first()
+                        db.session.delete(item)
+                        db.session.commit()
+                        return make_response(jsonify({'success': True}), 200)
+                    elif request.json['where'] == 'wl' and request.json['action'] == 'add':
+                        title = Title.query.filter_by(isbn=title_isbn).first()
+                        wl_title = Wishlist_title(user=current_user.id, title=title.id)
+                        db.session.add(wl_title)
+                        db.session.commit()
+                        return make_response(jsonify({'success': True}), 200)
+                    elif request.json['where'] == 'wl' and request.json['action'] == 'del':
+                        title = Title.query.filter_by(isbn=title_isbn).first()
+                        item = Wishlist_title.query.filter_by(user=current_user.id, title=title.id).first()
+                        db.session.delete(item)
+                        db.session.commit()
+                        return make_response(jsonify({'success': True}), 200)
+
             if request.form.get("add_lib"):
                 title_isbn = request.form.get("add_lib")
                 title = Title.query.filter_by(isbn=title_isbn).first()
                 if len(Wishlist_title.query.join(Title).filter(Title.isbn == title_isbn,
                                                                Wishlist_title.user == current_user.id).all()) > 0:
-                    item = Wishlist_title.query.filter_by(title=title.id).first()
+                    item = Wishlist_title.query.filter_by(user=current_user.id, title=title.id).first()
                     db.session.delete(item)
                 lib_title = Library_title(page=0, user=current_user.id, title=title.id)
                 db.session.add(lib_title)
@@ -269,13 +317,13 @@ def search():
             elif request.form.get("remove_lib"):
                 title_isbn = request.form.get("remove_lib")
                 title = Title.query.filter_by(isbn=title_isbn).first()
-                item = Library_title.query.filter_by(title=title.id).first()
+                item = Library_title.query.filter_by(user=current_user.id, title=title.id).first()
                 db.session.delete(item)
                 db.session.commit()
             elif request.form.get("remove_wl"):
                 title_isbn = request.form.get("remove_wl")
                 title = Title.query.filter_by(isbn=title_isbn).first()
-                item = Wishlist_title.query.filter_by(title=title.id).first()
+                item = Wishlist_title.query.filter_by(user=current_user.id, title=title.id).first()
                 db.session.delete(item)
                 db.session.commit()
         title_dict = {}
@@ -292,22 +340,28 @@ def search():
     else:
         return redirect(url_for('home'))
 
+
 """
     :Author: xsapak05
     showAuthor() fetches authors which are then used in view.
     :return: returns author page with fetched data
 """
+
+
 @app.route("/showAuthor/<int:id>/", methods=['GET', 'POST'])
 def showAuthor(id):
     author = Author.query.get(id)
     titles = Title.query.filter_by(author_id=id)
     return render_template('author_detail.html', author=author, titles=titles)
 
+
 """
     :Author: xsapak05/xdudaj02
     showTitle() fetches user's titles which are then used in view and edits title data in database
     :return: returns title page with fetched data
 """
+
+
 @app.route("/showTitle/<int:id>/", methods=['GET', 'POST'])
 def showTitle(id):
     if current_user.is_authenticated:
@@ -315,7 +369,8 @@ def showTitle(id):
         lib_title = Library_title.query.filter_by(title=id, user=current_user.id).first()
         wl_title = Wishlist_title.query.filter_by(title=id, user=current_user.id).first()
         notes = Note.query.join(Library_title).filter(Library_title.title == id,
-            Library_title.user == current_user.id).order_by(Note.start_page).all()
+                                                      Library_title.user == current_user.id).order_by(
+            Note.start_page).all()
         if lib_title:
             shelves = Shelf.query.filter_by(user=current_user.id)
             my_shelves = shelves.filter(Shelf.library_titles.any(id=lib_title.id)).all()
@@ -343,7 +398,7 @@ def showTitle(id):
                 # db.session.add(note)
                 # db.session.commit()
                 # data = {'name': name, 'start_page': start_page, 'end_page': end_page, 'text': text, 'color': color}
-                
+
                 print(request.json)
                 if request.json['event'] == 'page':
                     lib_title.page = request.json['page']
@@ -449,7 +504,8 @@ def showTitle(id):
             lib_title = Library_title.query.filter_by(title=id, user=current_user.id).first()
             wl_title = Wishlist_title.query.filter_by(title=id, user=current_user.id).first()
             notes = Note.query.join(Library_title).filter(Library_title.title == id,
-                Library_title.user == current_user.id).order_by(Note.start_page).all()
+                                                          Library_title.user == current_user.id).order_by(
+                Note.start_page).all()
             if lib_title:
                 shelves = Shelf.query.filter_by(user=current_user.id)
                 my_shelves = shelves.filter(Shelf.library_titles.any(id=lib_title.id)).all()
@@ -468,11 +524,14 @@ def showTitle(id):
     return render_template('title_detail.html', title=title, shelves=not_shelves, my_shelves=my_shelves, notes=notes,
                            reading=reading, lib_title=lib_title, wl_title=wl_title)
 
+
 """
     :Author: xsapak05
     showShelf() fetches user's shelves data which are then used in view.
     :return: returns shelf page with fetched data
 """
+
+
 @app.route("/showShelf/<int:id>", methods=['GET', 'POST'])
 def showShelf(id):
     shelf = Shelf.query.get(id)
@@ -502,11 +561,14 @@ def showShelf(id):
             pass
     return render_template('shelf_detail.html', shelf=shelf, titles=shelf.library_titles, default=default)
 
+
 """
     :Author: xsapak05
     login() fetches user's data from db and compares with input.
     :return: returns home page with fetched data when successfull else login page
 """
+
+
 @app.route("/login/", methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
@@ -522,11 +584,14 @@ def login():
             flash('Login unsuccessfull! Check password and mail address', 'Error')
     return render_template('login.html', title='Login', form=form)
 
+
 """
     :Author: xputal00
     register() inserts user's data into db.
     :return: returns login/register page
 """
+
+
 @app.route("/register/", methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
@@ -549,11 +614,14 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
+
 """
     :Author: xputal00
     logout()
     :return: returns home page with fetched data
 """
+
+
 @app.route("/logout/")
 def logout():
     logout_user()
