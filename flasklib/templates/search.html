@@ -223,7 +223,7 @@
                         btn_pressed.parentElement.parentElement.nextElementSibling.className = 'list-item-button';
                         btn_pressed.parentElement.parentElement.nextElementSibling.innerHTML = `<p>WISHLIST</p><div class="form-button-icon"><button name="add_wl" value="`+ isbn + `" class="btn-add" onclick="return wl_action('`+ isbn + `', 'add')"><i class="fas fa-plus"></i><span class="tooltip">add</span></button></div>`;
                     } else if (type === "add") {
-                        btn_pressed.innerHTML = `<i class="fas fa-times"></i><span class="tooltip">delete</span>`;
+                        btn_pressed.innerHTML = `<i class="fas fa-times"></i><span class="tooltip">remove</span>`;
                         btn_pressed.parentElement.parentElement.nextElementSibling.className = 'list-item-button-empty';
                         btn_pressed.parentElement.parentElement.nextElementSibling.innerHTML = ``;
                     }
@@ -275,7 +275,7 @@
                         btn_pressed.innerHTML = `<i class="fas fa-plus"></i><span class="tooltip">add</span>`;
                     } else if (type === "add") {
 
-                        btn_pressed.innerHTML = `<i class="fas fa-times"></i><span class="tooltip">delete</span>`;
+                        btn_pressed.innerHTML = `<i class="fas fa-times"></i><span class="tooltip">remove</span>`;
                     }
                 }
             }
