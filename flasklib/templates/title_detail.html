@@ -86,14 +86,15 @@
                                 {% if lib_title %}
                                     <!-- default sa zobrazi -->
                                     <div class="detail-tag-item">
-                                        {% if not my_shelves %}
-                                            <span>Add to shelf</span>
-                                        {% endif %}
                                         <div class="form-button-icon">
                                             <!-- calls add title to shelf pop up -->
                                             <button name="tag" value="add" class="btn-add-tag" id="add-tag-btn">
                                                 <i class="fas fa-plus"></i>
-                                                <span class="tooltip">add</span>
+                                                {% if not my_shelves %}
+                                                    <span id="add-to-shelf">Add to shelf</span>
+                                                {% else %}
+                                                    <span class="tooltip">add</span>
+                                                {% endif %}
                                             </button>
                                         </div>
                                     </div>
@@ -172,7 +173,7 @@
                         <form method="post" class="form-page-input" onsubmit="return page_num()">
                             <label>
                                 <span>You're on page: </span>
-                                <input type="number" name="page" value="{{ lib_title.page }}" class="page-input" id="page-input"> <!-- title_in_library.page -->
+                                <input type="number" name="page" min="0" value="{{ lib_title.page }}" class="page-input" id="page-input"> <!-- title_in_library.page -->
                                 <i class="fas fa-pencil-alt"></i>
                                 <span class="tooltip">Confirm by pressing Enter.</span>
                             </label>
@@ -344,8 +345,14 @@
             const xhttp = new XMLHttpRequest();
             xhttp.open("POST", "{{ url_for('showTitle', id=title.id)}}", true);
             xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-            const value = document.getElementById('page-input');
-            xhttp.send(JSON.stringify({ "event": "page", "page": value.value }));
+            const page = document.getElementById('page-input');
+            if ((!Number.isInteger(parseInt(page.value))) || (0 > page.value)) {
+                alert("invalid page number");
+            }
+            else {
+                xhttp.send(JSON.stringify({ "event": "page", "page": parseInt(page.value) }));
+                page.value = String(parseInt(page.value));
+            }
             document.activeElement.blur()
             return false;
         }
@@ -382,7 +389,7 @@
                         document.getElementById("lib-action").innerHTML = `<i class="fas fa-trash"></i>`
                         document.getElementById("lib-action").parentElement.nextElementSibling.innerHTML = "REMOVE FROM LIBRARY";
                         document.getElementById("wl-button-wrapper").innerHTML = "";
-                        document.getElementById("detail-tag-list").innerHTML = `<div class="detail-tag-item"><span>Add to shelf</span><div class="form-button-icon"><button name="tag" value="add" class="btn-add-tag" id="add-tag-btn"><i class="fas fa-plus"></i><span class="tooltip"">add</span></button></div></div>`;
+                        document.getElementById("detail-tag-list").innerHTML = `<div class="detail-tag-item"><div class="form-button-icon"><button name="tag" value="add" class="btn-add-tag" id="add-tag-btn"><i class="fas fa-plus"></i><span class="tooltip"">add</span></button></div><span id="add-to-shelf">Add to shelf</span></div>`;
                         document.getElementById("content-detail-list").innerHTML = `<div class="heading-w-button"><h3>My Notes</h3><button name="note" value="add" class="btn-add" id="add-note-btn"><span><i class="fas fa-plus-circle"></i> New Note</span></button></div><table id="note-table"></table>`;
                         set_add_tag();
                         set_add_note();

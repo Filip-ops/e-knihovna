@@ -871,3 +871,7 @@ label[for='search'] {
 .small-link:hover, .small-link:link, .small-link:visited, .small-link:active {
     text-decoration: underline;
 }
+
+#add-to-shelf {
+    margin-left: 7px;
+}
