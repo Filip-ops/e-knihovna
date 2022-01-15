@@ -157,6 +157,26 @@ def myWishlist():
         titles = [Title.query.get(lib_title.title) for lib_title in wl_titles.all()]
         searched = False
         if request.method == "POST":
+            if request.json:
+                print(request.json)
+
+                if request.json['event'] == 'del':
+                    title_isbn = request.json['id']
+                    title = Title.query.filter_by(isbn=title_isbn).first()
+                    item = Wishlist_title.query.filter_by(title=title.id, user=current_user.id).first()
+                    db.session.delete(item)
+                    db.session.commit()
+                    return make_response(jsonify({'success': True}), 200)
+                if request.json['event'] == 'add':
+                    title_isbn = request.json['id']
+                    title = Title.query.filter_by(isbn=title_isbn).first()
+                    item = Wishlist_title.query.filter_by(title=title.id, user=current_user.id).first()
+                    lib_title = Library_title(page=0, user=current_user.id, title=title.id)
+                    db.session.delete(item)
+                    db.session.add(lib_title)
+                    db.session.commit()
+                    return make_response(jsonify({'success': True}), 200)
+
             if request.form.get("button_search") == "Search":
                 searched = True
                 name_title = request.form.get("search")

@@ -63,7 +63,7 @@
                 </div>
                 <div id="content">
                     {% if titles %}
-                        <form action="" method="post" class="form-search">
+                        <form action="" method="post" class="form-search" id="visible_if_any">
                             <label for="search"></label>
                             <input type="text" name="search" size="30" id="search">
                             <input type="submit" name="button_search" value="Search">
@@ -98,25 +98,25 @@
                                                 <p>LIBRARY</p>
                                                 <!-- on press sends post request s add=title_in_wishlist.title.isbn -->
                                                 <!-- odstrani sa title_in_wishlist a vytvori sa title_in_library -->
-                                                <form method="POST" class="form-button-icon">
-                                                    <button name="add" value="{{ title.isbn }}" class="btn-add">
+                                                <div class="form-button-icon">
+                                                    <button name="add" value="{{ title.isbn }}" class="btn-add" onclick="return lib_action('{{ title.isbn }}')">
                                                         <!-- isbn_value=title_in_wishlis.title.isbn -->
                                                         <i class="fas fa-plus"></i>
                                                         <span class="tooltip">add</span>
                                                     </button>
-                                                </form>
+                                                </div>
                                             </div>
                                             <div class="list-item-button">
                                                 <p>WISHLIST</p>
                                                 <!-- on press sends post request s remove=title_in_wishlist.title.isbn -->
                                                 <!-- odstrani sa title_in_wishlist -->
-                                                <form method="POST" class="form-button-icon">
-                                                    <button name="remove" value="{{ title.isbn }}" class="btn-del">
+                                                <div class="form-button-icon">
+                                                    <button name="remove" value="{{ title.isbn }}" class="btn-del" onclick="return wl_action('{{ title.isbn }}')">
                                                         <!-- isbn_value=title_in_wishlis.title.isbn -->
                                                         <i class="fas fa-times"></i>
                                                         <span class="tooltip">remove</span>
                                                     </button>
-                                                </form>
+                                                </div>
                                             </div>
                                         </td>
                                     </tr>
@@ -140,5 +140,58 @@
             </div>
         </footer>
     </div>
+
+    <script>
+        function lib_action(wl_title_id) {
+            const buttons = document.getElementsByClassName("btn-add");
+            let btn_pressed;
+            for(let x = 0; x < buttons.length; x++)
+                if(buttons[x].value === wl_title_id)
+                    btn_pressed = buttons[x];
+
+            const xhttp = new XMLHttpRequest();
+            xhttp.open("POST", "{{ url_for('myWishlist')}}", true);
+            xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhttp.send(JSON.stringify({ "event": "add", "id": wl_title_id }));
+
+            xhttp.onreadystatechange = function() {
+                if ((xhttp.readyState === 4) && (xhttp.status === 200)) {
+                    let parent = btn_pressed.parentElement.parentElement.parentElement.parentElement.parentElement;
+                    btn_pressed.parentElement.parentElement.parentElement.parentElement.remove();
+                    if (parent.innerHTML.trim().length === 0) {
+                        document.getElementById("visible_if_any").remove();
+                        parent.parentElement.parentElement.innerHTML = `<p>You dont have any titles in your wishlist.</p>`;
+                    }
+                }
+            }
+            return false;
+        }
+
+        function wl_action(wl_title_id) {
+            const buttons = document.getElementsByClassName("btn-del");
+            let btn_pressed;
+            for(let x = 0; x < buttons.length; x++)
+                if(buttons[x].value === wl_title_id)
+                    btn_pressed = buttons[x];
+
+            const xhttp = new XMLHttpRequest();
+            xhttp.open("POST", "{{ url_for('myWishlist')}}", true);
+            xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhttp.send(JSON.stringify({ "event": "del", "id": wl_title_id }));
+
+            xhttp.onreadystatechange = function() {
+                if ((xhttp.readyState === 4) && (xhttp.status === 200)) {
+                    let parent = btn_pressed.parentElement.parentElement.parentElement.parentElement.parentElement;
+                    btn_pressed.parentElement.parentElement.parentElement.parentElement.remove();
+                    if (parent.innerHTML.trim().length === 0) {
+                        document.getElementById("visible_if_any").remove();
+                        parent.parentElement.parentElement.innerHTML = `<p>You dont have any titles in your wishlist.</p>`;
+                    }
+                }
+            }
+            return false;
+        }
+    </script>
+
 </body>
 </html>
