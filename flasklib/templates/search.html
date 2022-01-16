@@ -28,26 +28,26 @@
 
                 <div id="nav">
                     {% if current_user.is_authenticated %}
-                        <a href="{{ url_for('search') }}" class="nav-item" id="nav-selected">
+                        <a href="{{ url_for('search') }}" class="nav-selected" id="nav-search">
                             <span>Search</span>
                         </a>
-                        <a href="{{ url_for('myLibrary') }}" class="nav-item">
+                        <a href="{{ url_for('myLibrary') }}" class="nav-item" id="nav-lib">
                             <span>My Library</span>
                         </a>
-                        <a href="{{ url_for('myShelves') }}" class="nav-item">
+                        <a href="{{ url_for('myShelves') }}" class="nav-item" id="nav-shelves">
                             <span>My Shelves</span>
                         </a>
-                        <a href="{{ url_for('myWishlist') }}" class="nav-item">
+                        <a href="{{ url_for('myWishlist') }}" class="nav-item" id="nav-wl">
                             <span>My Wishlist</span>
                         </a>
-                        <a href="{{ url_for('logout') }}" class="nav-item">
+                        <a href="{{ url_for('logout') }}" class="nav-item" id="nav-logout">
                             <span>Logout</span>
                         </a>
                     {% else %}
-                        <a href="{{ url_for('login') }}" class="nav-item">
+                        <a href="{{ url_for('login') }}" class="nav-item" id="nav-login">
                             <span>Login</span>
                         </a>
-                        <a href="{{ url_for('register') }}" class="nav-item">
+                        <a href="{{ url_for('register') }}" class="nav-item" id="nav-register">
                             <span>Register</span>
                         </a>
                     {% endif %}

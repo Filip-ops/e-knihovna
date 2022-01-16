@@ -57,15 +57,15 @@ nav {
 }
 
 .nav-item:link, .nav-item:visited, .nav-item:active {
-    padding: 3px 10px;
+    padding: 3px 5px;
     font-weight: bolder;
     background: yellow;
     color: dimgrey;
     align-self: end;
 }
 
-.nav-item:hover, #nav-selected:link, #nav-selected:visited, #nav-selected:active, #nav-selected:hover {
-    padding: 2px 10px;
+.nav-item:hover, .nav-selected:link, .nav-selected:visited, .nav-selected:active, .nav-selected:hover {
+    padding: 2px 5px;
     font-weight: bolder;
     font-size: larger;
     color: black;
@@ -874,4 +874,65 @@ label[for='search'] {
 
 #add-to-shelf {
     margin-left: 7px;
+}
+
+#nav-login, #nav-login:visited, #nav-login:link, #nav-login:active, #nav-login:hover {
+    min-width: 47px;
+}
+
+.nav-item#nav-login span, .nav-item#nav-login:visited span, .nav-item#nav-login:link span, .nav-item#nav-login:active span {
+    padding-left: 4px;
+}
+
+#nav-register, #nav-register:visited, #nav-register:link, #nav-register:active, #nav-register:hover {
+    min-width: 72px;
+}
+
+.nav-item#nav-register span, .nav-item#nav-register:visited span, .nav-item#nav-register:link span, .nav-item#nav-register:active span {
+    padding-left: 6px;
+}
+
+#nav-search, #nav-search:visited, #nav-search:link, #nav-search:active, #nav-search:hover {
+    min-width: 61px;
+}
+
+.nav-item#nav-search span, .nav-item#nav-search:visited span, .nav-item#nav-search:link span, .nav-item#nav-search:active span {
+    padding-left: 5px;
+}
+
+#nav-lib, #nav-lib:visited, #nav-lib:link, #nav-lib:active, #nav-lib:hover {
+    min-width: 88px;
+}
+
+.nav-item#nav-lib span, .nav-item#nav-lib:visited span, .nav-item#nav-lib:link span, .nav-item#nav-lib:active span {
+    padding-left: 7px;
+}
+
+#nav-shelves, #nav-shelves:visited, #nav-shelves:link, #nav-shelves:active, #nav-shelves:hover {
+    min-width: 99px;
+}
+
+.nav-item#nav-shelves span, .nav-item#nav-shelves:visited span, .nav-item#nav-shelves:link span, .nav-item#nav-shelves:active span {
+    padding-left: 8px;
+}
+
+#nav-wl, #nav-wl:visited, #nav-wl:link, #nav-wl:active, #nav-wl:hover {
+    min-width: 97px;
+}
+
+.nav-item#nav-wl span, .nav-item#nav-wl:visited span, .nav-item#nav-wl:link span, .nav-item#nav-wl:active span{
+    padding-left: 8px;
+}
+
+#nav-logout, #nav-logout:visited, #nav-logout:link, #nav-logout:active, #nav-logout:hover {
+    min-width: 60px;
+}
+
+.nav-item#nav-logout span, .nav-item#nav-logout:visited span, .nav-item#nav-logout:link span, .nav-item#nav-logout:active span {
+    padding-left: 5px;
+}
+
+.nav-item#nav-login:hover span, .nav-item#nav-register:hover span, .nav-item#nav-search:hover span, .nav-item#nav-lib:hover span,
+.nav-item#nav-shelves:hover span, .nav-item#nav-wl:hover span, .nav-item#nav-logout:hover span {
+    padding: 0;
 }
