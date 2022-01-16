@@ -134,21 +134,18 @@ def myLibrary():
 @app.route("/myShelves/", methods=['GET', 'POST'])
 def myShelves():
     if current_user.is_authenticated:
-        shelf_list = Shelf.query.filter_by(user=current_user.id).order_by(Shelf.name).all()
-        shelves = {}
-        for shelf in shelf_list:
-            shelves[shelf] = len(shelf.library_titles)
         if request.method == "POST":
             name = request.form.get("name")
             desc = request.form.get("text")
             shelf = Shelf(name=name, desc=desc, user=current_user.id)
             db.session.add(shelf)
             db.session.commit()
-            shelf_list = Shelf.query.filter_by(user=current_user.id).order_by(Shelf.name).all()
-            for shelf in shelf_list:
-                shelves[shelf] = len(shelf.library_titles)
-        else:
-            pass
+
+        shelf_list = Shelf.query.filter_by(user=current_user.id).order_by(Shelf.name).all()
+        shelves = {}
+        for shelf in shelf_list:
+            shelves[shelf] = len(shelf.library_titles)
+
     else:
         return redirect(url_for('home'))
     return render_template('my_shelves.html', shelves=shelves)
