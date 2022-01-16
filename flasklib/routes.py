@@ -422,12 +422,13 @@ def showTitle(id):
                         db.session.commit()
                         return make_response(jsonify({'success': True}), 200)
                 elif request.json['event'] == 'not_shelf':
-                    not_shelves = shelves.filter(~Shelf.library_titles.any(id=lib_title.id)).all()
+                    not_shelves = shelves.filter(~Shelf.library_titles.any(id=lib_title.id)).order_by(Shelf.name).all()
                     not_shelves_ids = [int(x.id) for x in not_shelves]
                     not_shelves_names = [str(x.name) for x in not_shelves]
-                    not_shelves_format = {x: y for x, y in zip(not_shelves_ids, not_shelves_names)}
+                    not_shelves_format = {x: y for x, y in zip(not_shelves_names, not_shelves_ids)}
                     print(not_shelves_format)
-                    return make_response(jsonify({'success': True, 'not_shelves': not_shelves_format}), 200)
+                    return make_response(jsonify({'success': True, 'not_shelves': not_shelves_format,
+                                                  'order': not_shelves_names}), 200)
 
             if request.form.get("remove_tag"):  # if name == value
                 shelf_id = request.form.get("remove_tag")

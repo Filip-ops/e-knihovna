@@ -467,8 +467,9 @@
                             let not_shelves_list = document.getElementById("not-shelves-list");
                             let modal_string = `<form action="" method="POST">`
                             const response = JSON.parse(xhttp.responseText);
-                            for (let key in response['not_shelves']) {
-                                modal_string += `<div class="checkbox-item"><input type="checkbox" name="selected" id="`+ key + `" value="`+ key + `"><label for="`+ key + `">`+ response['not_shelves'][key] + `</label></div>`;
+                            for (let i in response['order']) {
+                                alert(response['order'][i]);
+                                modal_string += `<div class="checkbox-item"><input type="checkbox" name="selected" id="`+ response['not_shelves'][response['order'][i]] + `" value="`+ response['not_shelves'][response['order'][i]] + `"><label for="`+ response['not_shelves'][response['order'][i]] + `">`+ response['order'][i] + `</label></div>`;
                             }
                             modal_string += `<button name="tag" value="add" class="btn-add" type="submit"><i class="fas fa-check"></i></button><br></form>`;
                             not_shelves_list.innerHTML = modal_string
