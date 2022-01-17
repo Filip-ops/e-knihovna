@@ -85,12 +85,12 @@
                     {% endif %}
 
                     <h3>My Titles</h3>
-                    {% if titles %}
+                    {% if title_count > 0 %}
                         <!-- post method: v search je hladany retazec a v search_filter je co sa sf_x kde x je co sa prehladava -->
-                        <form action="" method="post" class="form-search" id="visible_if_any">
+                        <form action="" method="get" class="form-search" id="visible_if_any">
                             <label for="search"></label>
                             <input type="text" name="search" id="search" size="30">
-                            <input type="submit" name="button_search" value="Search">
+                            <input type="submit" value="Search">
                             <div class="search_filter">
                                 <label><input type="radio" value="all" checked="checked" name="search_filter" id="sf_all"> all</label>
                                 <label><input type="radio" value="title" name="search_filter" id="sf_title"> title</label>
