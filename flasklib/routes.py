@@ -186,7 +186,7 @@ def myShelves():
 def myWishlist():
     if current_user.is_authenticated:
         wl_titles = Wishlist_title.query.filter_by(user=current_user.id)
-        titles = [Title.query.get(lib_title.title) for lib_title in wl_titles.all()]
+        titles = [Title.query.get(wl_title.title) for wl_title in wl_titles.all()]
         title_count = len(titles)
         searched = False
 
