@@ -536,6 +536,22 @@ def showShelf(id):
         default = True
     if current_user.is_authenticated:
         if request.method == "POST":
+            if request.json:
+                print(request.json)
+
+                if request.json['action'] == 'edit':
+                    shelf.name = request.json['name']
+                    shelf.desc = request.json['text']
+                    db.session.commit()
+                    return make_response(jsonify({'success': True}), 200)
+
+                if request.json['action'] == 'remove_title':
+                    title_id = request.json['id']
+                    title = Library_title.query.get(title_id)
+                    shelf.library_titles.remove(title)
+                    db.session.commit()
+                    return make_response(jsonify({'success': True}), 200)
+
             if request.form.get("shelf") == "remove":  # if name == value
                 db.session.delete(shelf)
                 db.session.commit()

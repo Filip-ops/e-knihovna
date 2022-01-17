@@ -60,15 +60,15 @@
                 <div id="content-detail">
                     <div id="content-detail-header">
                         <div class="detail-desc">
-                            <h2>{{shelf.name}}</h2> <!-- shelf.name -->
-                            <p>{{shelf.desc}}</p> <!-- shelf.description -->
+                            <h2 id="shelf-name">{{shelf.name}}</h2> <!-- shelf.name -->
+                            <p id="shelf-text">{{shelf.desc}}</p> <!-- shelf.description -->
                         </div>
                         <!-- default tlacitka -->
                         <div class="detail-button-area">
                             {% if not default %}
                                 <div class="form-button-wrapper">
                                     <!-- vola edit shelf popup -->
-                                    <button name="shelf" value="edit" class="btn-edit" id="create-tag-btn">
+                                    <button name="shelf" value="edit" class="btn-edit" id="create-tag-btn" onclick="open_edit()">
                                         <i class="fas fa-edit"></i>
                                     </button>
                                     <p class="btn-desc">EDIT SHELF</p>
@@ -87,45 +87,46 @@
                     </div>
 
                     <!-- if dake knihy v shelfe -->
-                    {% if titles %}
-                        <div id="content-detail-list">
-                            <h3>Titles ({{ titles|length }})</h3>
-                            <table>
-                                <!-- jeden item ako v author_detail.html + tlacitko -->
-                                {% for title in titles %}
-                                    <tr class="list-item">
-                                        <td class="list-item-inner">
-                                            <img src="{{ title.l_title.img }}" alt="img" height="70">
-                                            <div class="list-item-text">
-                                                <a class="title-name" href="{{ url_for('showTitle', id=title.l_title.id)}}">{{title.l_title.name}}</a>
-                                                <span class="title-year">{{title.l_title.release_year}}</span>
-                                                <br>
-                                                <a class="title-author" href="{{ url_for('showAuthor', id=title.l_title.author_id)}}">{{title.l_title.author.name}}</a>
-                                                <br>
-                                                <span class="title-genre">{{title.l_title.genre}}</span>
-                                            </div>
-                                            <div class="list-item-tag-list">
-                                            </div>
-                                            <div class="list-item-button">
-                                                <p>SHELF</p>
-                                                <form method="POST" class="form-button-icon">
-                                                    <!-- post request s remove=title.isbn -->
-                                                    <button name="remove" value="{{title.id}}" class="btn-del">
-                                                        <!-- value=title_in_library.isbn -->
-                                                        <i class="fas fa-times"></i>
-                                                        <span class="tooltip">remove</span>
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            </table>
+                    <div id="content-detail-list">
+                        <h3>Titles (<b id="title-cnt">{{ titles|length }}</b>)</h3>
+                        <div id="list-wrapper">
+                            {% if titles %}
+                                <table>
+                                    <!-- jeden item ako v author_detail.html + tlacitko -->
+                                    {% for title in titles %}
+                                        <tr class="list-item">
+                                            <td class="list-item-inner">
+                                                <img src="{{ title.l_title.img }}" alt="img" height="70">
+                                                <div class="list-item-text">
+                                                    <a class="title-name" href="{{ url_for('showTitle', id=title.l_title.id)}}">{{title.l_title.name}}</a>
+                                                    <span class="title-year">{{title.l_title.release_year}}</span>
+                                                    <br>
+                                                    <a class="title-author" href="{{ url_for('showAuthor', id=title.l_title.author_id)}}">{{title.l_title.author.name}}</a>
+                                                    <br>
+                                                    <span class="title-genre">{{title.l_title.genre}}</span>
+                                                </div>
+                                                <div class="list-item-tag-list">
+                                                </div>
+                                                <div class="list-item-button">
+                                                    <p>SHELF</p>
+                                                    <div class="form-button-icon">
+                                                        <!-- post request s remove=title.isbn -->
+                                                        <button name="remove" value="{{title.id}}" class="btn-del" onclick="remove_title('{{ title.id }}')">
+                                                            <!-- value=title_in_library.isbn -->
+                                                            <i class="fas fa-times"></i>
+                                                            <span class="tooltip">remove</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </table>
+                            {% else %}
+                                <p>There are no titles in this shelf yet.</p>
+                            {% endif %}
                         </div>
-                    {% else %}
-                        <br>
-                        <p>There are no titles in this shelf yet.</p>
-                    {% endif %}
+                    </div>
                 </div>
             </div>
         </main>
@@ -141,7 +142,7 @@
         <div class="modal-inner">
             <div class="modal-header">
                 <h2>Edit Shelf</h2>
-                <i class="fas fa-times" id="create-tag-close"></i>
+                <i class="fas fa-times" id="create-tag-close" onclick="close_edit()"></i>
             </div>
             <div class="modal-body">
                 <div class="modal-form">
@@ -154,7 +155,7 @@
                             <label for="text">Description: </label>
                             <textarea name="text" id="text" rows="5">{{shelf.desc}}</textarea>
                         </div>
-                        <button name="shelf" value="edit" class="btn-add" type="submit">
+                        <button name="shelf" value="edit" class="btn-add" type="submit" onclick="return confirm_edit()">
                             <i class="fas fa-check"></i>
                         </button>
                         <br>
@@ -164,6 +165,68 @@
         </div>
     </div>
 
-    <script src="{{ url_for('static', filename='create_tag.js') }}"></script>
+    <script>
+        function open_edit() {
+            let modal = document.getElementById("create-tag-modal");
+            modal.style.display = "block";
+        }
+
+        function close_edit() {
+            let modal = document.getElementById("create-tag-modal");
+            modal.style.display = "none";
+
+        }
+
+        function confirm_edit() {
+            let modal = document.getElementById("create-tag-modal");
+            let name = document.getElementById("name").value;
+            let text = document.getElementById("text").value;
+
+            const xhttp = new XMLHttpRequest();
+            xhttp.open("POST", "{{ url_for('showShelf', id=shelf.id)}}", true);
+            xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhttp.send(JSON.stringify({ "action": "edit", "name": name, "text": text }));
+
+            xhttp.onreadystatechange = function() {
+                if ((xhttp.readyState === 4) && (xhttp.status === 200)) {
+                    let elem_name = document.getElementById("shelf-name");
+                    let elem_text = document.getElementById("shelf-text");
+                    elem_name.innerHTML = name;
+                    elem_text.innerHTML = text;
+                    modal.style.display = "none";
+                }
+            }
+            return false;
+        }
+
+        function remove_title(id) {
+            const buttons = document.getElementsByClassName("btn-del");
+            let btn_pressed;
+            for(let x = 0; x < buttons.length; x++)
+                if(buttons[x].value === id)
+                    btn_pressed = buttons[x];
+
+            const xhttp = new XMLHttpRequest();
+            xhttp.open("POST", "{{ url_for('showShelf', id=shelf.id)}}", true);
+            xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhttp.send(JSON.stringify({ "action": "remove_title", "id": id }));
+
+            xhttp.onreadystatechange = function() {
+                if ((xhttp.readyState === 4) && (xhttp.status === 200)) {
+                    let parent = btn_pressed.parentElement.parentElement.parentElement.parentElement.parentElement;
+                    btn_pressed.parentElement.parentElement.parentElement.parentElement.remove();
+                    const title_cnt = document.getElementById("title-cnt");
+                    let title_cnt_val = title_cnt.innerHTML;
+                    title_cnt_val--;
+                    title_cnt.innerHTML = title_cnt_val;
+                    if (parent.innerHTML.trim().length === 0) {
+                        parent.parentElement.parentElement.innerHTML = `<p>There are no titles in this shelf yet.</p>`;
+                    }
+                }
+            }
+            return false;
+        }
+    </script>
+
 </body>
 </html>
