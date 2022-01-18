@@ -936,3 +936,7 @@ label[for='search'] {
 .nav-item#nav-shelves:hover span, .nav-item#nav-wl:hover span, .nav-item#nav-logout:hover span {
     padding: 0;
 }
+
+#isbn-add-result {
+    height: 33px;
+}

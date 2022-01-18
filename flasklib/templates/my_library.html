@@ -67,22 +67,11 @@
                     <form action="" method="post" class="isbn-form">
                         <label for="isbn"><b>ISBN: </b></label>
                         <input type="text" name="isbn" id="isbn">
-                        <input type="submit" name="button_add" value="Add">
+                        <input type="submit" name="button_add" value="Add" onclick="return add_isbn()">
                     </form>
-                    <!-- if title s isbn=isbn doesnt exist -> display this, replace isbn_value -->
-                    {% if result == False %}
-                        <p class="err-msg">Sorry, there is no title with this isbn in the database. Contact the
-                            <a class="err-link" href="mailto:admin@eknihovna.com?subject=Missing title {{ bad_isbn }}&body=Please add this title.">admin</a>.
-                        </p>
-                    <!-- if title s isbn=isbn exists -> create title_in_library and display this -->
-                    <!-- ked sa prida mohlo by to redirectnut na jeho detail aby sa dalo pridat do policiek a hovadiny
-                    lebo sa mi tam nechcelo robit daky pridavaci form -->
-                    {% elif result == True %}
-                        <p class="ok-msg">Title successfully added to your library.</p>
-                    <!-- if not post -> display this -->
-                    {% else %}
+                    <div id="isbn-add-result">
                         <p></p>
-                    {% endif %}
+                    </div>
 
                     <h3>My Titles</h3>
                     {% if title_count > 0 %}
@@ -102,7 +91,7 @@
 
                     <div class="list-wrapper">
                         {% if titles %}
-                            <table>
+                            <table id="titles-table">
                                 {% for title, shelves in titles.items() %}
                                     <tr class="list-item">
                                         <td class="list-item-inner">
@@ -176,6 +165,49 @@
                     if (parent.innerHTML.trim().length === 0) {
                         document.getElementById("visible_if_any").remove();
                         parent.parentElement.parentElement.innerHTML = `<p>You dont have any titles in your library.</p>`;
+                    }
+                }
+            }
+            return false;
+        }
+
+        function add_isbn() {
+            const isbn = document.getElementById('isbn').value;
+
+            const xhttp = new XMLHttpRequest();
+            xhttp.open("POST", "{{ url_for('myLibrary')}}", true);
+            xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhttp.send(JSON.stringify({ "event": "isbn_add", "isbn": isbn }));
+
+            xhttp.onreadystatechange = function() {
+                if ((xhttp.readyState === 4) && (xhttp.status === 200)) {
+                    const response = JSON.parse(xhttp.responseText);
+                    if (response['found'] === 'true') {
+                        document.getElementById('isbn-add-result').innerHTML = `<p class="ok-msg">Title ` + response['name'] + ` was successfully added to your library</p>`;
+
+                        let title_url = "{{ url_for('showTitle', id=0)}}";
+                        let author_url = "{{ url_for('showAuthor', id=0)}}";
+                        title_url = title_url.substring(0, title_url.length - 2) + response['title_id'];
+                        author_url = author_url.substring(0, author_url.length - 2) + response['author_id'];
+                        let new_title_item_html = `<tr class="list-item"><td class="list-item-inner"><img src=` + response['image'] + ` alt="img" height="70"><div class="list-item-text"><a class="title-name" href="` + title_url + `">` + response['name'] + `</a><span class="title-year">` + response['year'] + `</span><br><a class="title-author" href="` + author_url + `">` + response['author'] + `</a><br><span class="title-genre">` + response['genre'] + `</span></div><div class="list-item-tag-list">`;
+                        new_title_item_html += `</div><div class="list-item-button"><p>LIBRARY</p><div class="form-button-icon"><button name="remove" value="` + response['isbn'] + `" class="btn-del" onclick="return lib_action('` + response['isbn'] + `')"><i class="fas fa-times"></i><span class="tooltip">remove</span></button></div></div></td></tr>`;
+
+                        const title_items = document.getElementsByClassName("list-item");
+                        const title_cnt = title_items.length;
+                        let inserted = false;
+                        for(let x = 0; x < title_cnt; x++) {
+                            if (response['name'] < title_items[x].firstElementChild.firstElementChild.nextElementSibling.firstElementChild.innerHTML) {
+                                title_items[x].insertAdjacentHTML('beforebegin', new_title_item_html);
+                                inserted = true;
+                            }
+                        }
+                        if (inserted === false) {
+                            document.getElementById('titles-table').lastElementChild.insertAdjacentHTML('afterend', new_title_item_html);
+                        }
+                    } else if (response['found'] === 'false') {
+                        document.getElementById('isbn-add-result').innerHTML = `<p class="err-msg">Sorry, there is no title with this isbn in the database. Contact the <a class="err-link" href="mailto:admin@eknihovna.com?subject=Missing title ` + isbn + `&body=Please add this title.">admin</a>.</p>`;
+                    } else {
+                        document.getElementById('isbn-add-result').innerHTML = `<p class="err-msg">You already have this title in your library.</p>`;
                     }
                 }
             }

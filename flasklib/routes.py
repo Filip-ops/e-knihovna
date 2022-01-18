@@ -92,6 +92,25 @@ def myLibrary():
                     db.session.commit()
                     return make_response(jsonify({'success': True}), 200)
 
+                if request.json['event'] == 'isbn_add':
+                    title_isbn = request.json['isbn']
+                    title = Title.query.filter_by(isbn=title_isbn).first()
+                    if not title:
+                        return make_response(jsonify({'success': True, 'found': 'false'}), 200)
+                    else:
+                        lib_title = Library_title.query.filter_by(title=title.id, user=current_user.id).first()
+                        if not lib_title:
+                            lib_title = Library_title(page=0, user=current_user.id, title=title.id)
+                            author = Author.query.filter_by(id=title.author_id).first()
+                            db.session.add(lib_title)
+                            db.session.commit()
+                            return make_response(jsonify({'success': True, 'found': 'true', 'title_id': title.id,
+                                                          'author_id': author.id, 'name': title.name,
+                                                          'author': author.name, 'genre': title.genre,
+                                                          'image': title.img, 'year': title.release_year}), 200)
+                        else:
+                            return make_response(jsonify({'success': True, 'found': 'repeat'}), 200)
+
             if request.form.get("button_search") == "Search":
                 searched = True
                 name_title = request.form.get("search")
@@ -413,7 +432,7 @@ def showTitle(id):
         title = Title.query.get(id)
         lib_title = Library_title.query.filter_by(title=id, user=current_user.id).first()
         wl_title = Wishlist_title.query.filter_by(title=id, user=current_user.id).first()
-        notes = Note.query.join(Library_title).\
+        notes = Note.query.join(Library_title). \
             filter(Library_title.title == id, Library_title.user == current_user.id).order_by(Note.start_page).all()
         if lib_title:
             shelves = Shelf.query.filter_by(user=current_user.id)
@@ -573,7 +592,7 @@ def showTitle(id):
 
             lib_title = Library_title.query.filter_by(title=id, user=current_user.id).first()
             wl_title = Wishlist_title.query.filter_by(title=id, user=current_user.id).first()
-            notes = Note.query.join(Library_title).\
+            notes = Note.query.join(Library_title). \
                 filter(Library_title.title == id, Library_title.user == current_user.id).order_by(Note.start_page).all()
             if lib_title:
                 shelves = Shelf.query.filter_by(user=current_user.id)
