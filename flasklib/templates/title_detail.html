@@ -545,7 +545,6 @@
                         if (name_list[x] === 'Reading') {
                             document.getElementById("reading-button-wrapper").innerHTML = `<form method="post" class="form-button-icon"><button name="reading" value="done" class="btn-finish" id="reading-action" onclick="return finish()"><i class="fas fa-check-circle"></i></button></form><p class="btn-desc">FINISH READING</p>`;
                             const page = {{ lib_title.page }};
-                            alert({{ lib_title.page }});
                             document.getElementById("page-number-wrapper").innerHTML = `<form method="post" class="form-page-input" onsubmit="return page_num()"><label><span>You're on page: </span><input type="number" name="page" min="0" value="` + page + `" class="page-input" id="page-input"><i class="fas fa-pencil-alt"></i><span class="tooltip">Confirm by pressing Enter.</span></label></form>`;
                         }
                     }
