@@ -73,13 +73,13 @@
                                         <div class="detail-tag-item">
                                             <span>{{ shelf.name }}</span> <!-- shelf.name -->
                                             <!-- on click post request with remove_tag=shelf.id -->
-                                            <form method="POST" class="form-button-icon">
-                                                <button name="remove_tag" value="{{ shelf.id }}" class="btn-del-tag">
+                                            <div class="form-button-icon">
+                                                <button name="remove_tag" value="{{ shelf.id }}" class="btn-del-tag" onclick="return tag_remove('{{ shelf.id }}')">
                                                     <!-- id_value=shelf.id -->
                                                     <i class="fas fa-times"></i>
                                                     <span class="tooltip">remove</span>
                                                 </button>
-                                            </form>
+                                            </div>
                                         </div>
                                     {% endfor %}
                                 {% endif %}
@@ -104,17 +104,18 @@
                         <!-- tlacitka - on click post request... -->
                         <div class="detail-button-area">
                             <!-- zobrazi sa ked existuje title_in_library s title.isbn a je v policke reading -->
-                            {% if reading %}
-                                <div class="form-button-wrapper" id="reading-button-wrapper">
+                            <div class="form-button-wrapper" id="reading-button-wrapper">
+                                {% if reading %}
                                     <form method="post" class="form-button-icon">
                                         <!-- odstrani z policky reading a prida do policky read -->
-                                        <button name="reading" value="done" class="btn-finish" id="reading-action">
+                                        <button name="reading" value="done" class="btn-finish" id="reading-action" onclick="return finish()">
                                             <i class="fas fa-check-circle"></i>
                                         </button>
                                     </form>
                                     <p class="btn-desc">FINISH READING</p>
-                                </div>
-                            {% endif %}
+                                {% endif %}
+                            </div>
+
                             <!-- zobrazi sa ked neexistuje title_in_library pre tento title -->
                             {% if not lib_title %}
                                 <div class="form-button-wrapper">
@@ -363,6 +364,7 @@
     <script>
         set_add_tag();
         set_add_note();
+        remove_effect();
         function lib_action() {
             let new_class = '';
             let type = '';
@@ -451,6 +453,73 @@
             }
             return false;
         }
+
+        function finish() {
+            const xhttp = new XMLHttpRequest();
+            xhttp.open("POST", "{{ url_for('showTitle', id=title.id)}}", true);
+            xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhttp.send(JSON.stringify({ "event": "finish" }));
+
+            xhttp.onreadystatechange = function() {
+                if ((xhttp.readyState === 4) && (xhttp.status === 200)) {
+                    const pole = JSON.parse(xhttp.responseText);
+                    const shelf_read_id = pole['read'];
+                    const shelf_reading_id = pole['reading'];
+                    document.getElementById("reading-button-wrapper").innerHTML = '';
+                    document.getElementById("page-number-wrapper").innerHTML = '';
+                    const shelf_all = document.getElementsByClassName('btn-del-tag');
+                    let shelf_reading_item;
+                    let shelf_read_item;
+                    for(let x = 0; x < shelf_all.length; x++) {
+                        if ((parseInt(shelf_all[x].value) === shelf_reading_id)) {
+                            shelf_reading_item = shelf_all[x];
+                        }
+                        if ((parseInt(shelf_all[x].value) === shelf_read_id)) {
+                            shelf_read_item = shelf_all[x];
+                        }
+                    }
+                    if (shelf_read_item != null) {
+                        shelf_read_item.parentElement.parentElement.remove();
+                    }
+                    shelf_reading_item.value = shelf_read_id;
+                    shelf_reading_item.parentElement.previousElementSibling.innerHTML = 'Read';
+                }
+            }
+            return false;
+        }
+
+        function tag_remove(id) {
+            const xhttp = new XMLHttpRequest();
+            xhttp.open("POST", "{{ url_for('showTitle', id=title.id)}}", true);
+            xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhttp.send(JSON.stringify({ "event": "tag", "action": "remove", "id": id }));
+
+            xhttp.onreadystatechange = function() {
+                if ((xhttp.readyState === 4) && (xhttp.status === 200)) {
+                    const pole = JSON.parse(xhttp.responseText);
+                    const shelf_reading_id = pole['reading'];
+                    const shelf_all = document.getElementsByClassName('btn-del-tag');
+                    let shelf_item;
+                    for (let x = 0; x < shelf_all.length; x++) {
+                        if ((shelf_all[x].value === id)) {
+                            shelf_item = shelf_all[x];
+                        }
+                    }
+                    if (parseInt(shelf_item.value) === shelf_reading_id) {
+                        document.getElementById("reading-button-wrapper").innerHTML = '';
+                        document.getElementById("page-number-wrapper").innerHTML = '';
+                    }
+
+                    shelf_item.parentElement.parentElement.remove();
+                    remove_effect();
+
+                    if (shelf_all.length === 0){
+                        document.getElementById("add-tag-btn").innerHTML = `<i class="fas fa-plus"></i><span id="add-to-shelf">Add to shelf</span>`;
+                    }
+                }
+            }
+        }
+
         function set_add_tag() {
             let modal_tag = document.getElementById("add-tag-modal");
             let btn_tag = document.getElementById("add-tag-btn");
@@ -516,6 +585,24 @@
                 }
             }
 
+        }
+
+        function remove_effect() {
+            let del_tags = document.getElementsByClassName('btn-del-tag');
+            for (let i = 0; i < del_tags.length; ++i) {
+                del_tags[i].onmouseover = function() {
+                    del_tags[i].parentElement.parentElement.style.border = "1px solid black"
+                    del_tags[i].parentElement.parentElement.style.color = "black"
+                    del_tags[i].parentElement.parentElement.style.boxShadow = "-1px 0 1px indianred, -1px 1px 1px indianred, " +
+                        "-1px -1px 1px indianred, 1px 0 1px indianred, 1px -1px 1px indianred, 1px 1px 1px indianred, " +
+                        "0 -1px 1px indianred, 0 1px 1px indianred"
+                };
+                del_tags[i].onmouseout = function() {
+                    del_tags[i].parentElement.parentElement.style.border = "1px solid lightgrey"
+                    del_tags[i].parentElement.parentElement.style.color = "darkgrey"
+                    del_tags[i].parentElement.parentElement.style.boxShadow = "none"
+                };
+            }
         }
     </script>
 
