@@ -85,7 +85,7 @@
                                 {% endif %}
                                 {% if lib_title %}
                                     <!-- default sa zobrazi -->
-                                    <div class="detail-tag-item">
+                                    <div class="detail-tag-item" id="add-tag-wrapper">
                                         <div class="form-button-icon">
                                             <!-- calls add title to shelf pop up -->
                                             <button name="tag" value="add" class="btn-add-tag" id="add-tag-btn">
@@ -393,7 +393,7 @@
                         document.getElementById("lib-action").innerHTML = `<i class="fas fa-trash"></i>`
                         document.getElementById("lib-action").parentElement.nextElementSibling.innerHTML = "REMOVE FROM LIBRARY";
                         document.getElementById("wl-button-wrapper").innerHTML = "";
-                        document.getElementById("detail-tag-list").innerHTML = `<div class="detail-tag-item"><div class="form-button-icon"><button name="tag" value="add" class="btn-add-tag" id="add-tag-btn"><i class="fas fa-plus"></i><span class="tooltip"">add</span></button></div><span id="add-to-shelf">Add to shelf</span></div>`;
+                        document.getElementById("detail-tag-list").innerHTML = `<div class="detail-tag-item" id="add-tag-wrapper"><div class="form-button-icon"><button name="tag" value="add" class="btn-add-tag" id="add-tag-btn"><i class="fas fa-plus"></i><span id="add-to-shelf">Add to shelf</span></button></div></div>`;
                         document.getElementById("content-detail-list").innerHTML = `<div class="heading-w-button"><h3>My Notes</h3><button name="note" value="add" class="btn-add" id="add-note-btn"><span><i class="fas fa-plus-circle"></i> New Note</span></button></div><table id="note-table"></table>`;
                         set_add_tag();
                         set_add_note();
@@ -520,6 +520,43 @@
             }
         }
 
+        function tag_add() {
+            const checkbox_all = document.getElementsByClassName('checkbox-item');
+            let id_list = [];
+            let name_list = [];
+            for (let x = 0; x < checkbox_all.length; x++) {
+                if ((checkbox_all[x].firstElementChild.checked === true)) {
+                    id_list.push(checkbox_all[x].firstElementChild.value);
+                    name_list.push(checkbox_all[x].firstElementChild.nextElementSibling.innerHTML);
+                }
+            }
+
+            const xhttp = new XMLHttpRequest();
+            xhttp.open("POST", "{{ url_for('showTitle', id=title.id)}}", true);
+            xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhttp.send(JSON.stringify({ "event": "tag", "action": "add", "id_list": id_list }));
+            xhttp.onreadystatechange = function() {
+                if ((xhttp.readyState === 4) && (xhttp.status === 200)) {
+                    const modal_tag = document.getElementById("add-tag-modal");
+                    modal_tag.style.display = "none";
+                    for (let x = 0; x < name_list.length; x++) {
+                        let new_tag_html = `<div class="detail-tag-item"><span>`+ name_list[x] +`</span><div class="form-button-icon"><button name="remove_tag" value="`+ id_list[x] +`" class="btn-del-tag" onclick="return tag_remove('`+ id_list[x] +`')"><i class="fas fa-times"></i><span class="tooltip">remove</span></button></div></div>`;
+                        document.getElementById('add-tag-wrapper').insertAdjacentHTML('beforebegin', new_tag_html);
+                        if (name_list[x] === 'Reading') {
+                            document.getElementById("reading-button-wrapper").innerHTML = `<form method="post" class="form-button-icon"><button name="reading" value="done" class="btn-finish" id="reading-action" onclick="return finish()"><i class="fas fa-check-circle"></i></button></form><p class="btn-desc">FINISH READING</p>`;
+                            const page = {{ lib_title.page }};
+                            alert({{ lib_title.page }});
+                            document.getElementById("page-number-wrapper").innerHTML = `<form method="post" class="form-page-input" onsubmit="return page_num()"><label><span>You're on page: </span><input type="number" name="page" min="0" value="` + page + `" class="page-input" id="page-input"><i class="fas fa-pencil-alt"></i><span class="tooltip">Confirm by pressing Enter.</span></label></form>`;
+                        }
+                    }
+                    document.getElementById("add-tag-btn").innerHTML = `<i class="fas fa-plus"></i><span class="tooltip">add</span>`;
+                    remove_effect();
+                }
+            }
+
+            return false;
+        }
+
         function set_add_tag() {
             let modal_tag = document.getElementById("add-tag-modal");
             let btn_tag = document.getElementById("add-tag-btn");
@@ -539,8 +576,11 @@
                             for (let i in response['order']) {
                                 modal_string += `<div class="checkbox-item"><input type="checkbox" name="selected" id="`+ response['not_shelves'][response['order'][i]] + `" value="`+ response['not_shelves'][response['order'][i]] + `"><label for="`+ response['not_shelves'][response['order'][i]] + `">`+ response['order'][i] + `</label></div>`;
                             }
-                            modal_string += `<button name="tag" value="add" class="btn-add" type="submit"><i class="fas fa-check"></i></button><br></form>`;
-                            not_shelves_list.innerHTML = modal_string
+                            modal_string += `<button name="tag" value="add" class="btn-add" type="submit" onclick="return tag_add()"><i class="fas fa-check"></i></button><br></form>`;
+                            if (response['order'].length > 0)
+                                not_shelves_list.innerHTML = modal_string;
+                            else
+                                not_shelves_list.innerHTML = `<p>This title is already added to all of your shelves.`;
                             modal_tag.style.display = "block";
                         }
                     }

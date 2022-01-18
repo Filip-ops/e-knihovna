@@ -487,6 +487,12 @@ def showTitle(id):
                         shelf.library_titles.remove(lib_title)
                         db.session.commit()
                         return make_response(jsonify({'success': True, 'reading': shelf_reading.id}), 200)
+                    if request.json['action'] == 'add':
+                        for s_id in request.json['id_list']:
+                            shelf = Shelf.query.get(s_id)
+                            shelf.library_titles.append(lib_title)
+                        db.session.commit()
+                        return make_response(jsonify({'success': True}), 200)
 
                 elif request.json['event'] == 'not_shelf':
                     not_shelves = shelves.filter(~Shelf.library_titles.any(id=lib_title.id)).order_by(Shelf.name).all()
