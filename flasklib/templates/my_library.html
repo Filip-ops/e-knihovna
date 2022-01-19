@@ -168,6 +168,7 @@
                     }
                 }
             }
+            document.getElementById('isbn-add-result').innerHTML = `<p></p>`;
             return false;
         }
 
@@ -190,7 +191,7 @@
                         title_url = title_url.substring(0, title_url.length - 2) + response['title_id'];
                         author_url = author_url.substring(0, author_url.length - 2) + response['author_id'];
                         let new_title_item_html = `<tr class="list-item"><td class="list-item-inner"><img src=` + response['image'] + ` alt="img" height="70"><div class="list-item-text"><a class="title-name" href="` + title_url + `">` + response['name'] + `</a><span class="title-year">` + response['year'] + `</span><br><a class="title-author" href="` + author_url + `">` + response['author'] + `</a><br><span class="title-genre">` + response['genre'] + `</span></div><div class="list-item-tag-list">`;
-                        new_title_item_html += `</div><div class="list-item-button"><p>LIBRARY</p><div class="form-button-icon"><button name="remove" value="` + response['isbn'] + `" class="btn-del" onclick="return lib_action('` + response['isbn'] + `')"><i class="fas fa-times"></i><span class="tooltip">remove</span></button></div></div></td></tr>`;
+                        new_title_item_html += `</div><div class="list-item-button"><p>LIBRARY</p><div class="form-button-icon"><button name="remove" value="` + isbn + `" class="btn-del" onclick="return lib_action('` + isbn + `')"><i class="fas fa-times"></i><span class="tooltip">remove</span></button></div></div></td></tr>`;
 
                         const title_items = document.getElementsByClassName("list-item");
                         const title_cnt = title_items.length;
