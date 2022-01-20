@@ -13,8 +13,7 @@ from flask_migrate import Migrate
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
-app.config[
-    'SQLALCHEMY_DATABASE_URI'] = 'postgresql://kqhwwsnmigskga:98ef5ac9ec4c99572c9aea8ac59aa5943e5870882c7624971537c07ba24f1751@ec2-54-220-243-77.eu-west-1.compute.amazonaws.com:5432/d370t6unudrrkp'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://nialcqehxsdpas:cef25d511b7991e99ddc2cf347961c9b567954eef38b554af8df36f36e3d16e4@ec2-63-34-223-144.eu-west-1.compute.amazonaws.com:5432/d4aldh40bv2tcr'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
