@@ -515,23 +515,23 @@ def showTitle(id):
                                                   'order': not_shelves_names}), 200)
 
                 elif request.json['event'] == 'add_note':
-                    name = request.form.get("name")
+                    '''name = request.form.get("name")
                     start_page = request.form.get("page_start")
                     end_page = request.form.get("page_end")
                     text = request.form.get("text")
-                    color = request.form.get("color")
-                    '''
+                    color = request.form.get("color")'''
+                    
                     name = request.json['name']
                     start_page = request.json['start_page']
                     end_page = request.json['end_page']
                     text = request.json['text']
-                    color = request.json['color']'''
+                    color = request.json['color']
                     note = Note(name=name, start_page=start_page, text=text, end_page=end_page, color=color,
                                  library_title=lib_title.id)
                     db.session.add(note)
                     db.session.commit()
                     return make_response(jsonify({'success': True, 'name': name, 'start_page': start_page, 'end_page': end_page,
-                                                 'text': text, 'color': color}), 200)
+                                                 'text': text, 'color': color, 'id':note.id}), 200)
                     
 
 
@@ -576,16 +576,16 @@ def showTitle(id):
                 db.session.delete(wl_title)
                 db.session.commit()
 
-            #if request.form.get("note") == "add":
-            #    name = request.form.get("name")
-            #    start_page = request.form.get("page_start")
-            #    end_page = request.form.get("page_end")
-            #    text = request.form.get("text")
-            #    color = request.form.get("color")
-            #    note = Note(name=name, start_page=start_page, text=text, end_page=end_page, color=color,
-            #                library_title=lib_title.id)
-            #    db.session.add(note)
-            #    db.session.commit()
+            if request.form.get("note") == "add":
+                name = request.form.get("name")
+                start_page = request.form.get("page_start")
+                end_page = request.form.get("page_end")
+                text = request.form.get("text")
+                color = request.form.get("color")
+                note = Note(name=name, start_page=start_page, text=text, end_page=end_page, color=color,
+                            library_title=lib_title.id)
+                db.session.add(note)
+                db.session.commit()
 
             #if request.form.get("remove_note"):
             #    note_id = request.form.get("remove_note")
