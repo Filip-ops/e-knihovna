@@ -598,6 +598,7 @@
             }
 
         }
+    
         function add_note(){
             let add_note_btn = document.getElementById("add-note-popup-btn");
             if (add_note_btn != null) {
@@ -619,11 +620,13 @@
                             const page_start = pole['page_start'];
                             const page_end = pole['page_end'];
                             const color = pole['color'];
-                            const text = pole['text']; 
+                            const text = pole['text'];
+                            //const id = pole['id']; 
                             document.getElementById("pg").innerHTML = '<p>PAGE' + page_start + '-' + page_end + '</p>';
                             document.getElementById("col").innerHTML = '<rect width="8px" height="50px" style="fill:' + color +' "></rect>';
                             document.getElementById("nm").innerHTML = '<p>' + name + '</p>';
                             document.getElementById("txt").innerHTML = '<p>' + text + '</p>';
+                            //document.getElementById("note-table").innerHTML += '<tr class="note-list-item"><td class="note-list-item-color"><svg width="8px" height="50px" id="col"><rect width="8px" height="50px" style="fill: ' + color + '"></rect></svg></td><td class="note-list-item-page" id="pg"><p>PAGE' + page_start + '-' + page_end + '</p></td><td class="note-list-item-name" id="nm"><p>' + name + '</p></td><td class="note-list-item-text" id="txt"><p>' + text + '</p></td><td class="note-list-item-button"><div class="form-button-icon"><button name="edit_note" value="{{note.id}}" class="btn-edit"><i class="fas fa-edit"></i><span class="tooltip">edit</span></button></div></td><td class="note-list-item-button"><form method="POST" class="form-button-icon"><button name="remove_note" value="{{'+id+'}}"class="btn-del"><i class="fas fa-trash"></i><span class="tooltip">remove</span></button></form></td></tr>';
                             //console.log(document.getElementById("pg").innerHTML);
                             //console.log(document.getElementById("col").innerHTML);
                             //console.log(document.getElementById("nm").innerHTML);
@@ -632,6 +635,7 @@
                     }
                 }
             }
+            return false;
         }
 
         function remove_effect() {
