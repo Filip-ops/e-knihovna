@@ -530,8 +530,9 @@ def showTitle(id):
                                  library_title=lib_title.id)
                     db.session.add(note)
                     db.session.commit()
+                    idn = note.id;
                     return make_response(jsonify({'success': True, 'name': name, 'start_page': start_page, 'end_page': end_page,
-                                                 'text': text, 'color': color}), 200)
+                                                 'text': text, 'color': color, 'idn': idn}), 200)
                     
 
 
