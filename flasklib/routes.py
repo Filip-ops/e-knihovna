@@ -577,16 +577,16 @@ def showTitle(id):
                 db.session.delete(wl_title)
                 db.session.commit()
 
-            if request.form.get("note") == "add":
-                name = request.form.get("name")
-                start_page = request.form.get("page_start")
-                end_page = request.form.get("page_end")
-                text = request.form.get("text")
-                color = request.form.get("color")
-                note = Note(name=name, start_page=start_page, text=text, end_page=end_page, color=color,
-                            library_title=lib_title.id)
-                db.session.add(note)
-                db.session.commit()
+            #if request.form.get("note") == "add":
+            #    name = request.form.get("name")
+            #    start_page = request.form.get("page_start")
+            #    end_page = request.form.get("page_end")
+            #    text = request.form.get("text")
+            #    color = request.form.get("color")
+            #    note = Note(name=name, start_page=start_page, text=text, end_page=end_page, color=color,
+            #                library_title=lib_title.id)
+            #    db.session.add(note)
+            #    db.session.commit()
 
             #if request.form.get("remove_note"):
             #    note_id = request.form.get("remove_note")
