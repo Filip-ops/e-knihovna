@@ -314,36 +314,6 @@
 
     <script>
     
-        function foo() {
-            const xhttp = new XMLHttpRequest();
-            xhttp.open("POST", "{{ url_for('home')}}", true);
-            xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;");
-            const name = document.getElementById('name');
-            const page_start = document.getElementById('page_start');
-            const page_end = document.getElementById('page_end');
-            const color = document.getElementById('color');
-            const text = document.getElementById('text');
-            xhttp.send(JSON.stringify({ "name": name.value,"page_start": page_start.value,"page_end": page_end.value,"color": color.value,"text": text.value }));
-
-            xhttp.onreadystatechange = function() {
-                if ((xhttp.readyState === 4) && (xhttp.status === 200)) {
-                    const pole = JSON.parse(xhttp.responseText);
-                    const name = pole['name'];
-                    const page_start = pole['page_start'];
-                    const page_end = pole['page_end'];
-                    const color = pole['color'];
-                    const text = pole['text']; 
-                    document.getElementById("pg").innerHTML = '<p>PAGE' + page_start + '-' + page_end + '</p>';
-                    document.getElementById("col").innerHTML = '<rect width="8px" height="50px" style="fill:' + color +' "></rect>';
-                    document.getElementById("nm").innerHTML = '<p>' + name + '</p>';
-                    document.getElementById("txt").innerHTML = '<p>' + text + '</p>';
-                    //console.log(document.getElementById("pg").innerHTML);
-                    //console.log(document.getElementById("col").innerHTML);
-                    //console.log(document.getElementById("nm").innerHTML);
-                    //console.log(document.getElementById("txt").innerHTML);
-                }
-            }
-        }
         function page_num() {
             const xhttp = new XMLHttpRequest();
             xhttp.open("POST", "{{ url_for('showTitle', id=title.id)}}", true);
@@ -606,6 +576,8 @@
 
             return false;
         }
+        
+    
 
         function set_add_note() {
             let modal_note = document.getElementById("add-note-modal");
@@ -615,6 +587,34 @@
             if (btn_note != null) {
                 btn_note.onclick = function() {
                     modal_note.style.display = "block";
+                    const xhttp = new XMLHttpRequest();
+                    xhttp.open("POST", "{{ url_for('showTitle', id=title.id)}}", true);
+                    xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;");
+                    const name = document.getElementById('name');
+                    const page_start = document.getElementById('page_start');
+                    const page_end = document.getElementById('page_end');
+                    const color = document.getElementById('color');
+                    const text = document.getElementById('text');
+                    xhttp.send(JSON.stringify({ "event":"add_note", "name": name.value,"page_start": page_start.value,"page_end": page_end.value,"color": color.value,"text": text.value }));
+                    
+                    xhttp.onreadystatechange = function() {
+                        if ((xhttp.readyState === 4) && (xhttp.status === 200)) {
+                            const pole = JSON.parse(xhttp.responseText);
+                            const name = pole['name'];
+                            const page_start = pole['page_start'];
+                            const page_end = pole['page_end'];
+                            const color = pole['color'];
+                            const text = pole['text']; 
+                            document.getElementById("pg").innerHTML = '<p>PAGE' + page_start + '-' + page_end + '</p>';
+                            document.getElementById("col").innerHTML = '<rect width="8px" height="50px" style="fill:' + color +' "></rect>';
+                            document.getElementById("nm").innerHTML = '<p>' + name + '</p>';
+                            document.getElementById("txt").innerHTML = '<p>' + text + '</p>';
+                            //console.log(document.getElementById("pg").innerHTML);
+                            //console.log(document.getElementById("col").innerHTML);
+                            //console.log(document.getElementById("nm").innerHTML);
+                            //console.log(document.getElementById("txt").innerHTML);
+                        }
+                    }
                 }
             }
 
