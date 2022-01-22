@@ -602,6 +602,7 @@
             let add_note_btn = document.getElementById("add-note-popup-btn");
             if (add_note_btn != null) {
                 add_note_btn.onclick = function() {
+                    modal_note.style.display = "none";
                     const xhttp = new XMLHttpRequest();
                     xhttp.open("POST", "{{ url_for('showTitle', id=title.id)}}", true);
                     xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;");
