@@ -285,7 +285,7 @@
                         </div>
                         <!-- on click post request -->
                         <!--<input type = "button" onclick = "foo()" value = "Display">-->
-                        <button name="note" value="add" class="btn-add">
+                        <button name="note" value="add" class="btn-add" id="add-note-popup-btn" onclick="return add_note()">
                             <i class="fas fa-check"></i>
                         </button>
                         <br>
@@ -587,6 +587,21 @@
             if (btn_note != null) {
                 btn_note.onclick = function() {
                     modal_note.style.display = "block";
+                    
+                }
+            }
+
+            if (close_note != null) {
+                close_note.onclick = function () {
+                    modal_note.style.display = "none";
+                }
+            }
+
+        }
+        function add_note(){
+            let add_note_btn = document.getElementById("add-note-popup-btn");
+            if (add_note_btn != null) {
+                add_note_btn.onclick = function() {
                     const xhttp = new XMLHttpRequest();
                     xhttp.open("POST", "{{ url_for('showTitle', id=title.id)}}", true);
                     xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;");
@@ -615,15 +630,7 @@
                             //console.log(document.getElementById("txt").innerHTML);
                         }
                     }
-                }
             }
-
-            if (close_note != null) {
-                close_note.onclick = function () {
-                    modal_note.style.display = "none";
-                }
-            }
-
         }
 
         function remove_effect() {
