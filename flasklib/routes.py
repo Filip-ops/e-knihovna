@@ -521,11 +521,12 @@ def showTitle(id):
                     text = request.form.get("text")
                     color = request.form.get("color")'''
                     if request.json['action'] == 'add':
-                        name = request.json['name']
-                        start_page = request.json['start_page']
-                        end_page = request.json['end_page']
-                        text = request.json['text']
-                        color = request.json['color']
+                        content = request.get_json()
+                        name = content['name']
+                        start_page = content['start_page']
+                        end_page = content['end_page']
+                        text = content['text']
+                        color = content['color']
                         note = Note(name=name, start_page=start_page, text=text, end_page=end_page, color=color,
                                     library_title=lib_title.id)
                         db.session.add(note)
