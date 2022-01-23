@@ -517,19 +517,18 @@ def showTitle(id):
                 elif request.json['event'] == 'note':
                     
                     if request.json['action'] == 'add':
-                        content = request.get_json()
-                        name = content['name']
-                        start_page = content['start_page']
-                        end_page = content['end_page']
-                        text = content['text']
-                        color = content['color']
+                        name = request.json['name']
+                        start_page = request.json['start_page']
+                        end_page = request.json['end_page']
+                        text = request.json['text']
+                        color = request.json['color']
                         note = Note(name=name, start_page=start_page, text=text, end_page=end_page, color=color,
                                     library_title=lib_title.id)
                         db.session.add(note)
                         db.session.commit()
                         idn = note.id
                         data = {'name': name, 'start_page': start_page, 'end_page': end_page, 'text': text, 'color': color, 'idn': idn}
-                        return make_response(jsonify(data),200)
+                        return make_response(jsonify(data))
                     
 
 
