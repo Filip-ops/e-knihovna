@@ -536,6 +536,29 @@ def showTitle(id):
                         db.session.commit()
                         return make_response(jsonify({'success': True}), 200)
 
+                    elif request.json['action'] == 'get':
+                        note_id = request.json['id']
+                        note = Note.query.get(note_id)
+                        return make_response(jsonify({'success': True, 'name': note.name, 'text': note.text,
+                                                      'color': note.color, 'start_page': note.start_page,
+                                                      'end_page': note.end_page}), 200)
+
+                    if request.json['action'] == 'edit':
+                        note_id = request.json['id']
+                        name = request.json['name']
+                        start_page = request.json['page_start']
+                        end_page = request.json['page_end']
+                        text = request.json['text']
+                        color = request.json['color']
+                        note = Note.query.get(note_id)
+                        note.name = name
+                        note.start_page = start_page
+                        note.end_page = end_page
+                        note.color = color
+                        note.text = text
+                        db.session.commit()
+                        return make_response(jsonify({'success': True}), 200)
+
             if request.form.get("remove_tag"):  # if name == value
                 shelf_id = request.form.get("remove_tag")
                 shelf = Shelf.query.get(shelf_id)

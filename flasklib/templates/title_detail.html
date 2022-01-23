@@ -196,7 +196,7 @@
                                 <!-- for note in poznamky k tomuto title_in_library -->
                                 <!-- jedna note item -->
                                 {% for note in notes %}
-                                    <tr class="note-list-item">
+                                    <tr class="note-list-item" id="{{ note.id }}">
                                         <td class="note-list-item-color">
                                             <svg width="8px" height="50px" id="col">
                                                 <rect width="8px" height="50px" style="fill: {{ note.color }}"></rect> <!-- note.color -->
@@ -219,7 +219,7 @@
                                         <!-- default tlacitka -->
                                         <td class="note-list-item-button">
                                             <div class="form-button-icon">
-                                                <button name="edit_note" value="{{note.id}}" class="btn-edit">
+                                                <button name="edit_note" value="{{note.id}}" class="btn-edit" onclick="return set_edit_note('{{ note.id }}')">
                                                     <i class="fas fa-edit"></i>
                                                     <span class="tooltip">edit</span>
                                                 </button>
@@ -260,7 +260,7 @@
                 <i class="fas fa-times" id="add-note-close"></i>
             </div>
             <div class="modal-body">
-                <div class="modal-form">
+                <div class="modal-form" id="note-modal-form">
                     <!-- post request s note=add a hodnotami pre novy notev : name, page_start, page_end, color, text -->
                     <!-- not sure about the color ze co to posle a ako sa to bude ukladat ta hodnota, hadam to bude
                     hexa hodnota a nebude je treba dako specialne riesit -->
@@ -582,11 +582,13 @@
             let modal_note = document.getElementById("add-note-modal");
             let btn_note = document.getElementById("add-note-btn");
             let close_note = document.getElementById("add-note-close");
+            let modal_note_inner = document.getElementById("note-modal-form");
 
             if (btn_note != null) {
                 btn_note.onclick = function() {
                     modal_note.style.display = "block";
-                    
+                    modal_note_inner.innerHTML = `<form method="POST"><div class="input-row"><label for="name" class="required-label">Name: </label><input type="text" name="name" id="name" required="required" maxlength="30" value=""></div><div class="input-row"><label for="page_start" class="required-label">Page: </label><input type="number" name="page_start" id="page_start" required="required" min="0" value="0"><label for="page_end"> - </label><input type="number" name="page_end" id="page_end" min="0" value="0"></div><div class="input-row"><label for="color" class="required-label">Color: </label><input type="color" name="color" id="color" value="#d9d9d9"></div><div class="input-row"><label for="text">Text: </label><textarea name="text" id="text" rows="5" maxlength="1000"></textarea></div><button name="note" value="add" type="button" class="btn-add" id="add-note-popup-btn" onclick="return add_note()"><i class="fas fa-check"></i></button><br></form>`;
+                    page_correct();
                 }
             }
 
@@ -629,18 +631,13 @@
                     } else {
                         page_html = `<span>` + page_start + ` - ` + page_end + `</span>`;
                     }
-                    const note_html = `<tr class="note-list-item"><td class="note-list-item-color"><svg width="8px" height="50px" id="col"><rect width="8px" height="50px" style="fill: ` + color + `"></rect></svg></td><td class="note-list-item-page" id="pg"><p>PAGE</p>` + page_html + `</p></td><td class="note-list-item-name" id="nm"><p>` + name + `</p></td><td class="note-list-item-text" id="txt"><p>` + text + `</p></td><td class="note-list-item-button"><div class="form-button-icon"><button name="edit_note" value="`+ id + `" class="btn-edit"><i class="fas fa-edit"></i><span class="tooltip">edit</span></button></div></td><td class="note-list-item-button"><div class="form-button-icon"><button name="remove_note" value="` + id + `"class="btn-del" onclick="return del_note('` + id + `')"><i class="fas fa-trash"></i><span class="tooltip">remove</span></button></div></td></tr>`;
+                    const note_html = `<tr class="note-list-item" id="` + id + `"><td class="note-list-item-color"><svg width="8px" height="50px" id="col"><rect width="8px" height="50px" style="fill: ` + color + `"></rect></svg></td><td class="note-list-item-page" id="pg"><p>PAGE</p>` + page_html + `</p></td><td class="note-list-item-name" id="nm"><p>` + name + `</p></td><td class="note-list-item-text" id="txt"><p>` + text + `</p></td><td class="note-list-item-button"><div class="form-button-icon"><button name="edit_note" value="`+ id + `" class="btn-edit" onclick="return set_edit_note('` + id + `')"><i class="fas fa-edit"></i><span class="tooltip">edit</span></button></div></td><td class="note-list-item-button"><div class="form-button-icon"><button name="remove_note" value="` + id + `"class="btn-del" onclick="return del_note('` + id + `')"><i class="fas fa-trash"></i><span class="tooltip">remove</span></button></div></td></tr>`;
                     if (notes.length > 0) {
                         notes[0].insertAdjacentHTML('beforebegin', note_html);
                     } else {
                         document.getElementById("note-table").innerHTML += note_html;
                     }
                     modal_note.style.display = "none";
-                    document.getElementById('name').value = '';
-                    document.getElementById('page_start').value = '';
-                    document.getElementById('page_end').value = '';
-                    document.getElementById('color').value = '#d9d9d9';
-                    document.getElementById('text').value = '';
                 }
             }
             return false;
@@ -664,6 +661,78 @@
             }
         }
 
+        function set_edit_note(idn){
+            let note_modal = document.getElementById('note-modal-form');
+
+            const xhttp = new XMLHttpRequest();
+            xhttp.open("POST", "{{ url_for('showTitle', id=title.id)}}", true);
+            xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhttp.send(JSON.stringify({ "event": "note", "action": "get", "id": idn }));
+
+            xhttp.onreadystatechange = function() {
+                if ((xhttp.readyState === 4) && (xhttp.status === 200)) {
+                    let response = JSON.parse(xhttp.responseText);
+                    let name = response['name'];
+                    let text = response['text'];
+                    let color = response['color'];
+                    let page_start = response['start_page'];
+                    let page_end = response['end_page'];
+
+                    note_modal.innerHTML = `<form method="POST"><div class="input-row"><label for="name" class="required-label">Name: </label><input type="text" name="name" id="name" required="required" maxlength="30" value="` + name + `"></div><div class="input-row"><label for="page_start" class="required-label">Page: </label><input type="number" name="page_start" id="page_start" required="required" min="0" value="` + page_start + `"><label for="page_end"> - </label><input type="number" name="page_end" id="page_end" min="0" value="` + page_end + `"></div><div class="input-row"><label for="color" class="required-label">Color: </label><input type="color" name="color" id="color" value="` + color + `"></div><div class="input-row"><label for="text">Text: </label><textarea name="text" id="text" rows="5" maxlength="1000">` + text + `</textarea></div><button name="note" value="add" type="button" class="btn-add" id="add-note-popup-btn" onclick="return edit_note('` + idn + `')"><i class="fas fa-check"></i></button><br></form>`;
+                    document.getElementById("add-note-modal").style.display = "block";
+                    page_correct();
+                }
+            }
+        }
+
+        function edit_note(idn){
+
+            let modal_note = document.getElementById("add-note-modal");
+            let name = document.getElementById('name').value;
+            let page_start = document.getElementById('page_start').value;
+            let page_end = document.getElementById('page_end').value;
+            let color = document.getElementById('color').value;
+            let text = document.getElementById('text').value;
+
+            if (name === '')
+                name = 'note name';
+            if (page_start === '') {
+                page_start = 0;
+                page_end = 0;
+            }
+
+
+            const xhttp = new XMLHttpRequest();
+            xhttp.open("POST", "{{ url_for('showTitle', id=title.id)}}", true);
+            xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhttp.send(JSON.stringify({ "event": "note", "action": "edit" ,"name": name,"page_start": page_start,"page_end": page_end,"color": color,"text": text, "id": idn }));
+
+            xhttp.onreadystatechange = function() {
+                if ((xhttp.readyState === 4) && (xhttp.status === 200)) {
+                    const notes_all = document.getElementsByClassName('note-list-item');
+                    let note;
+                    for (let x = 0; x < notes_all.length; x++)
+                        if (notes_all[x].id === idn)
+                            note = notes_all[x];
+                    let page_html = ``;
+                    if (page_end === page_start) {
+                        page_html = `<span>` + page_start + `</span>`;
+                    } else {
+                        page_html = `<span>` + page_start + ` - ` + page_end + `</span>`;
+                    }
+                    note.innerHTML = `<td class="note-list-item-color"><svg width="8px" height="50px" id="col"><rect width="8px" height="50px" style="fill: ` + color + `"></rect></svg></td><td class="note-list-item-page" id="pg"><p>PAGE</p>` + page_html + `</p></td><td class="note-list-item-name" id="nm"><p>` + name + `</p></td><td class="note-list-item-text" id="txt"><p>` + text + `</p></td><td class="note-list-item-button"><div class="form-button-icon"><button name="edit_note" value="` + idn + `" class="btn-edit" onclick="return edit_note('` + idn + `')"><i class="fas fa-edit"></i><span class="tooltip">edit</span></button></div></td><td class="note-list-item-button"><div class="form-button-icon"><button name="remove_note" value="` + idn + `"class="btn-del" onclick="return del_note('` + idn + `')"><i class="fas fa-trash"></i><span class="tooltip">remove</span></button></div></td>`;
+
+                    modal_note.style.display = "none";
+                    document.getElementById('name').value = '';
+                    document.getElementById('page_start').value = '';
+                    document.getElementById('page_end').value = '';
+                    document.getElementById('color').value = '#d9d9d9';
+                    document.getElementById('text').value = '';
+                }
+            }
+            return false;
+        }
+
         function remove_effect() {
             let del_tags = document.getElementsByClassName('btn-del-tag');
             for (let i = 0; i < del_tags.length; ++i) {
@@ -680,6 +749,23 @@
                     del_tags[i].parentElement.parentElement.style.boxShadow = "none"
                 };
             }
+        }
+
+        function page_correct() {
+            let page_start = document.getElementById("page_start");
+            let page_end = document.getElementById("page_end");
+
+            page_start.oninput = function () {
+                if (parseInt(page_end.value) <= parseInt(page_start.value) || page_end.value === "") {
+                    page_end.value = page_start.value;
+                }
+            }
+
+            page_end.oninput = function () {
+                if (parseInt(page_end.value) <= parseInt(page_start.value)) {
+                    page_end.value = page_start.value;
+                }
+}
         }
     </script>
 
