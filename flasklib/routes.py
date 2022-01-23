@@ -533,7 +533,7 @@ def showTitle(id):
                         db.session.commit()
                         idn = note.id
                         data = {'name': name, 'start_page': start_page, 'end_page': end_page, 'text': text, 'color': color, 'idn': idn}
-                        return make_response(jsonify(data))
+                        return make_response(jsonify(data),200)
                     
 
 
