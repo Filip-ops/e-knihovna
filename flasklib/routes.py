@@ -531,6 +531,8 @@ def showTitle(id):
                         data = {'success': True, 'name': name, 'start_page': start_page, 'end_page': end_page, 'text': text, 'color': color, 'idn': idn}
                         return make_response(jsonify(data),200)
 
+
+
             if request.form.get("remove_tag"):  # if name == value
                 shelf_id = request.form.get("remove_tag")
                 shelf = Shelf.query.get(shelf_id)
@@ -572,26 +574,26 @@ def showTitle(id):
                 db.session.delete(wl_title)
                 db.session.commit()
 
-            #if request.form.get("note") == "add":
-            #    name = request.form.get("name")
-            #    start_page = request.form.get("page_start")
-            #    end_page = request.form.get("page_end")
-            #    text = request.form.get("text")
-            #    color = request.form.get("color")
-            #    note = Note(name=name, start_page=start_page, text=text, end_page=end_page, color=color,
-            #                library_title=lib_title.id)
-            #    db.session.add(note)
-            #    db.session.commit()
+            if request.form.get("note") == "add":
+                name = request.form.get("name")
+                start_page = request.form.get("page_start")
+                end_page = request.form.get("page_end")
+                text = request.form.get("text")
+                color = request.form.get("color")
+                note = Note(name=name, start_page=start_page, text=text, end_page=end_page, color=color,
+                            library_title=lib_title.id)
+                db.session.add(note)
+                db.session.commit()
 
-            #if request.form.get("remove_note"):
-            #    note_id = request.form.get("remove_note")
-            #    note = Note.query.get(note_id)
-            #    db.session.delete(note)
-            #    db.session.commit()
+            if request.form.get("remove_note"):
+                note_id = request.form.get("remove_note")
+                note = Note.query.get(note_id)
+                db.session.delete(note)
+                db.session.commit()
 
-            #if request.form.get("edit_note"):
-            #    note_id = request.form.get("edit_note")
-            #    note = Note.query.get(note_id)
+            if request.form.get("edit_note"):
+                note_id = request.form.get("edit_note")
+                note = Note.query.get(note_id)
 
             #    pass
 
