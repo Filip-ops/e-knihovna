@@ -178,6 +178,18 @@ def myLibrary():
 def myShelves():
     if current_user.is_authenticated:
         if request.method == "POST":
+            if request.json:
+                print(request.json)
+
+                if request.json['action'] == 'add':
+                    name = request.json["name"]
+                    desc = request.json["text"]
+                    shelf = Shelf(name=name, desc=desc, user=current_user.id)
+                    db.session.add(shelf)
+                    db.session.commit()
+                    return make_response(jsonify({'success': True, "id": shelf.id}), 200)
+
+
             name = request.form.get("name")
             desc = request.form.get("text")
             shelf = Shelf(name=name, desc=desc, user=current_user.id)

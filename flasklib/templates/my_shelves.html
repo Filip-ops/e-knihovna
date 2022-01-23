@@ -62,7 +62,7 @@
                 </div>
                 <div id="content">
                     <!-- for shelf in policky -->
-                    <table class="shelf-list">
+                    <table class="shelf-list" id="shelf-list">
                         <!-- od tadeto 1 -->
                         <tr class="top">
                             <td></td>
@@ -76,7 +76,7 @@
                             </td>
                             <td></td>
                         </tr>
-                        <tr class="small">
+                        <tr class="small" id="new-shelf-bottom">
                             <td></td>
                             <td></td>
                             <td></td>
@@ -87,7 +87,7 @@
                             <tr class="normal">
                                 <td></td>
                                 <td class="shelf-item">
-                                    <a href="{{ url_for('showShelf', id=shelf.id)}}">{{shelf.name}}</a> <!-- shelf.name -->
+                                    <a class="shelf-name" href="{{ url_for('showShelf', id=shelf.id)}}">{{shelf.name}}</a> <!-- shelf.name -->
                                     <!-- todo: add counter to model -->
                                     {% if count == 1 %}
                                         <span class="shelf-small">{{ count }} book</span>
@@ -141,7 +141,7 @@
                             <textarea name="text" id="text" rows="5" value="" maxlength="50"></textarea>
                         </div>
                         <!-- on click post request s name=shelf.name, text=shelf.description -->
-                        <button name="note" value="add" class="btn-add" type="submit">
+                        <button name="note" value="add" class="btn-add" type="submit" onclick="return add_shelf()">
                             <i class="fas fa-check"></i>
                         </button>
                         <br> 
@@ -150,6 +150,32 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function add_shelf() {
+            let name = document.getElementById('name').value;
+            let text = document.getElementById('text').value;
+
+            const xhttp = new XMLHttpRequest();
+            xhttp.open("POST", "{{ url_for('myShelves')}}", true);
+            xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhttp.send(JSON.stringify({ "action": "add", "name": name, "text": text }));
+
+            xhttp.onreadystatechange = function() {
+                if ((xhttp.readyState === 4) && (xhttp.status === 200)) {
+                    const response = JSON.parse(xhttp.responseText);
+                    let shelf_url = "{{ url_for('showShelf', id=0)}}";
+                    shelf_url = shelf_url.substring(0, shelf_url.length - 1) + response['id'];
+                    let shelf_html = `<tr class="normal"><td></td><td class="shelf-item"><a class="shelf-name" href="` + shelf_url + `">` + name +`</a><span class="shelf-small">0 books</span></td><td></td></tr><tr class="small"><td></td><td></td><td></td></tr>`;
+                    document.getElementById('new-shelf-bottom').insertAdjacentHTML('afterend', shelf_html);
+                    document.getElementById("create-tag-modal").style.display = "none";
+                    document.getElementById('name').value = "";
+                    document.getElementById('text').value = "";
+                }
+            }
+            return false;
+        }
+    </script>
 
     <script src="{{ url_for('static', filename='create_tag.js') }}"></script>
 </body>
