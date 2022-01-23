@@ -616,9 +616,8 @@
                     
                     xhttp.onreadystatechange = function() {
                         if ((xhttp.readyState === 4) && (xhttp.status === 200)) {
-                            let response = JSON.parse(JSON.stringify(xhttp.response));
-                            alert(xhttp.responseText);
-                            alert(xhttp.response)
+                            let response = JSON.parse(JSON.stringify(xhttp.responseText));
+                            alert(response)
                             let name = response['name'];
                             let page_start = response['page_start'];
                             let page_end = response['page_end'];
