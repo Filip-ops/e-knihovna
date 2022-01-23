@@ -228,13 +228,13 @@
                                         <td class="note-list-item-button">
                                             <!-- post request s remove_note=note.id -->
                                             <!-- odstrani note -->
-                                            <form method="POST" class="form-button-icon">
-                                                <button name="remove_note" value="{{note.id}}" class="btn-del">
+                                            <div class="form-button-icon">
+                                                <button name="remove_note" value="{{note.id}}" class="btn-del" onclick="return del_note('{{ note.id }}')">
                                                     <!-- id_value=note.id -->
                                                     <i class="fas fa-trash"></i>
                                                     <span class="tooltip">remove</span>
                                                 </button>
-                                            </form>
+                                            </div>
                                         </td>
                                     </tr>
                                 {% endfor %}
@@ -598,7 +598,6 @@
 
         }
         function add_note(){
-            let add_note_btn = document.getElementById("add-note-popup-btn");
             let modal_note = document.getElementById("add-note-modal");
             let name = document.getElementById('name').value;
             let page_start = document.getElementById('page_start').value;
@@ -606,32 +605,63 @@
             let color = document.getElementById('color').value;
             let text = document.getElementById('text').value;
 
-            if (add_note_btn != null) {
-                add_note_btn.onclick = function() {
-                
-                    const xhttp = new XMLHttpRequest();
-                    xhttp.open("POST", "{{ url_for('showTitle', id=title.id)}}", true);
-                    xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-                    xhttp.send(JSON.stringify({ "event": "note", "action": "add" ,"name": name,"page_start": page_start,"page_end": page_end,"color": color,"text": text }));
-                    
-                    xhttp.onreadystatechange = function() {
-                        if ((xhttp.readyState === 4) && (xhttp.status === 200)) {
-                            let response = JSON.parse(xhttp.responseText);
-                            //let response = JSON.parse(JSON.stringify(xhttp.responseText));
-                            let name = response['name'];
-                            let page_start = response['page_start'];
-                            let page_end = response['page_end'];
-                            let color = response['color'];
-                            let text = response['text'];
-                            let id = response['idn'];
-                            //document.getElementById("footer-inner").innerHTML += '<p>' + name + page_start + page_end + color + text + id + '</p>'; 
-                            document.getElementById("note-table").innerHTML += '<tr class="note-list-item"><td class="note-list-item-color"><svg width="8px" height="50px" id="col"><rect width="8px" height="50px" style="fill: ' + color + '"></rect></svg></td><td class="note-list-item-page" id="pg"><p>PAGE' + page_start + '-' + page_end + '</p></td><td class="note-list-item-name" id="nm"><p>' + name + '</p></td><td class="note-list-item-text" id="txt"><p>' + text + '</p></td><td class="note-list-item-button"><div class="form-button-icon"><button name="edit_note" value="{{'+ id +'}}" class="btn-edit"><i class="fas fa-edit"></i><span class="tooltip">edit</span></button></div></td><td class="note-list-item-button"><form method="POST" class="form-button-icon"><button name="remove_note" value="{{'+ id +'}}"class="btn-del"><i class="fas fa-trash"></i><span class="tooltip">remove</span></button></form></td></tr>';
-                            modal_note.style.display = "none";
-                        }
+            if (name === '')
+                name = 'note name';
+            if (page_start === '') {
+                page_start = 0;
+                page_end = 0;
+            }
+
+
+            const xhttp = new XMLHttpRequest();
+            xhttp.open("POST", "{{ url_for('showTitle', id=title.id)}}", true);
+            xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhttp.send(JSON.stringify({ "event": "note", "action": "add" ,"name": name,"page_start": page_start,"page_end": page_end,"color": color,"text": text }));
+
+            xhttp.onreadystatechange = function() {
+                if ((xhttp.readyState === 4) && (xhttp.status === 200)) {
+                    let response = JSON.parse(xhttp.responseText);
+                    let id = response['idn'];
+                    const notes = document.getElementsByClassName('note-list-item');
+                    let page_html = ``;
+                    if (page_end === page_start) {
+                        page_html = `<span>` + page_start + `</span>`;
+                    } else {
+                        page_html = `<span>` + page_start + ` - ` + page_end + `</span>`;
                     }
+                    const note_html = `<tr class="note-list-item"><td class="note-list-item-color"><svg width="8px" height="50px" id="col"><rect width="8px" height="50px" style="fill: ` + color + `"></rect></svg></td><td class="note-list-item-page" id="pg"><p>PAGE</p>` + page_html + `</p></td><td class="note-list-item-name" id="nm"><p>` + name + `</p></td><td class="note-list-item-text" id="txt"><p>` + text + `</p></td><td class="note-list-item-button"><div class="form-button-icon"><button name="edit_note" value="`+ id + `" class="btn-edit"><i class="fas fa-edit"></i><span class="tooltip">edit</span></button></div></td><td class="note-list-item-button"><div class="form-button-icon"><button name="remove_note" value="` + id + `"class="btn-del" onclick="return del_note('` + id + `')"><i class="fas fa-trash"></i><span class="tooltip">remove</span></button></div></td></tr>`;
+                    if (notes.length > 0) {
+                        notes[0].insertAdjacentHTML('beforebegin', note_html);
+                    } else {
+                        document.getElementById("note-table").innerHTML += note_html;
+                    }
+                    modal_note.style.display = "none";
+                    document.getElementById('name').value = '';
+                    document.getElementById('page_start').value = '';
+                    document.getElementById('page_end').value = '';
+                    document.getElementById('color').value = '#d9d9d9';
+                    document.getElementById('text').value = '';
                 }
             }
             return false;
+        }
+
+        function del_note(idn){
+            const xhttp = new XMLHttpRequest();
+            xhttp.open("POST", "{{ url_for('showTitle', id=title.id)}}", true);
+            xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhttp.send(JSON.stringify({ "event": "note", "action": "del", "id": idn }));
+
+            xhttp.onreadystatechange = function() {
+                if ((xhttp.readyState === 4) && (xhttp.status === 200)) {
+                    let notes_all = document.getElementById('note-table').getElementsByClassName('btn-del');
+                    let note;
+                    for (let x = 0; x < notes_all.length; x++)
+                        if (notes_all[x].value === idn)
+                            note = notes_all[x];
+                    note.parentElement.parentElement.parentElement.remove();
+                }
+            }
         }
 
         function remove_effect() {

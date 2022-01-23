@@ -519,19 +519,22 @@ def showTitle(id):
                     
                     if request.json['action'] == 'add':
                         name = request.json['name']
-                        start_page = request.json['start_page']
-                        end_page = request.json['end_page']
+                        start_page = request.json['page_start']
+                        end_page = request.json['page_end']
                         text = request.json['text']
                         color = request.json['color']
                         note = Note(name=name, start_page=start_page, text=text, end_page=end_page, color=color,
                                     library_title=lib_title.id)
                         db.session.add(note)
                         db.session.commit()
-                        idn = note.id
-                        data = {'success': True, 'name': name, 'start_page': start_page, 'end_page': end_page, 'text': text, 'color': color, 'idn': idn}
-                        return make_response(jsonify(data),200)
+                        return make_response(jsonify({'success': True, 'idn': note.id}), 200)
 
-
+                    elif request.json['action'] == 'del':
+                        note_id = request.json['id']
+                        note = Note.query.get(note_id)
+                        db.session.delete(note)
+                        db.session.commit()
+                        return make_response(jsonify({'success': True}), 200)
 
             if request.form.get("remove_tag"):  # if name == value
                 shelf_id = request.form.get("remove_tag")
