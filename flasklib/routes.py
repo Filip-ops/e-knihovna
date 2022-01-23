@@ -515,11 +515,7 @@ def showTitle(id):
                                                   'order': not_shelves_names}), 200)
 
                 elif request.json['event'] == 'note':
-                    '''name = request.form.get("name")
-                    start_page = request.form.get("page_start")
-                    end_page = request.form.get("page_end")
-                    text = request.form.get("text")
-                    color = request.form.get("color")'''
+                    
                     if request.json['action'] == 'add':
                         content = request.get_json()
                         name = content['name']
