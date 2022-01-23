@@ -529,6 +529,12 @@ def showTitle(id):
                         idn = note.id
                         data = {'success': True, 'name': name, 'start_page': start_page, 'end_page': end_page, 'text': text, 'color': color, 'idn': idn}
                         return make_response(jsonify(data),200)
+
+                else:
+                    pass
+            
+            else:
+                pass
                     
 
 
